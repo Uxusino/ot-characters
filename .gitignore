@@ -1,2 +1,5 @@
 Lib/
 Scripts/
+
+.pytest_cache
+__pycache__
