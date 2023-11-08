@@ -1,13 +1,12 @@
 [tool.poetry]
-name = "characters"
+name = "maksukortti"
 version = "0.1.0"
-description = "A tool to manage characters of your story."
+description = "Yksikkötestausten harjoitustyö"
 authors = ["Uxusino Uxusone <89293277+Uxusino@users.noreply.github.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.8"
-cowsay = "^6.1"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -16,7 +15,3 @@ pytest = "^7.4.3"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
-
-packages = [
-    { include = "characters" }
-]
