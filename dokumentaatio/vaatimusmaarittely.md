@@ -57,6 +57,7 @@ Mahdolliset suhteet ovat:
     - Grandparent/grandchild
     - Sibling
     - Cousin
+    - Aunt/Uncle
     - Step-parent/stepchild
     - Wife/Husband
     - Girlfriend/Boyfriend
