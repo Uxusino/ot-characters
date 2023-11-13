@@ -57,16 +57,18 @@ Mahdolliset suhteet ovat:
     - Grandparent/grandchild
     - Sibling
     - Cousin
-    - Aunt/Uncle
+    - Aunt/uncle - niece/nephew
     - Step-parent/stepchild
     - Wife/Husband
     - Girlfriend/Boyfriend
     - Friend
     - Collegue
     - Classmate
+    - Alter-ego
+    - Creator/creation
 - Yksisuuntaiset:
     - Love interest
     - Enemy
     - Fan
 
-Hahmolla voi olla muutama suhde toisen hahmon kanssa, mikäli se ei ole fyysisesti mahdoton suhde (esim. joku ei voi olla samalla toisen henkilön lapsi ja vanhempi).
+Hahmolla voi olla muutama suhde toisen hahmon kanssa.
