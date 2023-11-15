@@ -59,16 +59,17 @@ Mahdolliset suhteet ovat:
     - Cousin
     - Aunt/uncle - niece/nephew
     - Step-parent/stepchild
+    - Relative (jos ei ole läheinen sukulainen)
     - Wife/Husband
     - Girlfriend/Boyfriend
     - Friend
     - Collegue
     - Classmate
-    - Alter-ego
+    - Alter ego
     - Creator/creation
 - Yksisuuntaiset:
     - Love interest
     - Enemy
     - Fan
 
-Hahmolla voi olla muutama suhde toisen hahmon kanssa.
+Hahmolla voi olla muutama suhde toisen hahmon kanssa. On mahdollista lisätä "former" (entinen) jokaiseen suhteeseen.

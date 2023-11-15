@@ -1,0 +1,91 @@
+{
+    "relations": [
+        {
+            "id":1, "name":"parent", "female_name":"mother", "male_name":"father", "two_sided":1, "counterpart":2
+        },
+
+        {
+            "id":2, "name":"child", "female_name":"daughter", "male_name":"son", "two_sided":1, "counterpart":1
+        },
+
+        {
+            "id":3, "name":"grandparent", "female_name":"grandmother", "male_name":"grandfather", "two_sided":1, "counterpart":4
+        },
+
+        {
+            "id":4, "name":"grandchild", "female_name":"granddaughter", "male_name":"grandson", "two_sided":1, "counterpart":3
+        },
+
+        {
+            "id":5, "name":"sibling", "female_name":"sister", "male_name":"brother", "two_sided":1, "counterpart":5
+        },
+
+        {
+            "id":6, "name":"cousin", "female_name":"cousin", "male_name":"cousin", "two_sided":1, "counterpart":6
+        },
+
+        {
+            "id":7, "name":"aunt/uncle", "female_name":"aunt", "male_name":"uncle", "two_sided":1, "counterpart":8
+        },
+
+        {
+            "id":8, "name":"niece/nephew", "female_name":"niece", "male_name":"nephew", "two_sided":1, "counterpart":7
+        },
+
+        {
+            "id":9, "name":"step-parent", "female_name":"stepmother", "male_name":"stepfather", "two_sided":1, "counterpart":10
+        },
+
+        {
+            "id":10, "name":"stepchild", "female_name":"stepdaughter", "male_name":"stepson", "two_sided":1, "counterpart":9
+        },
+
+        {
+            "id":11, "name":"spouse", "female_name":"wife", "male_name":"husband", "two_sided":1, "counterpart":11
+        },
+
+        {
+            "id":12, "name":"relative", "female_name":"relative", "male_name":"relative", "two_sided":1, "counterpart":12
+        },
+
+        {
+            "id":13, "name":"partner", "female_name":"girlfriend", "male_name":"boyfriend", "two_sided":1, "counterpart":13
+        },
+
+        {
+            "id":14, "name":"friend", "female_name":"friend", "male_name":"friend", "two_sided":1, "counterpart":14
+        },
+
+        {
+            "id":15, "name":"collegue", "female_name":"collegue", "male_name":"collegue", "two_sided":1, "counterpart":15
+        },
+
+        {
+            "id":16, "name":"classmate", "female_name":"classmate", "male_name":"classmate", "two_sided":1, "counterpart":16
+        },
+
+        {
+            "id":17, "name":"alter ego", "female_name":"alter ego", "male_name":"alter ego", "two_sided":1, "counterpart":17
+        },
+
+        {
+            "id":18, "name":"creator", "female_name":"creator", "male_name":"creator", "two_sided":1, "counterpart":19
+        },
+
+        {
+            "id":19, "name":"creation", "female_name":"creation", "male_name":"creation", "two_sided":1, "counterpart":18
+        },
+
+        {
+            "id":20, "name":"love interest", "female_name":"love interest", "male_name":"love interest", "two_sided":0
+        },
+
+        {
+            "id":21, "name":"enemy", "female_name":"enemy", "male_name":"enemy", "two_sided":0
+        },
+
+        {
+            "id":22, "name":"fan", "female_name":"fan", "male_name":"fan", "two_sided":0
+        }
+    ]  
+}
