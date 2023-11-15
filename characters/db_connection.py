@@ -1,6 +1,9 @@
+import os
 import sqlite3
 
-con = sqlite3.connect("db.db")
+dirname = os.path.abspath(__file__)
+
+con = sqlite3.connect(os.path.join((os.path.dirname(dirname)), "data", "db.db"))
 con.row_factory = sqlite3.Row
 
 def get_db_connection():

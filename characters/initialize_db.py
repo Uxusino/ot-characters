@@ -52,6 +52,7 @@ def create_tables(con: sqlite3.Connection):
             char1_id INTEGER NOT NULL,
             char2_id INTEGER NOT NULL,
             relation_id INTEGER NOT NULL,
+            former INTEGER DEFAULT 0,
             FOREIGN KEY (char1_id)
                 REFERENCES Characters(char_id)
                     ON DELETE CASCADE,
@@ -65,6 +66,7 @@ def create_tables(con: sqlite3.Connection):
     """)
     con.commit()
 
+# Deletes old database, creates new and loads relations
 def initialize_database():
     con = get_db_connection()
     drop_tables(con)
