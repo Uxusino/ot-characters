@@ -1,1 +1,1 @@
-# hiiiiiiii
+print("hiiiii")
