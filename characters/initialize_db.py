@@ -1,4 +1,6 @@
 import sqlite3
+import json
+import os
 from db_connection import get_db_connection
 
 def drop_tables(con: sqlite3.Connection):
@@ -66,11 +68,40 @@ def create_tables(con: sqlite3.Connection):
     """)
     con.commit()
 
+# Loads json into database for easier handling and code reading
+def load_relations(con: sqlite3.Connection):
+    fpath = os.path.abspath(__file__)
+    rpath = os.path.join(os.path.dirname(fpath), "data", "relations.json")
+    with open(rpath) as f:
+        raw_relations = f.read()
+        relations = json.loads(raw_relations)
+    relations_list = relations['relations']
+    sql_inputs = []
+    for r in relations_list:
+        if r['two_sided'] == 1:
+            i = (r['id'], r['name'], r['female_name'], r['male_name'], r['two_sided'], r['counterpart'])
+        else:
+            i = (r['id'], r['name'], r['female_name'], r['male_name'], r['two_sided'], None)
+        sql_inputs.append(i)
+
+    sql = "INSERT INTO Relations ( relation_id, name, female_name, male_name, two_sided, counterpart ) VALUES (?, ?, ?, ?, ?, ?)"
+
+    cur = con.cursor()
+    try:
+        cur.executemany(sql, sql_inputs)
+        con.commit()
+        print("Succesfully added relations to the table.")
+    except Exception as e:
+        con.rollback()
+        print("Something went horribly wrong :(" + str(e))
+
+
 # Deletes old database, creates new and loads relations
 def initialize_database():
     con = get_db_connection()
     drop_tables(con)
     create_tables(con)
+    load_relations(con)
 
 if __name__ == "__main__":
     initialize_database()
