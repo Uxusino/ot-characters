@@ -1,9 +1,17 @@
 import getpass
+import sys
+import os
 
+dir = os.path.dirname(os.path.abspath(__file__))
+root_dir = os.path.dirname(dir)
+sys.path.append(root_dir)
+
+from entities.story import Story
+from repositories.db_management import db
 from tkinter import ttk, constants
 
 class MainView:
-    def __init__(self, root, stories, handle_story) -> None:
+    def __init__(self, root, stories: list[Story], handle_story) -> None:
         self._root = root
         self._frame = None
         self._handle_story = handle_story
@@ -27,23 +35,25 @@ class MainView:
                                          command=self.create_story)
 
         welcome_text.pack()
-        if self.stories == 0:
+        if len(self.stories) == 0:
             no_stories = ttk.Label(master=self._frame, text="You don't have any stories yet. Why not create one?")
             no_stories.pack()
 
         create_story_button.pack()
 
-        # Show all dummy stories that are already there
-        for x in range(1, self.stories+1):
+        # Show all stories
+        for s in self.stories:
             story = ttk.Button(master=self._frame,
-                               text =f"Story {x}: Tadaa!",
-                               command=lambda: self._handle_story(story_id=x, stories=self.stories))
+                               text=s.name,
+                               command=lambda: self._handle_story(story_id=s.id))
             story.pack()
 
+    # It's a mess I have to change the ids the other way around
     def create_story(self):
-        self.stories += 1
-        new_story_id = self.stories
-        new_story = ttk.Button(master=self._frame,
-                               text=f"Story {new_story_id}: Tadaa!",
-                               command=lambda: self._handle_story(story_id=new_story_id, stories=self.stories))
-        new_story.pack()
+        new_story_id = len(self.stories) + 1
+        new_story = Story(id=new_story_id, name="Dummy Story", desc=None)
+        new_story_button = ttk.Button(master=self._frame,
+                               text=new_story.name,
+                               command=lambda: self._handle_story(story_id=new_story_id))
+        db.create_story(name=new_story.name, desc=new_story.desc)
+        new_story_button.pack()

@@ -36,7 +36,6 @@ class Database:
 
         cur = self._con.cursor()
         res = cur.execute(sql).fetchall()
-        print(res)
         stories = []
         for s in res:
             story = Story(id=s[0], name=s[1], desc=s[2])

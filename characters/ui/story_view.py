@@ -22,12 +22,13 @@ class StoryView:
         # but bugs out when switching between main view and story view and only
         # shows the id of a last story. In future this will be based on database
         # and not variables, so I won't be fixing this issue at the time...
+        # Also add a method to count stories
         label = ttk.Label(master=self._frame, text=f"This is a page for story number {self.id}.")
-        total_stories = ttk.Label(master=self._frame, text=f"You have {self.stories} stories in total.")
+        total_stories = ttk.Label(master=self._frame, text=f"You have {len(self.stories)} stories in total.")
         button = ttk.Button(
             master=self._frame,
             text="Go back",
-            command=lambda: self._handle_main(stories=self.stories)
+            command=lambda: self._handle_main()
         )
         
         label.pack()
