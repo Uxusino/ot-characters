@@ -6,4 +6,5 @@
 | 13.11 | 2    | Graafisen käyttöliittymän alustus |
 | 14.11 | 1,5  | Viikon 3 tehtävänannon lukeminen ja tehtävä 1 |
 | 15.11 | 4    | Tietokannan suunnittelu ja alustustiedostojen luominen, tehtävä 2 |
-| yht.  | 11,5  | |
+| 16.11 | 2    | Lisätty vähän perustoimintaa, voi lisätä uusia tarinoita perustasolla |
+| yht.  | 13,5 | |
