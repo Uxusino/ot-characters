@@ -6,8 +6,7 @@ dir = os.path.dirname(os.path.abspath(__file__))
 root_dir = os.path.dirname(dir)
 sys.path.append(root_dir)
 
-from entities.story import Story
-from repositories.db_management import db
+from services.story_service import story_service, Story
 from tkinter import ttk, constants
 
 class MainView:
@@ -30,6 +29,9 @@ class MainView:
 
         name = getpass.getuser()
         welcome_text = ttk.Label(master=self._frame, text=f"Welcome, {name}!")
+        clear_stories_button = ttk.Button(master=self._frame,
+                                          text="Delete all stories",
+                                          command=self._clear_stories)
         create_story_button = ttk.Button(master=self._frame,
                                          text="New Story",
                                          command=self._create_story)
@@ -39,6 +41,7 @@ class MainView:
             no_stories = ttk.Label(master=self._frame, text="You don't have any stories yet. Why not create one?")
             no_stories.pack()
 
+        clear_stories_button.pack()
         create_story_button.pack()
 
         self._initialize_stories_list()
@@ -54,12 +57,18 @@ class MainView:
         story_frame.pack(fill=constants.X)
 
     def _initialize_stories_list(self):
-        stories = db.get_stories()
+        stories = story_service.get_stories()
         for story in stories:
             self._initialize_story(story=story)
         self.pack()
 
     def _create_story(self):
-        new_story_id = db.create_story(name="Dummy Story3", desc=None)
-        new_story = Story(id=new_story_id, name="Dummy Story3", desc=None)
+        new_story = story_service.create_story(name="Dummy Story 5 uh", desc=None)
         self._initialize_story(story=new_story)
+
+    # Reloads the page completely. May be a better solution
+    # I'll find out later.
+    def _clear_stories(self):
+        story_service.clear_stories()
+        self.destroy()
+        self._initialize()

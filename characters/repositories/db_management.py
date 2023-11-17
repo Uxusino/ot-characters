@@ -1,6 +1,5 @@
 import sqlite3
 from db_connection import get_db_connection
-from entities.story import Story
 
 # Class for managing database
 class Database:
@@ -33,15 +32,24 @@ class Database:
         cur.execute(sql, data)
         self._con.commit()
 
-    # Returns a list of Story objects.
-    def get_stories(self) -> list[Story]:
+    # Returns a list of dictionaries as:
+    # {
+    #   "id": story.id,
+    #   "name": story.name,
+    #   "desc": story.desc
+    # }
+    def get_stories(self) -> list[dict]:
         sql = "SELECT * FROM Stories"
 
         cur = self._con.cursor()
         res = cur.execute(sql).fetchall()
         stories = []
         for s in res:
-            story = Story(id=s[0], name=s[1], desc=s[2])
+            story = {
+                "id": s[0],
+                "name":s[1],
+                "desc": s[2]
+            }   
             stories.append(story)
         return stories
     
@@ -50,5 +58,12 @@ class Database:
         cur = self._con.cursor()
         res = cur.execute(sql).fetchone()
         return res[0]
+    
+    # Deletes all stories.
+    def clear_stories(self) -> None:
+        sql = "DELETE FROM Stories"
+        cur = self._con.cursor()
+        cur.execute(sql)
+        self._con.commit()
 
 db = Database(get_db_connection())

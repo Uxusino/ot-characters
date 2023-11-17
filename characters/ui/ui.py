@@ -1,14 +1,14 @@
 from tkinter import Tk, ttk
 from main_view import MainView
 from story_view import StoryView
-from repositories.db_management import db
+from services.story_service import story_service
 from entities.story import Story
 
 class UI:
     def __init__(self, root) -> None:
         self._root = root
         self._current_view = None
-        self.stories = db.get_stories()
+        self.stories = story_service.get_stories()
 
     def start(self):
         self.show_main_view()
@@ -19,11 +19,11 @@ class UI:
         self._current_view = None
 
     def _handle_main(self):
-        self.stories = db.get_stories()
+        self.stories = story_service.get_stories()
         self.show_main_view()
 
     def _handle_story(self, story: Story):
-        self.stories = db.get_stories()
+        self.stories = story_service.get_stories()
         self.show_story_view(story=story)
 
     def show_main_view(self):
