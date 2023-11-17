@@ -32,6 +32,8 @@ class StoryService:
             return None
         if desc and len(desc) > 500:
             return None
+        if not name:
+            return None
         story_id = db.create_story(name=name, desc=desc)
         story = Story(id=story_id, name=name, desc=desc)
         return story
