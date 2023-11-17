@@ -32,7 +32,7 @@ class MainView:
         welcome_text = ttk.Label(master=self._frame, text=f"Welcome, {name}!")
         create_story_button = ttk.Button(master=self._frame,
                                          text="New Story",
-                                         command=self.create_story)
+                                         command=self._create_story)
 
         welcome_text.pack()
         if len(self.stories) == 0:
@@ -41,19 +41,25 @@ class MainView:
 
         create_story_button.pack()
 
-        # Show all stories
-        for s in self.stories:
-            story = ttk.Button(master=self._frame,
-                               text=s.name,
-                               command=lambda: self._handle_story(story_id=s.id))
-            story.pack()
+        self._initialize_stories_list()
 
-    # It's a mess I have to change the ids the other way around
-    def create_story(self):
-        new_story_id = len(self.stories) + 1
-        new_story = Story(id=new_story_id, name="Dummy Story", desc=None)
-        new_story_button = ttk.Button(master=self._frame,
-                               text=new_story.name,
-                               command=lambda: self._handle_story(story_id=new_story_id))
-        db.create_story(name=new_story.name, desc=new_story.desc)
-        new_story_button.pack()
+    def _initialize_story(self, story: Story):
+        story_frame = ttk.Frame(master=self._frame)
+        story_button = ttk.Button(
+            master=story_frame,
+            text=story.name,
+            command=lambda: self._handle_story(story=story)
+        )
+        story_button.pack()
+        story_frame.pack(fill=constants.X)
+
+    def _initialize_stories_list(self):
+        stories = db.get_stories()
+        for story in stories:
+            self._initialize_story(story=story)
+        self.pack()
+
+    def _create_story(self):
+        new_story_id = db.create_story(name="Dummy Story3", desc=None)
+        new_story = Story(id=new_story_id, name="Dummy Story3", desc=None)
+        self._initialize_story(story=new_story)

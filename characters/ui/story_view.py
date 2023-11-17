@@ -1,11 +1,13 @@
 from tkinter import ttk, constants
+from repositories.db_management import db
+from entities.story import Story
 
 class StoryView:
-    def __init__(self, root, id, handle_main, stories) -> None:
+    def __init__(self, root, story: Story, handle_main, stories: list[Story]) -> None:
         self._root = root
         self._handle_main = handle_main
         self._frame = None
-        self.id = id
+        self.story = story
         self.stories = stories
 
         self._initialize()
@@ -22,9 +24,8 @@ class StoryView:
         # but bugs out when switching between main view and story view and only
         # shows the id of a last story. In future this will be based on database
         # and not variables, so I won't be fixing this issue at the time...
-        # Also add a method to count stories
-        label = ttk.Label(master=self._frame, text=f"This is a page for story number {self.id}.")
-        total_stories = ttk.Label(master=self._frame, text=f"You have {len(self.stories)} stories in total.")
+        label = ttk.Label(master=self._frame, text=f"This is a page for story number {self.story.id} which name is {self.story.name}.")
+        total_stories = ttk.Label(master=self._frame, text=f"You have {db.count_stories()} stories in total.")
         button = ttk.Button(
             master=self._frame,
             text="Go back",

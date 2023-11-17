@@ -2,6 +2,7 @@ from tkinter import Tk, ttk
 from main_view import MainView
 from story_view import StoryView
 from repositories.db_management import db
+from entities.story import Story
 
 class UI:
     def __init__(self, root) -> None:
@@ -21,9 +22,9 @@ class UI:
         self.stories = db.get_stories()
         self.show_main_view()
 
-    def _handle_story(self, story_id):
+    def _handle_story(self, story: Story):
         self.stories = db.get_stories()
-        self.show_story_view(story_id=story_id)
+        self.show_story_view(story=story)
 
     def show_main_view(self):
         self._hide_current_view()
@@ -35,12 +36,12 @@ class UI:
         )
         self._current_view.pack()
 
-    def show_story_view(self, story_id):
+    def show_story_view(self, story: Story):
         self._hide_current_view()
 
         self._current_view = StoryView(
             root=self._root,
-            id=story_id,
+            story=story,
             handle_main = self._handle_main,
             stories = self.stories
         )
