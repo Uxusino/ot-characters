@@ -1,0 +1,6 @@
+[run]
+source = characters
+omit = characters/**/__init__.py, /characters/tests/**, /characters/ui/**, /characters/characters.py
+
+[report]
+omit = characters/**/__init__.py, /characters/tests/**, /characters/ui/**, /characters/characters.py

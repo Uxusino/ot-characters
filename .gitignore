@@ -5,7 +5,6 @@ Scripts/
 __pycache__
 htmlcov
 .coverage
-.coveragerc
 
 *.db
 *.sqlite
