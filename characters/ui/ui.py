@@ -1,6 +1,13 @@
-from tkinter import Tk, ttk
-from main_view import MainView
-from story_view import StoryView
+import os
+import sys
+
+dir = os.path.dirname(os.path.abspath(__file__))
+root_dir = os.path.dirname(dir)
+sys.path.append(root_dir)
+print(sys.path)
+
+from . import main_view as mv
+from . import story_view as sv
 from services.story_service import story_service
 from entities.story import Story
 
@@ -29,7 +36,7 @@ class UI:
     def show_main_view(self):
         self._hide_current_view()
 
-        self._current_view = MainView(
+        self._current_view = mv.MainView(
             root=self._root,
             stories = self.stories,
             handle_story = self._handle_story
@@ -39,18 +46,10 @@ class UI:
     def show_story_view(self, story: Story):
         self._hide_current_view()
 
-        self._current_view = StoryView(
+        self._current_view = sv.StoryView(
             root=self._root,
             story=story,
             handle_main = self._handle_main,
             stories = self.stories
         )
         self._current_view.pack()
-
-window = Tk()
-window.title("OT-chara")
-
-ui = UI(window)
-ui.start()
-
-window.mainloop()
