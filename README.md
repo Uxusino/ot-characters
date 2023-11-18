@@ -4,4 +4,4 @@ Tämän projektin idea on luoda alusta **hahmorekisterille**. Kun joku luo tarin
 
 Ensimmäisen viikon laskarit löytyvät [täältä](/laskarit).
 
-Toisen viikon vaatimusmäärittely löytyy [täältä](/dokumentaatio/vaatimusmaarittely.md) ja tuntikirjanpito [täältä](/dokumentaatio/tuntikirjanpito.md).
+Linkit: [Vaatimusmäärittely](/dokumentaatio/vaatimusmaarittely.md), [tuntikirjanpito](/dokumentaatio/tuntikirjanpito.md), [changelog](/dokumentaatio/changelog.md).
