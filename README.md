@@ -5,4 +5,4 @@ Tämän projektin idea on luoda alusta **hahmorekisterille**. Kun joku luo tarin
 ## Linkit
 - [Vaatimusmäärittely](/dokumentaatio/vaatimusmaarittely.md)
 - [Tuntikirjanpito](/dokumentaatio/tuntikirjanpito.md)
-- [Changelog](/dokumentaatio/changelog.md).
+- [Changelog](/dokumentaatio/changelog.md)
