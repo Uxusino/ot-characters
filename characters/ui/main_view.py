@@ -42,9 +42,7 @@ class StoryDialog:
         if desc == '':
             desc = None
 
-        print(name, desc)
         self.view._temp = (name, desc)
-        print(self.view._temp)
 
         self.dialog.destroy()
         return (name, desc)
@@ -116,7 +114,7 @@ class MainView:
     def _create_story(self):
         if not self._temp or not self._temp[0]:
             print(self._temp)
-            print("Something's wrong")
+            print("Something's wrong while creating story")
             return
         new_story = story_service.create_story(name=self._temp[0], desc=self._temp[1])
         # Clears _temp

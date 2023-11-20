@@ -102,7 +102,7 @@ def initialize_database():
     drop_tables(con)
     create_tables(con)
     load_relations(con)
+    print("Succesfully initialized database.")
 
 if __name__ == "__main__":
     initialize_database()
-    print("Succesfully initialized database.")

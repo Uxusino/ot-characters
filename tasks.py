@@ -7,6 +7,10 @@ def start(ctx):
     ctx.run("python .\characters\characters.py")
 
 @task
+def build(ctx):
+    ctx.run(r"python .\characters\build.py")
+
+@task
 def test(ctx):
     ctx.run("poetry shell")
     ctx.run("pytest characters")
