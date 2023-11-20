@@ -8,4 +8,5 @@
 | 16.11 | 2    | Lisätty vähän perustoimintaa, voi lisätä uusia tarinoita perustasolla |
 | 17.11 | 3    | Lisätty mahdollisuus luoda tarinoita käyttäjän antamalla nimellä, koodi parannettu |
 | 18.11 | 2,5  | Projektin rakenne parannettu, story_service testattu |
+| 20.11 | 2,5  | Sain ohjelman toimimaan Cubbli-koneella |
 | yht.  | 13   | |
