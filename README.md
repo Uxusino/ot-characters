@@ -9,6 +9,8 @@ Tämän projektin idea on luoda alusta **hahmorekisterille**. Kun joku luo tarin
 
 ## Asennus
 
+❗ Ohjelman poetry-versio on 1.7.1. Ainakin omalla Cubbli-koneella oli vanha versio, mutta kaikki toimii sen jälkeen, kun asentaa uudemman.
+
 1. Riippuvuudet:
 
 ```
