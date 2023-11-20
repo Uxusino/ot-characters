@@ -4,7 +4,6 @@ import sys
 dir = os.path.dirname(os.path.abspath(__file__))
 root_dir = os.path.dirname(dir)
 sys.path.append(root_dir)
-print(sys.path)
 
 from . import main_view as mv
 from . import story_view as sv
