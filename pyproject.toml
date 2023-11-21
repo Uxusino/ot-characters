@@ -11,6 +11,7 @@ cowsay = "^6.1"
 invoke = "^2.2.0"
 python-dotenv = "^1.0.0"
 tk = "^0.1.0"
+coverage = "^7.3.2"
 
 
 [tool.poetry.group.dev.dependencies]
