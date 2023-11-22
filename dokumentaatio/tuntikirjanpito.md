@@ -9,4 +9,5 @@
 | 17.11 | 3    | Lisätty mahdollisuus luoda tarinoita käyttäjän antamalla nimellä, koodi parannettu |
 | 18.11 | 2,5  | Projektin rakenne parannettu, story_service testattu |
 | 20.11 | 2,5  | Sain ohjelman toimimaan Cubbli-koneella |
-| yht.  | 15,5 | |
+| 22.11 | 1    | Pylint:in käyttöönotto |
+| yht.  | 16,5 | |
