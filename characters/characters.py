@@ -1,5 +1,5 @@
 from tkinter import Tk
-from ui.ui import UI
+from ui.ui import UI #pylint: disable=E0401
 
 def main():
     window = Tk()

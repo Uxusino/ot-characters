@@ -14,3 +14,7 @@
     - Tarinoiden luominen liian pitkällä tai puuttuvalla nimellä
     - Tarinoiden määrän laskeminen
     - Tarinoiden haku
+
+## Viikko 4
+
+- Lisätty pylint

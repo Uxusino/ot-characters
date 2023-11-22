@@ -1,3 +1,10 @@
+import os
+import sys
+
+dir = os.path.dirname(os.path.abspath(__file__))
+root_dir = os.path.dirname(dir)
+sys.path.append(root_dir)
+
 import unittest
 from services.story_service import story_service, Story
 from initialize_db import initialize_database
@@ -10,8 +17,8 @@ class TestStoryService(unittest.TestCase):
         self.storydesc = "Dummy Description"
         self.long_storyname = "Exiled in a Class Trial for “Poor Dexterity”. Because He Was Dexterous, He Lived on His Own. Because of His Dexterity, He Was Able to Use All the Skills and Magic of the Higher Ranks, Making Him Invincible. I Decided to Live on My Own, but the People Around Me Wouldn’t Leave Me Alone."
 
-        self.story = Story(id=1, name=self.storyname, desc=self.storydesc)
-        self.story_no_desc = Story(id=1, name=self.storyname, desc=None)
+        self.story = Story(story_id=1, name=self.storyname, desc=self.storydesc)
+        self.story_no_desc = Story(story_id=1, name=self.storyname, desc=None)
 
     # Must return a Story object if everything's correct,
     # None if input is invalid 
@@ -46,8 +53,8 @@ class TestStoryService(unittest.TestCase):
         story_service.create_story(name=self.storydesc, desc=self.storyname)
         stories = story_service.get_stories()
         model = [
-            Story(id=1, name=self.storyname, desc=self.storydesc),
-            Story(id=2, name=self.storydesc, desc=self.storyname)
+            Story(story_id=1, name=self.storyname, desc=self.storydesc),
+            Story(story_id=2, name=self.storydesc, desc=self.storyname)
         ]
 
         self.assertEqual(stories, model)

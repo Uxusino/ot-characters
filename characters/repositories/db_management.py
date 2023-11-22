@@ -1,5 +1,5 @@
 import sqlite3
-from db_connection import get_db_connection
+from db_connection import get_db_connection #pylint: disable=E0401
 
 # Class for managing database
 class Database:
@@ -17,15 +17,14 @@ class Database:
         self._con.commit()
         return story_id
 
-    def delete_story(self, id):
+    def delete_story(self, story_id):
         sql = "DELETE FROM Stories WHERE story_id=?"
-        
         cur = self._con.cursor()
-        cur.execute(sql, id)
+        cur.execute(sql, story_id)
         self._con.commit()
 
-    def update_story_name(self, id, new_name):
-        data = (new_name, id)
+    def update_story_name(self, story_id, new_name):
+        data = (new_name, story_id)
         sql = "UPDATE Stories SET name=? WHERE story_id=?"
 
         cur = self._con.cursor()
@@ -49,16 +48,16 @@ class Database:
                 "id": s[0],
                 "name":s[1],
                 "desc": s[2]
-            }   
+            }
             stories.append(story)
         return stories
-    
+
     def count_stories(self) -> int:
         sql = "SELECT COUNT(*) FROM Stories"
         cur = self._con.cursor()
         res = cur.execute(sql).fetchone()
         return res[0]
-    
+
     # Deletes all stories.
     def clear_stories(self) -> None:
         sql = "DELETE FROM Stories"

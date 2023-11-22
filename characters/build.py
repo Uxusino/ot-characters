@@ -1,4 +1,4 @@
-from initialize_db import initialize_database
+from initialize_db import initialize_database #pylint: disable=E0401
 
 def build():
     initialize_database()

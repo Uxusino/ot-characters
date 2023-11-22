@@ -20,7 +20,7 @@ class StoryView:
 
     def _initialize(self):
         self._frame = ttk.Frame(master=self._root)
-        label = ttk.Label(master=self._frame, text=f"This is a page for story number {self.story.id} which name is {self.story.name}.")
+        label = ttk.Label(master=self._frame, text=f"This is a page for story number {self.story.get_id()} which name is {self.story.name}.")
         total_stories = ttk.Label(master=self._frame, text=f"You have {db.count_stories()} stories in total.")
         button = ttk.Button(
             master=self._frame,

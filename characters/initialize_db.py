@@ -1,7 +1,9 @@
 import sqlite3
 import json
 import os
-from db_connection import get_db_connection
+from db_connection import get_db_connection #pylint: disable=E0401
+
+REL_FILE = "relations.json"
 
 def drop_tables(con: sqlite3.Connection):
     cur = con.cursor()
@@ -68,23 +70,36 @@ def create_tables(con: sqlite3.Connection):
     """)
     con.commit()
 
-# Loads json into database for easier handling and code reading
-def load_relations(con: sqlite3.Connection):
+def get_relations() -> list[tuple]:
     fpath = os.path.abspath(__file__)
-    rpath = os.path.join(os.path.dirname(fpath), "data", "relations.json")
-    with open(rpath) as f:
+    rpath = os.path.join(os.path.dirname(fpath), "data", REL_FILE)
+    with open(rpath, encoding="utf-8") as f:
         raw_relations = f.read()
         relations = json.loads(raw_relations)
     relations_list = relations['relations']
     sql_inputs = []
     for r in relations_list:
         if r['two_sided'] == 1:
-            i = (r['id'], r['name'], r['female_name'], r['male_name'], r['two_sided'], r['counterpart'])
+            i = (
+                r['id'],
+                r['name'],
+                r['female_name'],
+                r['male_name'],
+                r['two_sided'],
+                r['counterpart']
+                )
         else:
             i = (r['id'], r['name'], r['female_name'], r['male_name'], r['two_sided'], None)
         sql_inputs.append(i)
+    return sql_inputs
 
-    sql = "INSERT INTO Relations ( relation_id, name, female_name, male_name, two_sided, counterpart ) VALUES (?, ?, ?, ?, ?, ?)"
+# Loads json into database for easier handling and code reading
+def load_relations(con: sqlite3.Connection):
+    sql_inputs = get_relations()
+    sql = """
+        INSERT INTO Relations ( relation_id, name, female_name, male_name, two_sided, counterpart ) 
+        VALUES (?, ?, ?, ?, ?, ?)
+        """
 
     cur = con.cursor()
     try:
@@ -94,7 +109,6 @@ def load_relations(con: sqlite3.Connection):
     except Exception as e:
         con.rollback()
         print("Something went horribly wrong :(" + str(e))
-
 
 # Deletes old database, creates new and loads relations
 def initialize_database():
