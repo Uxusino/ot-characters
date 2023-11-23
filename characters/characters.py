@@ -1,5 +1,5 @@
 from tkinter import Tk
-from ui.ui import UI  # pylint: disable=E0401
+from ui.ui import UI
 
 
 def main():

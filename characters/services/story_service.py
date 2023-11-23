@@ -1,5 +1,5 @@
-from repositories.db_management import db  # pylint: disable=E0401
-from entities.story import Story  # pylint: disable=E0401
+from repositories.db_management import db
+from entities.story import Story
 
 # This class is a step between database and Story as an object,
 # since using the both in UI class looks like a mess.

@@ -1,7 +1,7 @@
 import sqlite3
 import json
 import os
-from db_connection import get_db_connection  # pylint: disable=E0401
+from db_connection import get_db_connection
 
 REL_FILE = "relations.json"
 
@@ -112,9 +112,9 @@ def load_relations(con: sqlite3.Connection):
         cur.executemany(sql, sql_inputs)
         con.commit()
         print("Succesfully added relations to the table.")
-    except Exception as e:
+    except sqlite3.Error as e:
         con.rollback()
-        print("Something went horribly wrong :(" + str(e))
+        print(str(e))
 
 # Deletes old database, creates new and loads relations
 

@@ -1,5 +1,5 @@
 import sqlite3
-from db_connection import get_db_connection  # pylint: disable=E0401
+from db_connection import get_db_connection
 
 # Class for managing database
 

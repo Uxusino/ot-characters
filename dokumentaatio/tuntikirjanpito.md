@@ -10,4 +10,5 @@
 | 18.11 | 2,5  | Projektin rakenne parannettu, story_service testattu |
 | 20.11 | 2,5  | Sain ohjelman toimimaan Cubbli-koneella |
 | 22.11 | 1    | Pylint:in käyttöönotto |
-| yht.  | 16,5 | |
+| 23.11 | 1    | Parennettu käyttöliittymän koodi |
+| yht.  | 17,5 | |

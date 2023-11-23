@@ -40,7 +40,7 @@ def coverage_report(ctx):
 
 @task
 def pylint(ctx):
-    ctx.run("pylint characters")
+    ctx.run("pylint --recursive=true characters")
 
 @task
 def format(ctx):
