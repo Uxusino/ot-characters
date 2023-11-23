@@ -1,10 +1,12 @@
-from repositories.db_management import db #pylint: disable=E0401
-from entities.story import Story #pylint: disable=E0401
+from repositories.db_management import db  # pylint: disable=E0401
+from entities.story import Story  # pylint: disable=E0401
 
 # This class is a step between database and Story as an object,
 # since using the both in UI class looks like a mess.
 # This class will also be responsible for checking if user's input
 # is valid or not.
+
+
 class StoryService:
     def __init__(self) -> None:
         pass
@@ -43,5 +45,6 @@ class StoryService:
 
     def delete_story(self, story_id: int):
         db.delete_story(story_id=story_id)
+
 
 story_service = StoryService()

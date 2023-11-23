@@ -1,3 +1,7 @@
+from entities.story import Story
+from services.story_service import story_service
+from . import story_view as sv
+from . import main_view as mv
 import os
 import sys
 
@@ -5,10 +9,6 @@ dir = os.path.dirname(os.path.abspath(__file__))
 root_dir = os.path.dirname(dir)
 sys.path.append(root_dir)
 
-from . import main_view as mv
-from . import story_view as sv
-from services.story_service import story_service
-from entities.story import Story
 
 class UI:
     def __init__(self, root) -> None:
@@ -37,8 +37,8 @@ class UI:
 
         self._current_view = mv.MainView(
             root=self._root,
-            stories = self.stories,
-            handle_story = self._handle_story
+            stories=self.stories,
+            handle_story=self._handle_story
         )
         self._current_view.pack()
 
@@ -48,7 +48,7 @@ class UI:
         self._current_view = sv.StoryView(
             root=self._root,
             story=story,
-            handle_main = self._handle_main,
-            stories = self.stories
+            handle_main=self._handle_main,
+            stories=self.stories
         )
         self._current_view.pack()

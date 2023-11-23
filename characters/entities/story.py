@@ -20,5 +20,4 @@ class Story:
             self.story_id == __value.story_id
             and self.name == __value.name
             and self.desc == __value.desc
-            )
-        
+        )

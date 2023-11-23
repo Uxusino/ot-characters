@@ -1,7 +1,9 @@
 import sqlite3
-from db_connection import get_db_connection #pylint: disable=E0401
+from db_connection import get_db_connection  # pylint: disable=E0401
 
 # Class for managing database
+
+
 class Database:
     def __init__(self, con: sqlite3.Connection) -> None:
         self._con = con
@@ -46,7 +48,7 @@ class Database:
         for s in res:
             story = {
                 "id": s[0],
-                "name":s[1],
+                "name": s[1],
                 "desc": s[2]
             }
             stories.append(story)
@@ -64,5 +66,6 @@ class Database:
         cur = self._con.cursor()
         cur.execute(sql)
         self._con.commit()
+
 
 db = Database(get_db_connection())

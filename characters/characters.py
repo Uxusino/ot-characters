@@ -1,5 +1,6 @@
 from tkinter import Tk
-from ui.ui import UI #pylint: disable=E0401
+from ui.ui import UI  # pylint: disable=E0401
+
 
 def main():
     window = Tk()
@@ -9,6 +10,7 @@ def main():
     ui.start()
 
     window.mainloop()
+
 
 if __name__ == "__main__":
     main()

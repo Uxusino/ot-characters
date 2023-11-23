@@ -1,3 +1,5 @@
+from tkinter import ttk, constants, Toplevel, Entry
+from services.story_service import story_service, Story
 import getpass
 import sys
 import os
@@ -6,14 +8,13 @@ dir = os.path.dirname(os.path.abspath(__file__))
 root_dir = os.path.dirname(dir)
 sys.path.append(root_dir)
 
-from services.story_service import story_service, Story
-from tkinter import ttk, constants, Toplevel, Entry
 
 # A class to manage user input of story name and description.
+
 class StoryDialog:
     def __init__(self, parent, view: "MainView") -> None:
         self.view = view
-        
+
         self.dialog = Toplevel(parent)
         self.dialog.title("New story")
         self.dialog.protocol("WM_DELETE_WINDOW", self.close)
@@ -46,9 +47,10 @@ class StoryDialog:
 
         self.dialog.destroy()
         return (name, desc)
-    
+
     def close(self):
         self.dialog.destroy()
+
 
 class MainView:
     def __init__(self, root, stories: list[Story], handle_story) -> None:
@@ -82,7 +84,8 @@ class MainView:
 
         welcome_text.pack()
         if len(self.stories) == 0:
-            no_stories = ttk.Label(master=self._frame, text="You don't have any stories yet. Why not create one?")
+            no_stories = ttk.Label(
+                master=self._frame, text="You don't have any stories yet. Why not create one?")
             no_stories.pack()
 
         clear_stories_button.pack()
@@ -110,13 +113,14 @@ class MainView:
     # NEXT TIME Add so user can't click buttons when in dialog
     def _story_creation_dialog(self):
         self._input_story_details()
-    
+
     def _create_story(self):
         if not self._temp or not self._temp[0]:
             print(self._temp)
             print("Something's wrong while creating story")
             return
-        new_story = story_service.create_story(name=self._temp[0], desc=self._temp[1])
+        new_story = story_service.create_story(
+            name=self._temp[0], desc=self._temp[1])
         # Clears _temp
         self._temp = None
         if new_story:
@@ -142,4 +146,3 @@ class MainView:
             else:
                 callback()
         wait()
-
