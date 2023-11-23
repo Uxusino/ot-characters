@@ -37,3 +37,11 @@ def coverage_report(ctx):
         call(("xdg-open", "htmlcov/index.html"))
     else:
         ctx.run("coverage html")
+
+@task
+def pylint(ctx):
+    ctx.run("pylint characters")
+
+@task
+def format(ctx):
+    ctx.run("autopep8 --in-place --recursive characters")

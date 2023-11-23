@@ -44,3 +44,17 @@ poetry run invoke coverage-report
 ```
 
 Tiedosto *index.html* löytyy hakemistosta *htmlcov* juurikansiossa.
+
+### Koodin laatu
+
+Pylint:
+
+```
+poetry run invoke pylint
+```
+
+Autopep:
+
+```
+poetry run invoke format
+```
