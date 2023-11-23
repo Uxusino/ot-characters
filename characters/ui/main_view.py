@@ -55,10 +55,15 @@ class StoryDialog:
 class MainView:
     def __init__(self, root, stories: list[Story], handle_story) -> None:
         self._root = root
+
         self._frame = None
+        self._stories_frame = None
+
         self._handle_story = handle_story
         self.stories = stories
 
+        # Can't click anything while dialog window is open
+        self._freeze = False
         # Stores last input from dialog
         self._temp = None
 
@@ -70,31 +75,47 @@ class MainView:
     def destroy(self):
         self._frame.destroy()
 
+    def _initialize_welcome_frame(self):
+        welcome_frame = ttk.Frame(master=self._frame)
+        welcome_frame.pack()
+
+        name = getpass.getuser()
+        welcome_text = ttk.Label(master=welcome_frame,
+                                 text=f"Welcome, {name}!")
+        welcome_text.pack()
+
+        if len(self.stories) == 0:
+            no_stories = ttk.Label(
+                master=welcome_frame, text="You don't have any stories yet. Why not create one?")
+            no_stories.pack()
+
+        create_story_button = ttk.Button(
+            master=welcome_frame,
+            text="New Story",
+            command=self._story_creation_dialog
+        )
+        create_story_button.pack()
+
+    def _initialize_endpage(self):
+        endpage_frame = ttk.Frame(master=self._frame)
+        endpage_frame.pack(pady=10)
+        clear_stories_button = ttk.Button(
+            master=endpage_frame,
+            text="Delete all stories",
+            command=self._clear_stories
+        )
+
+        clear_stories_button.pack()
+
     def _initialize(self):
         self._frame = ttk.Frame(master=self._root)
 
-        name = getpass.getuser()
-        welcome_text = ttk.Label(master=self._frame, text=f"Welcome, {name}!")
-        clear_stories_button = ttk.Button(master=self._frame,
-                                          text="Delete all stories",
-                                          command=self._clear_stories)
-        create_story_button = ttk.Button(master=self._frame,
-                                         text="New Story",
-                                         command=self._story_creation_dialog)
-
-        welcome_text.pack()
-        if len(self.stories) == 0:
-            no_stories = ttk.Label(
-                master=self._frame, text="You don't have any stories yet. Why not create one?")
-            no_stories.pack()
-
-        clear_stories_button.pack()
-        create_story_button.pack()
-
+        self._initialize_welcome_frame()
         self._initialize_stories_list()
+        self._initialize_endpage()
 
     def _initialize_story(self, story: Story):
-        story_frame = ttk.Frame(master=self._frame)
+        story_frame = ttk.Frame(master=self._stories_frame)
         story_button = ttk.Button(
             master=story_frame,
             text=story.name,
@@ -104,15 +125,28 @@ class MainView:
         story_frame.pack(fill=constants.X)
 
     def _initialize_stories_list(self):
+        if not self._stories_frame:
+            self._stories_frame = ttk.Frame(master=self._frame)
+        self._stories_frame.pack()
         stories = story_service.get_stories()
         for story in stories:
             self._initialize_story(story=story)
         self.pack()
 
+    def freeze(self):
+        self._freeze = True
+
+    def unfreeze(self):
+        self._freeze = False
+
+    def _frozen(self):
+        return self._freeze
+
     # No error message yet on errors
-    # NEXT TIME Add so user can't click buttons when in dialog
     def _story_creation_dialog(self):
-        self._input_story_details()
+        if not self._frozen():
+            self.freeze()
+            self._input_story_details()
 
     def _create_story(self):
         if not self._temp or not self._temp[0]:
@@ -123,6 +157,8 @@ class MainView:
             name=self._temp[0], desc=self._temp[1])
         # Clears _temp
         self._temp = None
+        # User now can interact with window
+        self.unfreeze()
         if new_story:
             self._initialize_story(story=new_story)
 
@@ -130,6 +166,7 @@ class MainView:
     # I'll find out later.
     def _clear_stories(self):
         story_service.clear_stories()
+        self._stories_frame = None
         self.destroy()
         self._initialize()
 
