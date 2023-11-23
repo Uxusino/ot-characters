@@ -99,6 +99,13 @@ class MainView:
     def _initialize_endpage(self):
         endpage_frame = ttk.Frame(master=self._frame)
         endpage_frame.pack(pady=10)
+
+        count = ttk.Label(
+            master=endpage_frame,
+            text=f"You have {story_service.count_stories()} stories."
+        )
+        count.pack()
+
         clear_stories_button = ttk.Button(
             master=endpage_frame,
             text="Delete all stories",
@@ -161,11 +168,15 @@ class MainView:
         self.unfreeze()
         if new_story:
             self._initialize_story(story=new_story)
+            self._reload()
+
+    def _clear_stories(self):
+        story_service.clear_stories()
+        self._reload()
 
     # Reloads the page completely. May be a better solution
     # I'll find out later.
-    def _clear_stories(self):
-        story_service.clear_stories()
+    def _reload(self):
         self._stories_frame = None
         self.destroy()
         self._initialize()
