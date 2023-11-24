@@ -53,6 +53,13 @@ class Database:
             }
             stories.append(story)
         return stories
+    
+    def get_name_by_id(self, story_id) -> str:
+        sql = "SELECT name FROM Stories WHERE story_id=?"
+
+        cur = self._con.cursor()
+        res = cur.execute(sql, (story_id,)).fetchone()[0]
+        return res
 
     def count_stories(self) -> int:
         sql = "SELECT COUNT(*) FROM Stories"

@@ -46,5 +46,8 @@ class StoryService:
     def delete_story(self, story_id: int):
         db.delete_story(story_id=story_id)
 
+    def get_name_by_id(self, story_id: int) -> str:
+        return db.get_name_by_id(story_id=story_id)
+
 
 story_service = StoryService()
