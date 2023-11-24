@@ -1,6 +1,7 @@
 from tkinter import ttk, constants, Toplevel, Entry, LEFT, RIGHT, END, font, Text, CURRENT, WORD
 from entities.story import Story
 
+
 class CharacterCreationDialog:
     def __init__(self, parent, view: "StoryView") -> None:
         self.view = view
@@ -44,7 +45,8 @@ class CharacterCreationDialog:
         askgender = ttk.Label(self.dialog, text="Gender:")
         askgender.pack()
 
-        self.genderbox = ttk.Combobox(self.dialog, values=["Female", "Male", "Unknown"])
+        self.genderbox = ttk.Combobox(
+            self.dialog, values=["Female", "Male", "Unknown"])
         self.genderbox.bind("<<ComboboxSelected>>", self.on_sex_change)
         self.genderbox.pack()
 
@@ -56,17 +58,23 @@ class CharacterCreationDialog:
         birthday_frame.pack()
 
         empty_entry_font = font.Font(size=10, slant='italic')
-        self.day = Entry(master=birthday_frame, fg='gray', font=empty_entry_font)
-        self.month = Entry(master=birthday_frame, fg='gray', font=empty_entry_font)
-        self.year = Entry(master=birthday_frame, fg='gray', font=empty_entry_font)
+        self.day = Entry(master=birthday_frame,
+                         fg='gray', font=empty_entry_font)
+        self.month = Entry(master=birthday_frame,
+                           fg='gray', font=empty_entry_font)
+        self.year = Entry(master=birthday_frame,
+                          fg='gray', font=empty_entry_font)
 
         self.day.insert(0, "Day")
         self.month.insert(0, "Month")
         self.year.insert(0, "Year")
 
-        self.day.bind("<FocusIn>", lambda event=None, entry=self.day: self.on_date_click(entry=entry))
-        self.month.bind("<FocusIn>", lambda event=None, entry=self.month: self.on_date_click(entry=entry))
-        self.year.bind("<FocusIn>", lambda event=None, entry=self.year: self.on_date_click(entry=entry))
+        self.day.bind("<FocusIn>", lambda event=None,
+                      entry=self.day: self.on_date_click(entry=entry))
+        self.month.bind("<FocusIn>", lambda event=None,
+                        entry=self.month: self.on_date_click(entry=entry))
+        self.year.bind("<FocusIn>", lambda event=None,
+                       entry=self.year: self.on_date_click(entry=entry))
 
         self.day.pack(side=LEFT, padx=5)
         self.month.pack(side=LEFT, padx=5)
@@ -92,7 +100,8 @@ class CharacterCreationDialog:
 
         self.appearance = Text(self.dialog, wrap=WORD, height=5, width=30)
         self.appearance.pack()
-        self.appearance.bind("<KeyRelease>", lambda: self.move_line(text=self.appearance, event=None))
+        self.appearance.bind("<KeyRelease>", lambda: self.move_line(
+            text=self.appearance, event=None))
 
     def initialize_personality(self) -> None:
         askpersonality = ttk.Label(self.dialog, text="Personality:")
@@ -100,7 +109,8 @@ class CharacterCreationDialog:
 
         self.personality = Text(self.dialog, wrap=WORD, height=5, width=30)
         self.personality.pack()
-        self.personality.bind("<KeyRelease>", lambda: self.move_line(text=self.personality, event=None))
+        self.personality.bind("<KeyRelease>", lambda: self.move_line(
+            text=self.personality, event=None))
 
     def initialize_history(self) -> None:
         askhistory = ttk.Label(self.dialog, text="History:")
@@ -108,10 +118,12 @@ class CharacterCreationDialog:
 
         self.history = Text(self.dialog, wrap=WORD, height=5, width=30)
         self.history.pack()
-        self.history.bind("<KeyRelease>", lambda: self.move_line(text=self.history, event=None))
+        self.history.bind("<KeyRelease>", lambda: self.move_line(
+            text=self.history, event=None))
 
     def initialize_picture(self) -> None:
-        askpicture = ttk.Label(self.dialog, text="Select picture (not available yet!):")
+        askpicture = ttk.Label(
+            self.dialog, text="Select picture (not available yet!):")
         askpicture.pack()
         # Here goes code for selecting picture from PC
 
@@ -121,7 +133,8 @@ class CharacterCreationDialog:
 
         self.trivia = Text(self.dialog, wrap=WORD, height=5, width=30)
         self.trivia.pack()
-        self.trivia.bind("<KeyRelease>", lambda: self.move_line(text=self.trivia, event=None))
+        self.trivia.bind("<KeyRelease>", lambda: self.move_line(
+            text=self.trivia, event=None))
 
     def move_line(self, text: Text, event=None) -> None:
         text.yview(CURRENT)
@@ -137,6 +150,7 @@ class CharacterCreationDialog:
 
     def close(self) -> None:
         self.dialog.destroy()
+
 
 class StoryView:
     def __init__(self, root, story: Story, handle_main, stories: list[Story]) -> None:

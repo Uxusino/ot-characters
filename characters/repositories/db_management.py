@@ -53,7 +53,7 @@ class Database:
             }
             stories.append(story)
         return stories
-    
+
     def get_name_by_id(self, story_id) -> str:
         sql = "SELECT name FROM Stories WHERE story_id=?"
 
