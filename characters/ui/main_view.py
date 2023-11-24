@@ -45,8 +45,7 @@ class StoryDialog:
 
         self.view._temp = (name, desc)
 
-        self.dialog.destroy()
-        return (name, desc)
+        self.close()
 
     def close(self):
         self.dialog.destroy()

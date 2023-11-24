@@ -11,4 +11,5 @@
 | 20.11 | 2,5  | Sain ohjelman toimimaan Cubbli-koneella |
 | 22.11 | 1    | Pylint:in käyttöönotto |
 | 23.11 | 1    | Parennettu käyttöliittymän koodi |
-| yht.  | 17,5 | |
+| 24.11 | 2,5  | Character-luokka luotu, "hahmon luonti" -käyttöliittymä alustettu |
+| yht.  | 20 | |
