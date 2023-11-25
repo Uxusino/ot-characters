@@ -19,6 +19,32 @@ class Database:
         self._con.commit()
         return story_id
 
+    def create_character(self, stats: tuple) -> int:
+        data = stats
+        sql = """
+            INSERT INTO Characters(
+                story_id,
+                name,
+                gender,
+                birthday,
+                age,
+                height,
+                weight,
+                appearance,
+                personality,
+                history,
+                picture,
+                trivia
+            ) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """
+
+        cur = self._con.cursor()
+        cur.execute(sql, data)
+        char_id = cur.lastrowid
+        self._con.commit()
+        print("Succesfully inserted character into database.")
+        return char_id
+
     def delete_story(self, story_id):
         sql = "DELETE FROM Stories WHERE story_id=?"
         cur = self._con.cursor()

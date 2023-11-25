@@ -157,7 +157,7 @@ class MainView:
     def _create_story(self):
         if not self._temp or not self._temp[0]:
             print(self._temp)
-            print("Something's wrong while creating story")
+            print("Invalid input")
             return
         new_story = story_service.create_story(
             name=self._temp[0], desc=self._temp[1])

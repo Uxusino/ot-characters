@@ -1,8 +1,7 @@
 from repositories.db_management import db
 from entities.story import Story
 
-# This class is a step between database and Story as an object,
-# since using the both in UI class looks like a mess.
+# This class is a step between database and Story as an object.
 # This class will also be responsible for checking if user's input
 # is valid or not.
 

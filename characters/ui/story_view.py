@@ -1,5 +1,6 @@
 from tkinter import ttk, constants, Toplevel, Entry, LEFT, RIGHT, END, font, Text, CURRENT, WORD
 from entities.story import Story
+from services.character_service import char_service, Character
 
 
 class CharacterCreationDialog:
@@ -15,12 +16,14 @@ class CharacterCreationDialog:
         self.day = None
         self.month = None
         self.year = None
+        self.age = None
         self.height = None
         self.weight = None
         self.appearance = None
         self.personality = None
         self.history = None
         self.picture = None
+        self.trivia = None
 
         self.initialize_name()
         self.initialize_gender()
@@ -32,7 +35,40 @@ class CharacterCreationDialog:
         self.initialize_picture()
         self.initialize_trivia()
 
-        self.ok_button = ttk.Button(self.dialog, text="Ok", command=None)
+        ok_button = ttk.Button(self.dialog, text="Ok", command=self.enter)
+        ok_button.pack()
+
+    # Saves tuple (name, gender, (day, month, year), height, weight, appearance, personality, history, picture, trivia)
+    def enter(self) -> None:
+        name = self.name.get()
+        gender = self.gender
+        day = self.day.get()
+        month = self.month.get()
+        year = self.year.get()
+        age = self.age.get()
+        height = self.height.get()
+        weight = self.weight.get()
+        appearance = self.appearance.get()
+        personality = self.personality.get()
+        history = self.history.get()
+        picture = None
+        trivia = self.trivia.get()
+
+        self.view._temp = (
+            name,
+            gender,
+            (day, month, year),
+            age,
+            height,
+            weight,
+            appearance,
+            personality,
+            history,
+            picture,
+            trivia
+        )
+
+        self.close()
 
     def initialize_name(self) -> None:
         askname = ttk.Label(self.dialog, text="Name:")
@@ -79,6 +115,13 @@ class CharacterCreationDialog:
         self.day.pack(side=LEFT, padx=5)
         self.month.pack(side=LEFT, padx=5)
         self.year.pack(side=LEFT, padx=5)
+
+    def initialize_age(self) -> None:
+        askage = ttk.Label(self.dialog, text="Age:")
+        askage.pack()
+
+        self.age = Entry(self.dialog)
+        self.age.pack()
 
     def initialize_height(self) -> None:
         askheight = ttk.Label(self.dialog, text="Height:")
@@ -196,10 +239,13 @@ class StoryView:
         )
         character_button.pack()
 
-    def _initialize_characters(self):
+    def _initialize_characters(self) -> None:
         pass
 
-    def _initialize_endpage(self):
+    def _initialize_character(self, character: Character) -> None:
+        pass
+
+    def _initialize_endpage(self) -> None:
         endpage_frame = ttk.Frame(master=self._frame)
         endpage_frame.pack(pady=10)
 
@@ -210,7 +256,7 @@ class StoryView:
         )
         button.pack()
 
-    def _initialize(self):
+    def _initialize(self) -> None:
         self._frame = ttk.Frame(master=self._root)
 
         self._initialize_heading()
@@ -222,12 +268,12 @@ class StoryView:
             self.freeze()
             self._input_character_details()
 
-    def _input_character_details(self):
+    def _input_character_details(self) -> None:
         dialog = CharacterCreationDialog(self._root, self)
         self._wait_for_input(dialog, self._create_character)
 
     # Waits for user input before executing the rest of create story function
-    def _wait_for_input(self, dialog: "CharacterCreationDialog", callback):
+    def _wait_for_input(self, dialog: "CharacterCreationDialog", callback) -> None:
         def wait():
             if dialog.dialog.winfo_exists():
                 self._root.after(100, wait)
@@ -236,6 +282,12 @@ class StoryView:
         wait()
 
     def _create_character(self) -> None:
+        new_character = self._temp
+        self._temp = None
+        valid_character = char_service.create_character(
+            stats=new_character, story_id=self.story.get_id())
+        if valid_character:
+            self._initialize_character(character=valid_character)
         self.unfreeze()
 
     def freeze(self):

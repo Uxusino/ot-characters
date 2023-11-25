@@ -13,7 +13,7 @@
 #       history: string that describes character's history
 #       picture: name of the picture, pictures are stored in characters/lib/avatars
 #       trivia: additional information on the character
-#   None of the stats are obligatory.
+#   None of the stats are obligatory, but the character cannot be completely empty.
 from services.story_service import story_service
 
 
