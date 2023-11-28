@@ -36,7 +36,7 @@ class Character:
         pic = self.stats["picture"]
         if not pic:
             pic = "default.png"
-        return f"../lib/avatars/{pic}"
+        return f"../library/avatars/{pic}"
 
     def __str__(self) -> str:
         return f"{self.stats['name']} from {story_service.get_name_by_id(self.story_id)}"
