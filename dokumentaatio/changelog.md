@@ -8,7 +8,7 @@
 - Käyttäjä pääsee tarinan sivulle, jossa lukee tarinoiden lukumäärä, tarinan id ja nimi
 - Lisätty luokat:
     - Database: vastaa tietokantaoperaatioista
-    - StoryService: vastaa solluslogiikasta luokasta Story. Eli yhdistää tarina-olioita ja tietokantaa
+    - StoryService: vastaa sovelluslogiikasta luokasta Story. Eli yhdistää tarinaolioita ja tietokantaa
 - Testattu StoryService:
     - Tarinan luominen
     - Tarinoiden luominen liian pitkällä tai puuttuvalla nimellä
@@ -18,3 +18,8 @@
 ## Viikko 4
 
 - Lisätty pylint
+- Käyttäjä voi lisätä hahmoja ja antaa niille kaikki perustiedot
+    - Kuvia ei vielä saa lisätä
+- Tarinan sivulla nyt näkyy lista hahmoja
+- Lisätty luokat:
+    - CharacterService: vastaa sovelluslogiikasta luokasta Character; yhdistää hahmo-olioita ja tietokantaa

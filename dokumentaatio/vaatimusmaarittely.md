@@ -10,10 +10,11 @@ Sovelluksen avulla käyttäjä voi hallita omia hahmojaan tietyssä tarinassa. S
 
 Pääsivussa näkyy lista omista tarinoita.
 
-- Pääsivulle voi lisätä uusia tarinoita.
-- Tarinalle annetaan nimi ja vapaaehtoinen kuvaus.
+- Pääsivulle voi lisätä uusia tarinoita. *(tehty)*
+- Tarinalle annetaan nimi ja vapaaehtoinen kuvaus. *(tehty)*
 - Tarinan nimi ja kuvaus voidaan muokata.
 - Voi poistaa tarinoita, mikä poistaa myös kaikki tarinan hahmoja.
+- Voi poistaa kaikki tarinat yhdellä klikkauksella. *(tehty)*
 
 Pääsivusta pääsee jonkin tarinan sivulle.
 
@@ -22,18 +23,19 @@ Pääsivusta pääsee jonkin tarinan sivulle.
 Tarinan sivussa näkyy lista hahmoja ja hahmojen tilasto (esim. keski-ikä, keskipituus, miten paljon on nais- tai mieshahmoja jne.)
 
 - Voi luoda uusia hahmoja. Hahmojen mahdollisia ominaisuuksia:
-    - Nimi
-    - Sukupuoli (nainen, mies tai tuntematon)
-    - Syntymäpäivä
-    - Ikä
-    - Pituus
-    - Paino
-    - Ulkonäön kuvaus
-    - Luonteen kuvaus
-    - Historia (mitä tapahtuu hahmolle tarinassa)
+    - Nimi *(tehty)*
+    - Sukupuoli (nainen, mies tai tuntematon) *(tehty)*
+    - Syntymäpäivä *(tehty)*
+    - Ikä *(tehty)*
+    - Pituus *(tehty)*
+    - Paino *(tehty)*
+    - Ulkonäön kuvaus *(tehty)*
+    - Luonteen kuvaus *(tehty)*
+    - Historia (mitä tapahtuu hahmolle tarinassa) *(tehty)*
     - Kuva (ladataan käyttäjän koneelta)
-    - Lisätietoa
-- Hahmon luomisen jälkeen näkyy lista kaikkia hahmoja ja niiden omalle sivulle pääsee klikkaamalla.
+    - Lisätietoa *(tehty)*
+- Hahmon luomisen jälkeen näkyy lista kaikkia hahmoja. *(tehty)*
+- Hahmon sivulle pääsee klikkaamalla.
 - Sivun alapuolella näkyy tilasto, jossa voi tarkistaa:
     - Hahmojen keski-ikä
     - Montako prosentteja naisia, miehiä tai ei tiedossa olevia sukupuolia
