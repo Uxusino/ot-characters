@@ -28,6 +28,15 @@ class Character:
 
     def get_story_id(self) -> int:
         return self.story_id
+    
+    def get_name(self) -> str:
+        return self.stats["name"]
+    
+    def get_image_path(self) -> str:
+        pic = self.stats["picture"]
+        if not pic:
+            pic = "default.png"
+        return f"../lib/avatars/{pic}"
 
     def __str__(self) -> str:
         return f"{self.stats['name']} from {story_service.get_name_by_id(self.story_id)}"

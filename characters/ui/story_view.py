@@ -1,4 +1,6 @@
-from tkinter import ttk, constants, Toplevel, Entry, LEFT, RIGHT, END, font, Text, CURRENT, WORD
+import tkinter as tk
+import os
+from tkinter import ttk, font, constants
 from entities.story import Story
 from services.character_service import char_service, Character
 
@@ -7,7 +9,7 @@ class CharacterCreationDialog:
     def __init__(self, parent, view: "StoryView") -> None:
         self.view = view
 
-        self.dialog = Toplevel(parent)
+        self.dialog = tk.Toplevel(parent)
         self.dialog.title = "New Character"
         self.dialog.protocol("WM_DELETE_WINDOW", self.close)
 
@@ -28,9 +30,11 @@ class CharacterCreationDialog:
         self.initialize_name()
         self.initialize_gender()
         self.initialize_birthday()
+        self.initialize_age()
         self.initialize_height()
         self.initialize_weight()
         self.initialize_appearance()
+        self.initialize_personality()
         self.initialize_history()
         self.initialize_picture()
         self.initialize_trivia()
@@ -48,13 +52,13 @@ class CharacterCreationDialog:
         age = self.age.get()
         height = self.height.get()
         weight = self.weight.get()
-        appearance = self.appearance.get()
-        personality = self.personality.get()
-        history = self.history.get()
+        appearance = self.appearance.get("1.0", tk.END)
+        personality = self.personality.get("1.0", tk.END)
+        history = self.history.get("1.0", tk.END)
         picture = None
-        trivia = self.trivia.get()
+        trivia = self.trivia.get("1.0", tk.END)
 
-        self.view._temp = (
+        res_tuple = (
             name,
             gender,
             (day, month, year),
@@ -68,13 +72,15 @@ class CharacterCreationDialog:
             trivia
         )
 
+        self.view._temp = res_tuple
+
         self.close()
 
     def initialize_name(self) -> None:
         askname = ttk.Label(self.dialog, text="Name:")
         askname.pack()
 
-        self.name = Entry(self.dialog)
+        self.name = tk.Entry(self.dialog)
         self.name.pack()
 
     def initialize_gender(self) -> None:
@@ -94,11 +100,11 @@ class CharacterCreationDialog:
         birthday_frame.pack()
 
         empty_entry_font = font.Font(size=10, slant='italic')
-        self.day = Entry(master=birthday_frame,
+        self.day = tk.Entry(master=birthday_frame,
                          fg='gray', font=empty_entry_font)
-        self.month = Entry(master=birthday_frame,
+        self.month = tk.Entry(master=birthday_frame,
                            fg='gray', font=empty_entry_font)
-        self.year = Entry(master=birthday_frame,
+        self.year = tk.Entry(master=birthday_frame,
                           fg='gray', font=empty_entry_font)
 
         self.day.insert(0, "Day")
@@ -112,57 +118,51 @@ class CharacterCreationDialog:
         self.year.bind("<FocusIn>", lambda event=None,
                        entry=self.year: self.on_date_click(entry=entry))
 
-        self.day.pack(side=LEFT, padx=5)
-        self.month.pack(side=LEFT, padx=5)
-        self.year.pack(side=LEFT, padx=5)
+        self.day.pack(side=tk.LEFT, padx=5)
+        self.month.pack(side=tk.LEFT, padx=5)
+        self.year.pack(side=tk.LEFT, padx=5)
 
     def initialize_age(self) -> None:
         askage = ttk.Label(self.dialog, text="Age:")
         askage.pack()
 
-        self.age = Entry(self.dialog)
+        self.age = tk.Entry(self.dialog)
         self.age.pack()
 
     def initialize_height(self) -> None:
         askheight = ttk.Label(self.dialog, text="Height:")
         askheight.pack()
 
-        self.height = Entry(master=self.dialog)
+        self.height = tk.Entry(master=self.dialog)
         self.height.pack()
 
     def initialize_weight(self) -> None:
         askweight = ttk.Label(self.dialog, text="Weight:")
         askweight.pack()
 
-        self.weight = Entry(master=self.dialog)
+        self.weight = tk.Entry(master=self.dialog)
         self.weight.pack()
 
     def initialize_appearance(self) -> None:
         askappearance = ttk.Label(self.dialog, text="Appearance:")
         askappearance.pack()
 
-        self.appearance = Text(self.dialog, wrap=WORD, height=5, width=30)
+        self.appearance = tk.Text(self.dialog, wrap=tk.WORD, height=5, width=30)
         self.appearance.pack()
-        self.appearance.bind("<KeyRelease>", lambda: self.move_line(
-            text=self.appearance, event=None))
 
     def initialize_personality(self) -> None:
         askpersonality = ttk.Label(self.dialog, text="Personality:")
         askpersonality.pack()
 
-        self.personality = Text(self.dialog, wrap=WORD, height=5, width=30)
+        self.personality = tk.Text(self.dialog, wrap=tk.WORD, height=5, width=30)
         self.personality.pack()
-        self.personality.bind("<KeyRelease>", lambda: self.move_line(
-            text=self.personality, event=None))
 
     def initialize_history(self) -> None:
         askhistory = ttk.Label(self.dialog, text="History:")
         askhistory.pack()
 
-        self.history = Text(self.dialog, wrap=WORD, height=5, width=30)
+        self.history = tk.Text(self.dialog, wrap=tk.WORD, height=5, width=30)
         self.history.pack()
-        self.history.bind("<KeyRelease>", lambda: self.move_line(
-            text=self.history, event=None))
 
     def initialize_picture(self) -> None:
         askpicture = ttk.Label(
@@ -174,18 +174,12 @@ class CharacterCreationDialog:
         asktrivia = ttk.Label(self.dialog, text="Trivia:")
         asktrivia.pack()
 
-        self.trivia = Text(self.dialog, wrap=WORD, height=5, width=30)
+        self.trivia = tk.Text(self.dialog, wrap=tk.WORD, height=5, width=30)
         self.trivia.pack()
-        self.trivia.bind("<KeyRelease>", lambda: self.move_line(
-            text=self.trivia, event=None))
 
-    def move_line(self, text: Text, event=None) -> None:
-        text.yview(CURRENT)
-        text.config(height=text.count('1.0', END, 'lines'))
-
-    def on_date_click(self, entry: Entry, event=None) -> None:
+    def on_date_click(self, entry: tk.Entry, event=None) -> None:
         if entry.get() == "Day" or entry.get() == "Month" or entry.get() == "Year":
-            entry.delete(0, END)
+            entry.delete(0, tk.END)
             entry.config(fg='black', font=('Arial', 10, 'normal'))
 
     def on_sex_change(self, event) -> None:
@@ -199,7 +193,10 @@ class StoryView:
     def __init__(self, root, story: Story, handle_main, stories: list[Story]) -> None:
         self._root = root
         self._handle_main = handle_main
+        # Handle character page (yet to be added)
+        self._handle_character = None
         self._frame = None
+        self._characters_frame = None
         self.story = story
         self.stories = stories
 
@@ -240,10 +237,39 @@ class StoryView:
         character_button.pack()
 
     def _initialize_characters(self) -> None:
+        self._characters_frame = ttk.Frame(master=self._frame)
+        self._characters_frame.pack()
+        characters = char_service.get_characters_by_story_id(story_id=self.story.get_id())
+        if not characters:
+            return
+        for character in characters:
+            self._initialize_character(character=character)
+
+    def _on_character_click(self):
         pass
 
     def _initialize_character(self, character: Character) -> None:
-        pass
+        char_frame = ttk.Frame(master=self._characters_frame)
+        char_frame.pack(padx=5, pady=5)
+
+        img_frame = ttk.Frame(master=char_frame, border=1, relief=tk.SOLID)
+        img_frame.pack(padx=5, pady=5)
+
+        img_path = character.get_image_path()
+
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+
+        pic_path = os.path.join(current_dir, img_path)
+
+        img = tk.PhotoImage(file=pic_path)
+        label = tk.Label(master=img_frame, image=img)
+        label.image = img
+        label.pack()
+        label.bind("<Button-1>", lambda event: self._on_character_click())
+
+        char_name = character.get_name()
+        char_name_label = tk.Label(master=char_frame, text=char_name)
+        char_name_label.pack()
 
     def _initialize_endpage(self) -> None:
         endpage_frame = ttk.Frame(master=self._frame)

@@ -42,7 +42,7 @@ class Database:
         cur.execute(sql, data)
         char_id = cur.lastrowid
         self._con.commit()
-        print("Succesfully inserted character into database.")
+        print(f"Succesfully inserted character with id {char_id} into database.")
         return char_id
 
     def delete_story(self, story_id):
@@ -79,6 +79,35 @@ class Database:
             }
             stories.append(story)
         return stories
+    
+    def get_characters_by_story_id(self, story_id: int) -> list[dict]:
+        sql = "SELECT * FROM Characters WHERE story_id=?"
+        
+        cur = self._con.cursor()
+        res = cur.execute(sql, (story_id, )).fetchall()
+        if not res:
+            return None
+        characters = []
+        for c in res:
+            character = {
+                "char_id": c[0],
+                "story_id": c[1],
+                "stats": {
+                    "name": c[2],
+                    "gender": c[3],
+                    "birthday": c[4],
+                    "age": c[5],
+                    "height": c[6],
+                    "weight": c[7],
+                    "appearance": c[8],
+                    "personality": c[9],
+                    "history": c[10],
+                    "picture": c[11],
+                    "trivia": c[12]
+                }
+            }
+            characters.append(character)
+        return characters
 
     def get_name_by_id(self, story_id) -> str:
         sql = "SELECT name FROM Stories WHERE story_id=?"

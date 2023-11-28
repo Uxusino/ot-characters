@@ -5,7 +5,6 @@ from entities.character import Character
 # This class will also be responsible for checking if user's input
 # is valid or not.
 
-
 class CharacterService():
     def __init__(self) -> None:
         pass
@@ -54,6 +53,8 @@ class CharacterService():
     # Adds character to database and returns a Character object
     def create_character(self, stats: tuple, story_id: int) -> Character:
         # You need to fill at least one field to create character.
+        if not stats:
+            return None
         for stat in stats:
             if not (not stat or stat == (None, None, None)):
                 break
@@ -110,6 +111,20 @@ class CharacterService():
         )
 
         return new_char
+
+    def get_characters_by_story_id(self, story_id: int) -> list[Character]:
+        db_characters = db.get_characters_by_story_id(story_id=story_id)
+        if not db_characters:
+            return None
+        characters = []
+        for c in db_characters:
+            character = Character(
+                char_id=c["char_id"],
+                story_id=c["story_id"],
+                stats=c["stats"]
+            )
+            characters.append(character)
+        return characters
 
 
 char_service = CharacterService()
