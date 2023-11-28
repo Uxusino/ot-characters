@@ -6,6 +6,7 @@ Tämän projektin idea on luoda alusta **hahmorekisterille**. Kun joku luo tarin
 - [Vaatimusmäärittely](/dokumentaatio/vaatimusmaarittely.md)
 - [Tuntikirjanpito](/dokumentaatio/tuntikirjanpito.md)
 - [Changelog](/dokumentaatio/changelog.md)
+- [Arkkitehtuuri](/dokumentaatio/arkkitehtuuri.md)
 
 ## Asennus
 
