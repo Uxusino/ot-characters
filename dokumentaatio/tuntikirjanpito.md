@@ -13,4 +13,5 @@
 | 23.11 | 1    | Parennettu käyttöliittymän koodi |
 | 24.11 | 2,5  | Character-luokka luotu, "hahmon luonti" -käyttöliittymä alustettu |
 | 25.11 | 2    | Lisätty luokka CharacterService ja mahdollisuus lisätä hahmoja tietokantaan |
-| yht.  | 22   | |
+| 28.11 | 4    | Hahmoja näkyy nyt tarinan näkymässä. Virheet korjattu ja luotu testit hahmoille |
+| yht.  | 26   | |
