@@ -19,16 +19,16 @@ def build(ctx):
 @task
 def test(ctx):
     if platform == "win32":
-        ctx.run("pytest characters")
+        ctx.run("pytest characters --ignore=characters/ui")
     else:
-        ctx.run("pytest characters", pty=True)
+        ctx.run("pytest characters --ignore=characters/ui", pty=True)
 
 @task
 def coverage(ctx):
     if platform == "win32":
-        ctx.run("coverage run --branch -m pytest characters -c .coveragerc")
+        ctx.run("coverage run --branch -m pytest characters --ignore-glob=**/ui/* -c .coveragerc")
     else:
-        ctx.run("coverage run --branch -m pytest characters -c .coveragerc", pty=True)
+        ctx.run("coverage run --branch -m pytest characters --ignore-glob=**/ui/* -c .coveragerc", pty=True)
 
 @task(coverage)
 def coverage_report(ctx):
@@ -39,7 +39,7 @@ def coverage_report(ctx):
         ctx.run("coverage html")
 
 @task
-def pylint(ctx):
+def lint(ctx):
     ctx.run("pylint --recursive=true characters")
 
 @task

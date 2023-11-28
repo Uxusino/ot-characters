@@ -5,6 +5,7 @@ from entities.character import Character
 # This class will also be responsible for checking if user's input
 # is valid or not.
 
+
 class CharacterService():
     def __init__(self) -> None:
         pass
@@ -62,17 +63,12 @@ class CharacterService():
             return None
 
         name = self._parse_name(name=stats[0])
-        story_id = story_id
         gender = self._parse_gender(stats[1])
         birthday = self._parse_birthday(stats[2])
         age = self._parse_number_value(stats[3])
         height = self._parse_number_value(stats[4])
         weight = self._parse_number_value(stats[5])
-        appearance = stats[6]
-        personality = stats[7]
-        history = stats[8]
         picture = stats[9]
-        trivia = stats[10]
 
         char_id = db.create_character((
             story_id,
@@ -82,11 +78,11 @@ class CharacterService():
             age,
             height,
             weight,
-            appearance,
-            personality,
-            history,
+            stats[6],   # Appearance
+            stats[7],   # Personality
+            stats[8],   # History
             picture,
-            trivia
+            stats[10]   # Trivia
         ))
 
         if not char_id:
@@ -102,11 +98,11 @@ class CharacterService():
                 "age": age,
                 "height": height,
                 "weight": weight,
-                "appearance": appearance,
-                "personality": personality,
-                "history": history,
+                "appearance": stats[6],
+                "personality": stats[7],
+                "history": stats[8],
                 "picture": picture,
-                "trivia": trivia
+                "trivia": stats[10]
             }
         )
 

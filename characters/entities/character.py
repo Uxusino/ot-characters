@@ -28,10 +28,10 @@ class Character:
 
     def get_story_id(self) -> int:
         return self.story_id
-    
+
     def get_name(self) -> str:
         return self.stats["name"]
-    
+
     def get_image_path(self) -> str:
         pic = self.stats["picture"]
         if not pic:

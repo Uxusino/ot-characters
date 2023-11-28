@@ -23,3 +23,6 @@
 - Tarinan sivulla nyt näkyy lista hahmoja
 - Lisätty luokat:
     - CharacterService: vastaa sovelluslogiikasta luokasta Character; yhdistää hahmo-olioita ja tietokantaa
+- Testattu CharacterService:
+    - Hahmon luominen
+    - Hahmojen haku

@@ -50,7 +50,7 @@ Tiedosto *index.html* löytyy hakemistosta *htmlcov* juurikansiossa.
 Pylint:
 
 ```
-poetry run invoke pylint
+poetry run invoke lint
 ```
 
 Autopep:

@@ -52,11 +52,11 @@ class CharacterCreationDialog:
         age = self.age.get()
         height = self.height.get()
         weight = self.weight.get()
-        appearance = self.appearance.get("1.0", tk.END)
-        personality = self.personality.get("1.0", tk.END)
-        history = self.history.get("1.0", tk.END)
+        appearance = self.appearance.get("1.0", tk.END).strip()
+        personality = self.personality.get("1.0", tk.END).strip()
+        history = self.history.get("1.0", tk.END).strip()
         picture = None
-        trivia = self.trivia.get("1.0", tk.END)
+        trivia = self.trivia.get("1.0", tk.END).strip()
 
         res_tuple = (
             name,
@@ -101,11 +101,11 @@ class CharacterCreationDialog:
 
         empty_entry_font = font.Font(size=10, slant='italic')
         self.day = tk.Entry(master=birthday_frame,
-                         fg='gray', font=empty_entry_font)
+                            fg='gray', font=empty_entry_font)
         self.month = tk.Entry(master=birthday_frame,
-                           fg='gray', font=empty_entry_font)
+                              fg='gray', font=empty_entry_font)
         self.year = tk.Entry(master=birthday_frame,
-                          fg='gray', font=empty_entry_font)
+                             fg='gray', font=empty_entry_font)
 
         self.day.insert(0, "Day")
         self.month.insert(0, "Month")
@@ -147,14 +147,16 @@ class CharacterCreationDialog:
         askappearance = ttk.Label(self.dialog, text="Appearance:")
         askappearance.pack()
 
-        self.appearance = tk.Text(self.dialog, wrap=tk.WORD, height=5, width=30)
+        self.appearance = tk.Text(
+            self.dialog, wrap=tk.WORD, height=5, width=30)
         self.appearance.pack()
 
     def initialize_personality(self) -> None:
         askpersonality = ttk.Label(self.dialog, text="Personality:")
         askpersonality.pack()
 
-        self.personality = tk.Text(self.dialog, wrap=tk.WORD, height=5, width=30)
+        self.personality = tk.Text(
+            self.dialog, wrap=tk.WORD, height=5, width=30)
         self.personality.pack()
 
     def initialize_history(self) -> None:
@@ -239,7 +241,8 @@ class StoryView:
     def _initialize_characters(self) -> None:
         self._characters_frame = ttk.Frame(master=self._frame)
         self._characters_frame.pack()
-        characters = char_service.get_characters_by_story_id(story_id=self.story.get_id())
+        characters = char_service.get_characters_by_story_id(
+            story_id=self.story.get_id())
         if not characters:
             return
         for character in characters:

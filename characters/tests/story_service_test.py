@@ -17,8 +17,10 @@ class TestStoryService(unittest.TestCase):
         self.storydesc = "Dummy Description"
         self.long_storyname = "Exiled in a Class Trial for “Poor Dexterity”. Because He Was Dexterous, He Lived on His Own. Because of His Dexterity, He Was Able to Use All the Skills and Magic of the Higher Ranks, Making Him Invincible. I Decided to Live on My Own, but the People Around Me Wouldn’t Leave Me Alone."
 
-        self.story = Story(story_id=1, name=self.storyname,
-                           desc=self.storydesc)
+        self.story = Story(
+            story_id=1,
+            name=self.storyname,
+            desc=self.storydesc)
         self.story_no_desc = Story(story_id=1, name=self.storyname, desc=None)
 
     # Must return a Story object if everything's correct,
