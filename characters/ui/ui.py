@@ -1,5 +1,4 @@
-from entities.story import Story
-from services.story_service import story_service
+from services.story_service import story_service, Story
 from . import story_view as sv
 from . import main_view as mv
 import os
