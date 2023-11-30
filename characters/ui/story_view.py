@@ -1,6 +1,7 @@
 import tkinter as tk
 import os
-from tkinter import ttk, font, constants
+from tkinter import ttk, font, constants, filedialog
+from PIL import Image, ImageTk
 from entities.story import Story
 from services.character_service import char_service, Character
 
@@ -12,6 +13,9 @@ class CharacterCreationDialog:
         self.dialog = tk.Toplevel(parent)
         self.dialog.title = "New Character"
         self.dialog.protocol("WM_DELETE_WINDOW", self.close)
+
+        self._pic_frame = tk.Frame(self.dialog)
+        self._pic_name = ttk.Label(master=self._pic_frame, text="")
 
         self.name = None
         self.gender = None
@@ -167,10 +171,37 @@ class CharacterCreationDialog:
         self.history.pack()
 
     def initialize_picture(self) -> None:
+        self._pic_frame.pack()
         askpicture = ttk.Label(
-            self.dialog, text="Select picture (not available yet!):")
+            self._pic_frame, text="Select image:")
+        warning = ttk.Label(
+            self._pic_frame, text="For better compatibility the image is advised to have 1:1 aspect ratio.\nCurrently supported: .png, .jpg, .jpeg"
+        )
+
         askpicture.pack()
-        # Here goes code for selecting picture from PC
+        warning.pack()
+        self._pic_name.pack()
+
+        select_image_button = ttk.Button(
+            self._pic_frame, text="Select image", command=self.select_image)
+        select_image_button.pack()
+
+    def select_image(self) -> None:
+        file_path = filedialog.askopenfilename(
+            title="Select an image",
+            filetypes=[("Images", "*.png;*.jpg;*.jpeg;")]
+        )
+
+        if file_path:
+            image_path = file_path
+            img_name = os.path.basename(file_path)
+            img = Image.open(image_path)
+            img = img.resize((125, 125))
+            self.picture = img
+            self.show_img_name(name=img_name)
+
+    def show_img_name(self, name: str) -> None:
+        self._pic_name.config(text=name)
 
     def initialize_trivia(self) -> None:
         asktrivia = ttk.Label(self.dialog, text="Trivia:")
@@ -202,13 +233,16 @@ class StoryView:
         self.story = story
         self.stories = stories
 
+        self._row = 0
+        self._column = 0
+
         self._freeze = False
         self._temp = None
 
         self._initialize()
 
     def pack(self):
-        self._frame.pack(fill=constants.X)
+        self._frame.pack(fill=constants.X, expand=True)
 
     def destroy(self):
         self._frame.destroy()
@@ -240,7 +274,7 @@ class StoryView:
 
     def _initialize_characters(self) -> None:
         self._characters_frame = ttk.Frame(master=self._frame)
-        self._characters_frame.pack()
+        self._characters_frame.pack(fill=tk.BOTH, expand=True)
         characters = char_service.get_characters_by_story_id(
             story_id=self.story.get_id())
         if not characters:
@@ -253,9 +287,15 @@ class StoryView:
 
     def _initialize_character(self, character: Character) -> None:
         char_frame = ttk.Frame(master=self._characters_frame)
-        char_frame.pack(padx=5, pady=5)
+        char_frame.grid(row=self._row, column=self._column)
 
-        img_frame = ttk.Frame(master=char_frame, border=1, relief=tk.SOLID)
+        self._column += 1
+        if self._column == 7:
+            self._column = 0
+            self._row += 1
+
+        img_frame = ttk.Frame(master=char_frame, border=1,
+                              relief=tk.SOLID, width=125, height=125)
         img_frame.pack(padx=5, pady=5)
 
         img_path = character.get_image_path()
