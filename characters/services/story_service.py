@@ -1,4 +1,5 @@
 from repositories.db_management import db
+from repositories.file_management import rep
 from entities.story import Story
 
 # This class is a step between database and Story as an object.
@@ -41,6 +42,7 @@ class StoryService:
 
     def clear_stories(self):
         db.clear_stories()
+        rep.delete_all_avatars()
 
     def delete_story(self, story_id: int):
         db.delete_story(story_id=story_id)

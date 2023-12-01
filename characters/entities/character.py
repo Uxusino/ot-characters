@@ -35,8 +35,8 @@ class Character:
     def get_image_path(self) -> str:
         pic = self.stats["picture"]
         if not pic:
-            pic = "default.png"
-        return f"../library/avatars/{pic}"
+            pic = "default"
+        return f"../library/avatars/{pic}.png"
 
     def __str__(self) -> str:
         return f"{self.stats['name']} from {story_service.get_name_by_id(self.story_id)}"

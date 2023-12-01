@@ -1,5 +1,7 @@
 import tkinter as tk
 import os
+import string
+import random
 from tkinter import ttk, font, constants, filedialog
 from PIL import Image, ImageTk
 from entities.story import Story
@@ -59,7 +61,9 @@ class CharacterCreationDialog:
         appearance = self.appearance.get("1.0", tk.END).strip()
         personality = self.personality.get("1.0", tk.END).strip()
         history = self.history.get("1.0", tk.END).strip()
-        picture = None
+        picture = self.picture
+        if picture:
+            picture = self.save_image(picture)
         trivia = self.trivia.get("1.0", tk.END).strip()
 
         res_tuple = (
@@ -79,6 +83,24 @@ class CharacterCreationDialog:
         self.view._temp = res_tuple
 
         self.close()
+
+    def generate_name(self) -> str:
+        chars = string.ascii_letters + string.digits
+        name = ''.join(random.sample(chars, k=10))
+        return name
+
+    # Saves image to image directory and returns image's name
+    def save_image(self, image: Image) -> str:
+        dir = "../library/avatars/"
+        new_name = self.generate_name()
+        print(new_name)
+        filedir = dir + f"{new_name}.png"
+
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        pic_path = os.path.join(current_dir, filedir)
+        
+        image.save(pic_path, format="png")
+        return new_name
 
     def initialize_name(self) -> None:
         askname = ttk.Label(self.dialog, text="Name:")
@@ -198,10 +220,7 @@ class CharacterCreationDialog:
             img = Image.open(image_path)
             img = img.resize((125, 125))
             self.picture = img
-            self.show_img_name(name=img_name)
-
-    def show_img_name(self, name: str) -> None:
-        self._pic_name.config(text=name)
+            self._pic_name.config(text=img_name)
 
     def initialize_trivia(self) -> None:
         asktrivia = ttk.Label(self.dialog, text="Trivia:")
@@ -301,7 +320,6 @@ class StoryView:
         img_path = character.get_image_path()
 
         current_dir = os.path.dirname(os.path.abspath(__file__))
-
         pic_path = os.path.join(current_dir, img_path)
 
         img = tk.PhotoImage(file=pic_path)

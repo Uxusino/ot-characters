@@ -26,3 +26,8 @@
 - Testattu CharacterService:
     - Hahmon luominen
     - Hahmojen haku
+
+## Viikko 5
+
+- Käyttäjä voi lisätä kuvan luomaansa hahmoon
+- Lisätty luokka Repository joka hoitaa kuvien poistamisesta
