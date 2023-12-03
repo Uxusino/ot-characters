@@ -98,7 +98,7 @@ class CharacterCreationDialog:
 
         current_dir = os.path.dirname(os.path.abspath(__file__))
         pic_path = os.path.join(current_dir, filedir)
-        
+
         image.save(pic_path, format="png")
         return new_name
 
@@ -242,11 +242,11 @@ class CharacterCreationDialog:
 
 
 class StoryView:
-    def __init__(self, root, story: Story, handle_main, stories: list[Story]) -> None:
+    def __init__(self, root, story: Story, handle_main, handle_character, stories: list[Story]) -> None:
         self._root = root
         self._handle_main = handle_main
         # Handle character page (yet to be added)
-        self._handle_character = None
+        self._handle_character = handle_character
         self._frame = None
         self._characters_frame = None
         self.story = story
@@ -301,9 +301,6 @@ class StoryView:
         for character in characters:
             self._initialize_character(character=character)
 
-    def _on_character_click(self):
-        pass
-
     def _initialize_character(self, character: Character) -> None:
         char_frame = ttk.Frame(master=self._characters_frame)
         char_frame.grid(row=self._row, column=self._column)
@@ -317,7 +314,7 @@ class StoryView:
                               relief=tk.SOLID, width=125, height=125)
         img_frame.pack(padx=5, pady=5)
 
-        img_path = character.get_image_path()
+        img_path = character.image()
 
         current_dir = os.path.dirname(os.path.abspath(__file__))
         pic_path = os.path.join(current_dir, img_path)
@@ -326,9 +323,10 @@ class StoryView:
         label = tk.Label(master=img_frame, image=img)
         label.image = img
         label.pack()
-        label.bind("<Button-1>", lambda event: self._on_character_click())
+        label.bind(
+            "<Button-1>", lambda event: self._handle_character(character=character))
 
-        char_name = character.get_name()
+        char_name = character.name()
         char_name_label = tk.Label(master=char_frame, text=char_name)
         char_name_label.pack()
 

@@ -29,14 +29,47 @@ class Character:
     def get_story_id(self) -> int:
         return self.story_id
 
-    def get_name(self) -> str:
+    def name(self) -> str:
         return self.stats["name"]
 
-    def get_image_path(self) -> str:
+    def image(self) -> str:
         pic = self.stats["picture"]
         if not pic:
             pic = "default"
         return f"../library/avatars/{pic}.png"
+
+    def gender(self) -> str:
+        return {
+            "0": "Female",
+            "1": "Male",
+            "2": "Unknown"
+        }[str(self.stats["gender"])]
+
+    def age(self) -> str:
+        age = self.stats["age"]
+        if age:
+            return str(age)
+        return "???"
+
+    def birthday(self) -> str:
+        birthday = self.stats["birthday"]
+        if birthday == "??/??/????" or not birthday:
+            return "Unknown"
+        if birthday[-4:] == "????":
+            return birthday[:-5]
+        return birthday
+
+    def height(self) -> str:
+        h = self.stats["height"]
+        if h:
+            return f"{h} cm"
+        return "??? cm"
+
+    def weight(self) -> str:
+        w = self.stats["weight"]
+        if w:
+            return f"{w} kg"
+        return "?? kg"
 
     def __str__(self) -> str:
         return f"{self.stats['name']} from {story_service.get_name_by_id(self.story_id)}"

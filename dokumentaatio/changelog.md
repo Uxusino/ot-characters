@@ -31,3 +31,5 @@
 
 - Käyttäjä voi lisätä kuvan luomaansa hahmoon
 - Lisätty luokka Repository joka hoitaa kuvien poistamisesta
+- Uusi näkymä: CharacterView
+- Käyttäjä pääsee hahmon sivulle, missä näkyy hahmon tiedot

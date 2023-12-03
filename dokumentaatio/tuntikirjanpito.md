@@ -16,4 +16,5 @@
 | 28.11 | 4    | Hahmoja näkyy nyt tarinan näkymässä. Virheet korjattu ja luotu testit hahmoille |
 | 30.11 | 3    | Hahmojen sijoittaminen tarinassa parannettu, alustettu kuvan lisääminen |
 | 1.12  | 1    | Kuvien lisääminen hahmon luomisessa onnistuu |
-| yht.  | 33   | |
+| 3.12  | 3    | Käyttäjä nyt pääsee hahmon sivulle |
+| yht.  | 36   | |

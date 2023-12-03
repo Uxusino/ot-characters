@@ -1,5 +1,6 @@
 import os
 
+
 class Repository:
     def __init__(self) -> None:
         current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -15,5 +16,6 @@ class Repository:
     def delete_avatar(self, name: str) -> None:
         img_path = self._path + f"{name}.png"
         os.remove(path=img_path)
+
 
 rep = Repository()

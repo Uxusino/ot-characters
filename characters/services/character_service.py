@@ -122,5 +122,8 @@ class CharacterService():
             characters.append(character)
         return characters
 
+    def clear_characters(self) -> None:
+        db.clear_characters()
+
 
 char_service = CharacterService()

@@ -22,7 +22,7 @@ Pääsivusta pääsee jonkin tarinan sivulle.
 
 Tarinan sivussa näkyy lista hahmoja ja hahmojen tilasto (esim. keski-ikä, keskipituus, miten paljon on nais- tai mieshahmoja jne.)
 
-- Voi luoda uusia hahmoja. Hahmojen mahdollisia ominaisuuksia:
+- Voi luoda uusia hahmoja. Hahmojen mahdollisia ominaisuuksia: *(tehty)*
     - Nimi *(tehty)*
     - Sukupuoli (nainen, mies tai tuntematon) *(tehty)*
     - Syntymäpäivä *(tehty)*
@@ -32,10 +32,10 @@ Tarinan sivussa näkyy lista hahmoja ja hahmojen tilasto (esim. keski-ikä, kesk
     - Ulkonäön kuvaus *(tehty)*
     - Luonteen kuvaus *(tehty)*
     - Historia (mitä tapahtuu hahmolle tarinassa) *(tehty)*
-    - Kuva (ladataan käyttäjän koneelta)
+    - Kuva (ladataan käyttäjän koneelta) *(tehty)*
     - Lisätietoa *(tehty)*
 - Hahmon luomisen jälkeen näkyy lista kaikkia hahmoja. *(tehty)*
-- Hahmon sivulle pääsee klikkaamalla.
+- Hahmon sivulle pääsee klikkaamalla. *(tehty)*
 - Sivun alapuolella näkyy tilasto, jossa voi tarkistaa:
     - Hahmojen keski-ikä
     - Montako prosentteja naisia, miehiä tai ei tiedossa olevia sukupuolia

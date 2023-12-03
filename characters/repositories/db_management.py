@@ -81,6 +81,18 @@ class Database:
             stories.append(story)
         return stories
 
+    def get_story_by_id(self, story_id: int) -> dict:
+        sql = "SELECT * FROM Stories WHERE story_id=?"
+
+        cur = self._con.cursor()
+        res = cur.execute(sql, (story_id, )).fetchone()
+        story = {
+            "id": res[0],
+            "name": res[1],
+            "desc": res[2]
+        }
+        return story
+
     def get_characters_by_story_id(self, story_id: int) -> list[dict]:
         sql = "SELECT * FROM Characters WHERE story_id=?"
 
@@ -126,6 +138,12 @@ class Database:
     # Deletes all stories.
     def clear_stories(self) -> None:
         sql = "DELETE FROM Stories"
+        cur = self._con.cursor()
+        cur.execute(sql)
+        self._con.commit()
+
+    def clear_characters(self) -> None:
+        sql = "DELETE FROM Characters"
         cur = self._con.cursor()
         cur.execute(sql)
         self._con.commit()

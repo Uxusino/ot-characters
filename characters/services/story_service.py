@@ -24,6 +24,10 @@ class StoryService:
             stories.append(story)
         return stories
 
+    def get_story_by_id(self, story_id: int) -> Story:
+        story_dict = db.get_story_by_id(story_id=story_id)
+        return Story(story_id=story_dict["id"], name=story_dict["name"], desc=story_dict["desc"])
+
     def count_stories(self) -> int:
         return db.count_stories()
 
@@ -42,6 +46,7 @@ class StoryService:
 
     def clear_stories(self):
         db.clear_stories()
+        db.clear_characters()
         rep.delete_all_avatars()
 
     def delete_story(self, story_id: int):
