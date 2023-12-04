@@ -34,43 +34,35 @@ class TestCharacterService(unittest.TestCase):
             }
         )
 
+        self.dummy_character_stats = (
+            "Dummy",
+            "Unknown",
+            ("24", "12", "1999"),
+            "23",
+            "170",
+            "60",
+            "",
+            "",
+            "",
+            None,
+            ""
+        )
+
     def test_create_character(self):
         testcharacter = char_service.create_character(
-            (
-                "Dummy",
-                "Unknown",
-                ("24", "12", "1999"),
-                "23",
-                "170",
-                "60",
-                "",
-                "",
-                "",
-                None,
-                ""
-            ),
-            1
-        )
+            self.dummy_character_stats, 1)
 
         self.assertEqual(testcharacter, self.dummy_character)
 
     def test_returns_right_list(self):
-        testcharacter = char_service.create_character(
-            (
-                "Dummy",
-                "Unknown",
-                ("24", "12", "1999"),
-                "23",
-                "170",
-                "60",
-                "",
-                "",
-                "",
-                None,
-                ""
-            ),
-            1
-        )
+        char_service.create_character(self.dummy_character_stats, 1)
 
         charlist = char_service.get_characters_by_story_id(1)
         self.assertEqual(charlist, [self.dummy_character])
+
+    def test_clear_stories_clears_characters(self):
+        char_service.create_character(self.dummy_character_stats, 1)
+        story_service.clear_stories()
+        chars = char_service.get_characters_by_story_id(1)
+
+        self.assertEqual(chars, None)
