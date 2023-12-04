@@ -17,4 +17,5 @@
 | 30.11 | 3    | Hahmojen sijoittaminen tarinassa parannettu, alustettu kuvan lisääminen |
 | 1.12  | 1    | Kuvien lisääminen hahmon luomisessa onnistuu |
 | 3.12  | 3    | Käyttäjä nyt pääsee hahmon sivulle |
-| yht.  | 36   | |
+| 4.12  | 1    | Github release, dokumentaation päivitys, uusi testi |
+| yht.  | 37   | |
