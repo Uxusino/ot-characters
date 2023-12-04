@@ -7,6 +7,7 @@ Tämän projektin idea on luoda alusta **hahmorekisterille**. Kun joku luo tarin
 - [Tuntikirjanpito](/dokumentaatio/tuntikirjanpito.md)
 - [Changelog](/dokumentaatio/changelog.md)
 - [Arkkitehtuuri](/dokumentaatio/arkkitehtuuri.md)
+- [Viikon 5 release](https://github.com/Uxusino/ot-characters/releases/tag/viikko5)
 
 ## Asennus
 
