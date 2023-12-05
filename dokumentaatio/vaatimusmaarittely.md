@@ -48,9 +48,9 @@ Sivussa näkyy kaikki yllä mainitut tiedot. On mahdollista:
 
 - Poistaa hahmon
 - Muokata kumpi tahansa kohta
-- Lisätä suhteita olemassaolevien hahmojen väliin
+- Lisätä suhteita olemassaolevien hahmojen väliin *(tehty)*
     - Jos lisätään kaksisuuntainen suhde (esim. "parent"), myös toisen hahmon sivu päivitetään
-    - On mahdollista lisätä yksisuuntaisia suhdeita (esim. "love interest")
+    - On mahdollista lisätä yksisuuntaisia suhteita (esim. "love interest") *(tehty)*
 
 Mahdolliset suhteet ovat:
 
@@ -74,4 +74,4 @@ Mahdolliset suhteet ovat:
     - Enemy
     - Fan
 
-Hahmolla voi olla muutama suhde toisen hahmon kanssa. On mahdollista lisätä "former" (entinen) jokaiseen suhteeseen.
+Hahmolla voi olla muutama suhde toisen hahmon kanssa. On mahdollista lisätä "former" (entinen) jokaiseen suhteeseen. *(tehty)*

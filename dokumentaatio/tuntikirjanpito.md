@@ -18,4 +18,5 @@
 | 1.12  | 1    | Kuvien lisääminen hahmon luomisessa onnistuu |
 | 3.12  | 3    | Käyttäjä nyt pääsee hahmon sivulle |
 | 4.12  | 1    | Github release, dokumentaation päivitys, uusi testi |
-| yht.  | 37   | |
+| 5.12  | 3    | Hahmojen suhteet lisätty |
+| yht.  | 40   | |
