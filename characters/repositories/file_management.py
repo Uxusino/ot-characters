@@ -19,7 +19,7 @@ class Repository:
 
     def get_image_path(self, name: str) -> str:
         """Responsible for giving full path to image.
-        
+
         Args:
             name: Image name
 

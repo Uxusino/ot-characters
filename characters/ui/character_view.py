@@ -13,7 +13,8 @@ class RelationDialog:
         self.dialog.title = "Add Relation"
 
         self._character = character
-        self._characters = char_service.get_characters_by_story_id(self._character.story_id)
+        self._characters = char_service.get_characters_by_story_id(
+            self._character.story_id)
 
         self._relations = char_service.get_relations()
 
@@ -38,7 +39,8 @@ class RelationDialog:
         tome.pack(side=tk.LEFT)
 
         self._former = tk.IntVar()
-        former_check = tk.Checkbutton(master=self.dialog, text="Former", variable=self._former)
+        former_check = tk.Checkbutton(
+            master=self.dialog, text="Former", variable=self._former)
         self._former.set(0)
         former_check.pack(padx=5, side=tk.LEFT)
 
@@ -64,7 +66,8 @@ class RelationDialog:
     def _enter(self):
         if not self._target_char or not self._target_rel:
             return
-        char_service.set_relations(char1=self._character, char2=self._target_char, relation=self._target_rel, former=self._former.get())
+        char_service.set_relations(char1=self._character, char2=self._target_char,
+                                   relation=self._target_rel, former=self._former.get())
         self._close()
 
     def _close(self):
@@ -124,7 +127,8 @@ class CharacterView:
                     width=self._info_width)
                 info.pack(padx=5, pady=5)
             else:
-                self._relations_frame = ttk.Frame(master=info_frame, width=self._info_width)
+                self._relations_frame = ttk.Frame(
+                    master=info_frame, width=self._info_width)
                 self._relations_frame.pack()
                 self._initialize_relations()
 
@@ -142,7 +146,7 @@ class CharacterView:
         img_frame.pack()
 
         img_path = char_service.get_image_path(self._character)
-       
+
         img = tk.PhotoImage(file=img_path)
         img_label = tk.Label(master=img_frame, image=img)
         img_label.image = img
@@ -199,7 +203,8 @@ class CharacterView:
             widget.destroy()
         relations = char_service.get_character_relations(self._character)
         if not relations:
-            ttk.Label(master=self._relations_frame, text="", width=self._info_width).pack()
+            ttk.Label(master=self._relations_frame, text="",
+                      width=self._info_width).pack()
             return
         for relation in relations:
             lbl = ttk.Label(

@@ -128,7 +128,7 @@ class Database:
         cur = self._con.cursor()
         res = cur.execute(sql, (story_id,)).fetchone()[0]
         return res
-    
+
     def get_relations(self) -> list[str]:
         sql = "SELECT name FROM Relations"
 
@@ -138,14 +138,14 @@ class Database:
         for r in res:
             relations.append(r[0])
         return relations
-    
+
     def get_relation_id_from_name(self, name: str) -> int:
         sql = "SELECT relation_id FROM Relations WHERE name=?"
 
         cur = self._con.cursor()
         res = cur.execute(sql, (name,)).fetchone()[0]
         return res
-    
+
     def get_character_relations(self, char_id: int) -> list[tuple]:
         sql = """
             SELECT char.name, charrel.former,
@@ -168,7 +168,7 @@ class Database:
         for r in res:
             relations.append((r[0], r[1], r[2]))
         return relations
-    
+
     def set_relation(self, char1_id: int, char2_id: int, relation_id: int, former: int) -> None:
         data = (char1_id, char2_id, relation_id, former)
         sql = """
