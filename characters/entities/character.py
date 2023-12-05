@@ -23,12 +23,6 @@ class Character:
         self.story_id = story_id
         self.stats = stats
 
-    def get_id(self) -> int:
-        return self.char_id
-
-    def get_story_id(self) -> int:
-        return self.story_id
-
     def name(self) -> str:
         return self.stats["name"]
 

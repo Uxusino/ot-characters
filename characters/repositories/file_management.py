@@ -17,5 +17,18 @@ class Repository:
         img_path = self._path + f"{name}.png"
         os.remove(path=img_path)
 
+    def get_image_path(self, name: str) -> str:
+        """Responsible for giving full path to image.
+        
+        Args:
+            name: Image name
+
+        Returns:
+            string with full path    
+        """
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        img_path = os.path.join(current_dir, name)
+        return img_path
+
 
 rep = Repository()

@@ -128,6 +128,61 @@ class Database:
         cur = self._con.cursor()
         res = cur.execute(sql, (story_id,)).fetchone()[0]
         return res
+    
+    def get_relations(self) -> list[str]:
+        sql = "SELECT name FROM Relations"
+
+        cur = self._con.cursor()
+        res = cur.execute(sql).fetchall()
+        relations = []
+        for r in res:
+            relations.append(r[0])
+        return relations
+    
+    def get_relation_id_from_name(self, name: str) -> int:
+        sql = "SELECT relation_id FROM Relations WHERE name=?"
+
+        cur = self._con.cursor()
+        res = cur.execute(sql, (name,)).fetchone()[0]
+        return res
+    
+    def get_character_relations(self, char_id: int) -> list[tuple]:
+        sql = """
+            SELECT char.name, charrel.former,
+                CASE
+                    WHEN char.gender = 0 THEN rel.female_name
+                    WHEN char.gender = 1 THEN rel.male_name
+                    ELSE rel.name
+                END AS relation_name
+            FROM CharacterRelations charrel
+            JOIN Characters char ON char.char_id = charrel.char2_id
+            JOIN Relations rel ON rel.relation_id = charrel.relation_id
+            WHERE charrel.char1_id = ?
+        """
+
+        cur = self._con.cursor()
+        res = cur.execute(sql, (char_id,)).fetchall()
+        if not res:
+            return None
+        relations = []
+        for r in res:
+            relations.append((r[0], r[1], r[2]))
+        return relations
+    
+    def set_relation(self, char1_id: int, char2_id: int, relation_id: int, former: int) -> None:
+        data = (char1_id, char2_id, relation_id, former)
+        sql = """
+            INSERT INTO CharacterRelations(
+                char1_id,
+                char2_id,
+                relation_id,
+                former
+            ) VALUES (?, ?, ?, ?)
+        """
+
+        cur = self._con.cursor()
+        cur.execute(sql, data)
+        self._con.commit()
 
     def count_stories(self) -> int:
         sql = "SELECT COUNT(*) FROM Stories"

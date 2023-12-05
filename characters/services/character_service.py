@@ -1,4 +1,5 @@
 from repositories.db_management import db
+from repositories.file_management import rep
 from entities.character import Character
 
 # This class is a stepping stone between database and Character as an object.
@@ -122,8 +123,26 @@ class CharacterService():
             characters.append(character)
         return characters
 
+    def get_image_path(self, character: Character) -> str:
+        img_path = character.image()
+        return rep.get_image_path(img_path)
+    
+    def get_relations(self) -> list[str]:
+        return db.get_relations()
+    
+    def get_character_relations(self, character: Character) -> list[tuple]:
+        relations = db.get_character_relations(character.char_id)
+        return relations
+    
+    def set_relations(self, char1: Character, char2: Character, relation: str, former: int) -> None:
+        char1_id = char1.char_id
+        char2_id = char2.char_id
+        rel_id = db.get_relation_id_from_name(relation)
+        db.set_relation(char1_id=char1_id, char2_id=char2_id, relation_id=rel_id, former=former)
+
     def clear_characters(self) -> None:
         db.clear_characters()
+        rep.delete_all_avatars()
 
 
 char_service = CharacterService()

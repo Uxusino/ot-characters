@@ -114,7 +114,7 @@ class CharacterCreationDialog:
         askgender.pack()
 
         self.genderbox = ttk.Combobox(
-            self.dialog, values=["Female", "Male", "Unknown"])
+            self.dialog, values=["Female", "Male", "Unknown"], state="readonly")
         self.genderbox.bind("<<ComboboxSelected>>", self.on_sex_change)
         self.genderbox.pack()
 
@@ -270,14 +270,14 @@ class StoryView:
         heading_frame = ttk.Frame(master=self._frame)
         heading_frame.pack()
 
-        story_name = self.story.get_name()
+        story_name = self.story.name
         head = ttk.Label(
             master=heading_frame,
             text=story_name
         )
         head.pack()
 
-        story_desc = self.story.get_desc()
+        story_desc = self.story.desc
         desc = ttk.Label(
             master=heading_frame,
             text=story_desc
@@ -295,7 +295,7 @@ class StoryView:
         self._characters_frame = ttk.Frame(master=self._frame)
         self._characters_frame.pack(fill=tk.BOTH, expand=True)
         characters = char_service.get_characters_by_story_id(
-            story_id=self.story.get_id())
+            story_id=self.story.story_id)
         if not characters:
             return
         for character in characters:
@@ -314,12 +314,9 @@ class StoryView:
                               relief=tk.SOLID, width=125, height=125)
         img_frame.pack(padx=5, pady=5)
 
-        img_path = character.image()
+        img_path = char_service.get_image_path(character=character)
 
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        pic_path = os.path.join(current_dir, img_path)
-
-        img = tk.PhotoImage(file=pic_path)
+        img = tk.PhotoImage(file=img_path)
         label = tk.Label(master=img_frame, image=img)
         label.image = img
         label.pack()
@@ -370,7 +367,7 @@ class StoryView:
         new_character = self._temp
         self._temp = None
         valid_character = char_service.create_character(
-            stats=new_character, story_id=self.story.get_id())
+            stats=new_character, story_id=self.story.story_id)
         if valid_character:
             self._initialize_character(character=valid_character)
         self.unfreeze()

@@ -9,15 +9,6 @@ class Story:
         self.name = name
         self.desc = desc
 
-    def get_id(self):
-        return self.story_id
-
-    def get_name(self):
-        return self.name
-
-    def get_desc(self):
-        return self.desc
-
     def __str__(self) -> str:
         return f"{self.story_id}. {self.name}: {self.desc}"
 
