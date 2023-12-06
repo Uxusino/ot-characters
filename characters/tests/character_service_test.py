@@ -70,7 +70,8 @@ class TestCharacterService(unittest.TestCase):
     def test_get_character_relations(self):
         char1 = char_service.create_character(self.dummy_character_stats, 1)
         char2 = char_service.create_character(self.dummy_character_stats, 1)
-        char_service.set_relations(char1=char1, char2=char2, relation="sibling", former=0)
+        char_service.set_relations(
+            char1=char1, char2=char2, relation="sibling", former=0)
         relations = char_service.get_character_relations(character=char1)
 
         self.assertEqual(relations, [("Dummy", 0, "sibling")])
@@ -78,7 +79,8 @@ class TestCharacterService(unittest.TestCase):
     def test_clear_stories_clears_relations(self):
         char1 = char_service.create_character(self.dummy_character_stats, 1)
         char2 = char_service.create_character(self.dummy_character_stats, 1)
-        char_service.set_relations(char1=char1, char2=char2, relation="sibling", former=0)
+        char_service.set_relations(
+            char1=char1, char2=char2, relation="sibling", former=0)
         story_service.clear_stories()
         story_service.create_story("Dummy Story 2")
         char3 = char_service.create_character(self.dummy_character_stats, 1)
