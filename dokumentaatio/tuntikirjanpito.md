@@ -19,4 +19,5 @@
 | 3.12  | 3    | Käyttäjä nyt pääsee hahmon sivulle |
 | 4.12  | 1    | Github release, dokumentaation päivitys, uusi testi |
 | 5.12  | 3    | Hahmojen suhteet lisätty |
-| yht.  | 40   | |
+| 6.12  | 2    | Testit ja koodin dokumentaatio |
+| yht.  | 42   | |
