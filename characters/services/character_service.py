@@ -1,10 +1,14 @@
+"""A stepping stone between database and Character as an object.
+
+Is also be responsible for checking if user's input is valid or not.
+
+    Returns:
+        CharacterService: App logic for everything to do with characters.
+"""
+
 from repositories.db_management import db
 from repositories.file_management import rep
 from entities.character import Character
-
-# This class is a stepping stone between database and Character as an object.
-# This class will also be responsible for checking if user's input
-# is valid or not.
 
 
 class CharacterService():
@@ -12,20 +16,38 @@ class CharacterService():
         pass
 
     def _convert_gender(self, gender: str) -> int:
+        """Converts gender from string to integer representative.
+
+        0 = Female
+        1 = Male
+        2 = Unknown/other
+
+        Args:
+            gender (str): Gender string
+
+        Returns:
+            int: Integer representative of character's gender.
+        """
+
+        if not gender or gender not in ["Female", "Male", "Unknown"]:
+            return 2
         return {
             "Female": 0,
             "Male": 1,
             "Unknown": 2,
         }[gender]
 
-    def _parse_gender(self, gender: str) -> int:
-        if not gender or gender not in ["Female", "Male", "Unknown"]:
-            return 2
-        return self._convert_gender(gender=gender)
-
-    # dd/mm/yyyy
-    # All values must be numeric, else it will be reverted to unknown value
     def _parse_birthday(self, birthday: tuple[str]) -> str:
+        """Converts day, month and year to string representation of birthday.
+
+        All values must be numeric, else it will be reverted to an unknown value.
+
+        Args:
+            birthday (tuple[str]): Tuple with values of day, month and year.
+
+        Returns:
+            str: Birthday in the form of dd/mm/yyyy
+        """
         day = birthday[0]
         month = birthday[1]
         year = birthday[2]
@@ -43,48 +65,54 @@ class CharacterService():
         return birthday
 
     def _parse_number_value(self, value: str) -> int:
+        """If user has given non-numeric value, resets it to None.
+
+        Args:
+            value (str): String value that must represent a number.
+
+        Returns:
+            int: Integer representation of given numeric string.
+        """
         if not value or not value.isnumeric():
             return None
         return int(value)
 
     def _parse_name(self, name: str) -> str:
+        """Checks whether user has given name, else sets the name as Unknown.
+
+        Args:
+            name (str): User's input of character's name.
+
+        Returns:
+            str: Character's name in form of a valid string.
+        """
         if not name:
             return "Unknown"
         return name
 
-    # Adds character to database and returns a Character object
     def create_character(self, stats: tuple, story_id: int) -> Character:
-        # You need to fill at least one field to create character.
+        """Adds character to the database and returns a Character object.
+
+        Args:
+            stats (tuple): Tuple that contains all the character's info.
+            story_id (int): Story id.
+
+        Returns:
+            Character: Character object.
+        """
+
         if not stats:
-            return None
-        for stat in stats:
-            if not (not stat or stat == (None, None, None)):
-                break
-        else:
             return None
 
         name = self._parse_name(name=stats[0])
-        gender = self._parse_gender(stats[1])
+        gender = self._convert_gender(stats[1])
         birthday = self._parse_birthday(stats[2])
         age = self._parse_number_value(stats[3])
         height = self._parse_number_value(stats[4])
         weight = self._parse_number_value(stats[5])
-        picture = stats[9]
 
-        char_id = db.create_character((
-            story_id,
-            name,
-            gender,
-            birthday,
-            age,
-            height,
-            weight,
-            stats[6],   # Appearance
-            stats[7],   # Personality
-            stats[8],   # History
-            picture,
-            stats[10]   # Trivia
-        ))
+        char_id = db.create_character((story_id, name, gender, birthday, age,
+                                height, weight, stats[6], stats[7], stats[8], stats[9], stats[10]))
 
         if not char_id:
             return None
@@ -102,7 +130,7 @@ class CharacterService():
                 "appearance": stats[6],
                 "personality": stats[7],
                 "history": stats[8],
-                "picture": picture,
+                "picture": stats[9],
                 "trivia": stats[10]
             }
         )
@@ -110,6 +138,15 @@ class CharacterService():
         return new_char
 
     def get_characters_by_story_id(self, story_id: int) -> list[Character]:
+        """Searches all characters of a certain story in the database.
+
+        Args:
+            story_id (int): Story id.
+
+        Returns:
+            list[Character]: Contains Character-objects.
+        """
+
         db_characters = db.get_characters_by_story_id(story_id=story_id)
         if not db_characters:
             return None
@@ -124,17 +161,52 @@ class CharacterService():
         return characters
 
     def get_image_path(self, character: Character) -> str:
+        """Creates file path for character's avatar.
+
+        Args:
+            character (Character): Character whose avatar we're getting.
+
+        Returns:
+            str: Complete path to the image.
+        """
+
         img_path = character.image()
-        return rep.get_image_path(img_path)
+        return rep.get_file_path(img_path)
 
     def get_relations(self) -> list[str]:
+        """All relation names as a list.
+
+        Returns:
+            list[str]: List with relation names.
+        """
+
         return db.get_relations()
 
     def get_character_relations(self, character: Character) -> list[tuple]:
+        """Searches all relationships of a character.
+
+        Args:
+            character (Character): Character whose relationships we're searching.
+
+        Returns:
+            list[tuple]: List with all relationships of this character.
+        """
+
         relations = db.get_character_relations(character.char_id)
         return relations
 
     def set_relations(self, char1: Character, char2: Character, relation: str, former: int) -> None:
+        """Set a relationship between two characters.
+
+        Char2 is ___ to char1.
+
+        Args:
+            char1 (Character): First character.
+            char2 (Character): Second character.
+            relation (str): Relation name
+            former (int): Is relation former or not? 1 or 0
+        """
+
         char1_id = char1.char_id
         char2_id = char2.char_id
         rel_id = db.get_relation_id_from_name(relation)
@@ -142,6 +214,9 @@ class CharacterService():
                         relation_id=rel_id, former=former)
 
     def clear_characters(self) -> None:
+        """Deletes all characters and their avatars.
+        """
+
         db.clear_characters()
         rep.delete_all_avatars()
 

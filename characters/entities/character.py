@@ -1,19 +1,23 @@
-# The class to represent a character.
-#   char_id: id as in the database
-#   story_id: id of the story
-#   stats: dictionary that includes the keys:
-#       name: character's name
-#       gender: 0=female, 1=male, 2=unknown
-#       birthday: text dd/mm/YY
-#       age: character's age
-#       height: integer cm
-#       weight: integer kg
-#       appearance: string that describes character's appearance
-#       personality: string that describes character's personality
-#       history: string that describes character's history
-#       picture: name of the picture, pictures are stored in characters/lib/avatars
-#       trivia: additional information on the character
-#   None of the stats are obligatory, but the character cannot be completely empty.
+"""The class to represent a character.
+    char_id: id as in the database
+    story_id: id of the story
+    stats: dictionary that includes the keys:
+        name: character's name
+        gender: 0=female, 1=male, 2=unknown
+        birthday: text dd/mm/YY
+        age: character's age
+        height: integer cm
+        weight: integer kg
+        appearance: string that describes character's appearance
+        personality: string that describes character's personality
+        history: string that describes character's history
+        picture: name of the picture, pictures are stored in characters/lib/avatars
+        trivia: additional information on the character
+
+    Returns:
+        Character: returns a character object.
+"""
+
 from services.story_service import story_service
 
 
@@ -24,15 +28,33 @@ class Character:
         self.stats = stats
 
     def name(self) -> str:
+        """Character's name.
+
+        Returns:
+            str: Name of the character.
+        """
+
         return self.stats["name"]
 
     def image(self) -> str:
-        pic = self.stats["picture"]
-        if not pic:
-            pic = "default"
+        """Path to character's avatar.
+
+        Returns path to the default picture, if the character doesn't have an avatar.
+
+        Returns:
+            str: Path to character's avatar.
+        """
+
+        pic = self.stats["picture"] or "default"
         return f"../library/avatars/{pic}.png"
 
     def gender(self) -> str:
+        """String representantion of character's gender.
+
+        Returns:
+            str: Character's gender.
+        """
+
         return {
             "0": "Female",
             "1": "Male",
@@ -40,12 +62,29 @@ class Character:
         }[str(self.stats["gender"])]
 
     def age(self) -> str:
+        """String representation of character's age.
+
+        Returns ??? if age isn't set.
+
+        Returns:
+            str: Character's age.
+        """
+
         age = self.stats["age"]
         if age:
             return str(age)
         return "???"
 
     def birthday(self) -> str:
+        """String representation of character's birthday.
+
+        Returns ???? if birthday is completely unknown.
+        Returns only day and month if year is unknown.
+
+        Returns:
+            str: Character's birthday.
+        """
+
         birthday = self.stats["birthday"]
         if birthday == "??/??/????" or not birthday:
             return "Unknown"
@@ -54,12 +93,25 @@ class Character:
         return birthday
 
     def height(self) -> str:
+        """String representation of character's height.
+
+        Not adding support for freedom units ever :D
+
+        Returns:
+            str: Character's height in centimeters.
+        """
         h = self.stats["height"]
         if h:
             return f"{h} cm"
         return "??? cm"
 
     def weight(self) -> str:
+        """String representation of character's weight.
+
+        Returns:
+            str: Character's weight in kilograms.
+        """
+
         w = self.stats["weight"]
         if w:
             return f"{w} kg"
