@@ -1,69 +1,91 @@
 import tkinter as tk
-import os
-from tkinter import constants, ttk
+from tkinter import ttk
+from typing import Callable
 from services.character_service import char_service, Character
-from services.story_service import story_service, Story
+from services.story_service import story_service
 
 
 class RelationDialog:
-    def __init__(self, parent, view: "CharacterView", character: Character) -> None:
-        self._view = view
+    def __init__(self, parent, character: Character) -> None:
+        """Class for dialog window for setting characters' relationships.
+
+        Args:
+            parent (Tk): Parent root.
+            character (Character): Character whose relationship is being added.
+        """
 
         self.dialog = tk.Toplevel(parent)
         self.dialog.title = "Add Relation"
 
         self._character = character
+        self._characters = None
+        self._relations = None
+        self._target_char = None
+        self._charbox = None
+        self._target_rel = None
+        self._relbox = None
+
+        self._former = tk.IntVar()
+
+        self._initialize()
+
+    def _initialize(self):
+        """Initializes elements in the dialog window.
+        """
+
         self._characters = char_service.get_characters_by_story_id(
             self._character.story_id)
-
         self._relations = char_service.get_relations()
 
-        self._target_char = None
         self._charbox = ttk.Combobox(
             master=self.dialog, values=[char.name() for char in self._characters], state="readonly"
         )
         self._charbox.bind("<<ComboboxSelected>>", self._on_character_choice)
         self._charbox.pack(padx=5, side=tk.LEFT)
 
-        _is = ttk.Label(master=self.dialog, text="is")
-        _is.pack(side=tk.LEFT)
+        ttk.Label(master=self.dialog, text="is").pack(side=tk.LEFT)
 
-        self._target_rel = None
         self._relbox = ttk.Combobox(
             master=self.dialog, values=self._relations, state="readonly"
         )
         self._relbox.bind("<<ComboboxSelected>>", self._on_relation_choice)
         self._relbox.pack(padx=5, side=tk.LEFT)
 
-        tome = ttk.Label(master=self.dialog, text="to me.")
-        tome.pack(side=tk.LEFT)
+        ttk.Label(master=self.dialog, text="to me.").pack(side=tk.LEFT)
 
-        self._former = tk.IntVar()
         former_check = tk.Checkbutton(
             master=self.dialog, text="Former", variable=self._former)
         self._former.set(0)
         former_check.pack(padx=5, side=tk.LEFT)
 
-        notice = ttk.Label(
+        ttk.Label(
             master=self.dialog, text="""
             Currently you can only set relations one-sidedly.\n
             Later, reciprocal relations will update themselves also on the second character.
             """
-        )
-        notice.pack()
-
-        ok_button = ttk.Button(
-            master=self.dialog, text="OK", command=self._enter
-        )
-        ok_button.pack(pady=10)
+        ).pack(pady=5)
+        ttk.Button(master=self.dialog, text="OK",
+                   command=self._enter).pack(pady=10)
 
     def _on_character_choice(self, event):
+        """Is called when user selects a character from character selection box.
+        """
+
         self._target_char = self._characters[self._charbox.current()]
 
     def _on_relation_choice(self, event):
+        """Is called when user selects a relation from relation selection box.
+        """
+
         self._target_rel = self._relbox.get()
 
     def _enter(self):
+        """Is called when user presses OK button.
+
+        Doesn't close window if a character or relation are not selected.
+
+        """
+
         if not self._target_char or not self._target_rel:
             return
         char_service.set_relations(char1=self._character, char2=self._target_char,
@@ -71,11 +93,21 @@ class RelationDialog:
         self._close()
 
     def _close(self):
+        """Closes the dialog.
+        """
         self.dialog.destroy()
 
 
 class CharacterView:
-    def __init__(self, root, character: Character, handle_story) -> None:
+    def __init__(self, root, character: Character, handle_story: Callable) -> None:
+        """View that contains information about certain character.
+
+        Args:
+            root (Tk): Parent root.
+            character (Character): Character whose information is being displayed.
+            handle_story (Callable): Function to return back to story view.
+        """
+
         self._root = root
         self._handle_story = handle_story
         self._frame = None
@@ -92,47 +124,67 @@ class CharacterView:
         self._initialiaze()
 
     def pack(self):
+        """Packs the main frame of the view.
+        """
+
         self._frame.pack()
 
     def destroy(self):
+        """Destroys the main frame of the view.
+        """
+
         self._frame.destroy()
 
     def _initialiaze(self):
+        """Initializes the whole view.
+        """
+
         self._frame = ttk.Frame(master=self._root)
         self._initialize_left()
         self._initialize_right()
 
     def _initialize_left(self):
+        """Initializes left side of the view.
+        """
+
         left_frame = ttk.Frame(master=self._frame)
         left_frame.pack(side=tk.LEFT)
 
         labels = ["Appearance", "Personality",
-                  "History", "Relationships", "Trivia"]
+                  "History", "Trivia"]
         for l in labels:
             stat_frame = ttk.Frame(left_frame)
             stat_frame.pack(pady=15, padx=30)
             ttk.Label(stat_frame, text=l,
                       font=self._heading_font).pack(anchor="w")
-            if l == "Relationships":
-                new_relation = ttk.Button(
-                    master=stat_frame, text="Add Relation", command=self._add_relation, width=self._button_width)
-                new_relation.pack(pady=5)
             info_frame = ttk.Frame(
                 master=stat_frame, border=1, relief=tk.SOLID)
             info_frame.pack()
-            if l != "Relationships":
-                info = ttk.Label(
-                    master=info_frame,
-                    text=self._character.stats[l.lower()],
-                    width=self._info_width)
-                info.pack(padx=5, pady=5)
-            else:
-                self._relations_frame = ttk.Frame(
-                    master=info_frame, width=self._info_width)
-                self._relations_frame.pack()
-                self._initialize_relations()
+            info = ttk.Label(
+                master=info_frame,
+                text=self._character.stats[l.lower()],
+                width=self._info_width)
+            info.pack(padx=5, pady=5)
+
+        rel_frame = ttk.Frame(left_frame)
+        rel_frame.pack(pady=15, padx=30)
+        ttk.Label(rel_frame, text="Relationships",
+                  font=self._heading_font).pack(anchor="w")
+
+        info_frame = ttk.Frame(
+            master=rel_frame, border=1, relief=tk.SOLID)
+        info_frame.pack()
+        ttk.Button(master=info_frame, text="Add Relation",
+                   command=self._add_relation, width=self._button_width).pack(pady=5)
+        self._relations_frame = ttk.Frame(
+            master=info_frame, width=self._info_width)
+        self._relations_frame.pack()
+        self._initialize_relations()
 
     def _initialize_right(self):
+        """Initializes the right side of the character view.
+        """
+
         right_frame = ttk.Frame(master=self._frame)
         right_frame.pack(side=tk.RIGHT)
 
@@ -157,7 +209,16 @@ class CharacterView:
         story_name_label = ttk.Label(master=right_frame, text=story_name)
         story_name_label.pack()
 
-        table_frame = ttk.Frame(right_frame)
+        self._initialize_table(parent=right_frame)
+
+    def _initialize_table(self, parent: ttk.Frame):
+        """Initializes table with character info.
+
+        Args:
+            parent (ttk.Frame): Parent frame.
+        """
+
+        table_frame = ttk.Frame(parent)
         table_frame.pack()
 
         data = [
@@ -176,21 +237,31 @@ class CharacterView:
             entry.insert(0, record[1])
             y += 1
 
-        delete_character = ttk.Button(master=right_frame, text="Delete Character",
+        delete_character = ttk.Button(master=parent, text="Delete Character",
                                       command=self._delete_character, width=self._button_width)
         delete_character.pack(pady=50)
 
-        go_back = ttk.Button(master=right_frame, text="Go Back", width=self._button_width, command=lambda: self._handle_story(
+        go_back = ttk.Button(master=parent, text="Go Back", width=self._button_width, command=lambda: self._handle_story(
             story=story_service.get_story_by_id(self._character.story_id)))
         go_back.pack()
 
     def _add_relation(self):
+        """Calls new dialog window for adding relationships, freezes other buttons and waits for input.
+        """
+
         if not self._frozen:
-            dialog = RelationDialog(self._root, self, self._character)
+            dialog = RelationDialog(self._root, self._character)
             self._frozen = True
             self._wait_for_input(dialog, self._initialize_relations)
 
     def _wait_for_input(self, dialog: "RelationDialog", callback) -> None:
+        """Doesn't execute the rest of the code in a function when called if an open dialog exists.
+
+        Args:
+            dialog (RelationDialog): Function checks if this dialog exists.
+            callback (function): Calls this function when the dialog cease from existence.
+        """
+
         def wait():
             if dialog.dialog.winfo_exists():
                 self._root.after(100, wait)
@@ -198,7 +269,10 @@ class CharacterView:
                 callback()
         wait()
 
-    def _initialize_relations(self):
+    def _initialize_relations(self) -> None:
+        """Destroys and initializes all relations from scratch.
+        """
+
         for widget in self._relations_frame.winfo_children():
             widget.destroy()
         relations = char_service.get_character_relations(self._character)
@@ -207,13 +281,18 @@ class CharacterView:
                       width=self._info_width).pack()
             return
         for relation in relations:
-            lbl = ttk.Label(
+            ttk.Label(
                 master=self._relations_frame,
                 text=f"{relation[0]}: {relation[2]}. {'(former)' if relation[1] == 1 else ''}",
                 width=self._info_width
-            )
-            lbl.pack()
+            ).pack()
         self._frozen = False
 
     def _delete_character(self):
+        """Deletes current character from the database.
+
+        WIP
+
+        """
+
         pass

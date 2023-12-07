@@ -20,4 +20,5 @@
 | 4.12  | 1    | Github release, dokumentaation päivitys, uusi testi |
 | 5.12  | 3    | Hahmojen suhteet lisätty |
 | 6.12  | 2    | Testit ja koodin dokumentaatio |
-| yht.  | 42   | |
+| 7.12  | 1    | Koodin dokumentaatio |
+| yht.  | 43   | |

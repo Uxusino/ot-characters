@@ -90,29 +90,29 @@ class CharacterService():
             return "Unknown"
         return name
 
-    def create_character(self, stats: tuple, story_id: int) -> Character:
+    def create_character(self, inf: tuple, story_id: int) -> Character:
         """Adds character to the database and returns a Character object.
 
         Args:
-            stats (tuple): Tuple that contains all the character's info.
+            inf (tuple): Tuple that contains all the character's info.
             story_id (int): Story id.
 
         Returns:
             Character: Character object.
         """
 
-        if not stats:
+        if not inf:
             return None
 
-        name = self._parse_name(name=stats[0])
-        gender = self._convert_gender(stats[1])
-        birthday = self._parse_birthday(stats[2])
-        age = self._parse_number_value(stats[3])
-        height = self._parse_number_value(stats[4])
-        weight = self._parse_number_value(stats[5])
+        name = self._parse_name(name=inf[0])
+        gender = self._convert_gender(inf[1])
+        birthday = self._parse_birthday(inf[2])
+        age = self._parse_number_value(inf[3])
+        height = self._parse_number_value(inf[4])
+        weight = self._parse_number_value(inf[5])
 
         char_id = db.create_character((story_id, name, gender, birthday, age,
-                                height, weight, stats[6], stats[7], stats[8], stats[9], stats[10]))
+                                       height, weight, inf[6], inf[7], inf[8], inf[9], inf[10]))
 
         if not char_id:
             return None
@@ -127,11 +127,11 @@ class CharacterService():
                 "age": age,
                 "height": height,
                 "weight": weight,
-                "appearance": stats[6],
-                "personality": stats[7],
-                "history": stats[8],
-                "picture": stats[9],
-                "trivia": stats[10]
+                "appearance": inf[6],
+                "personality": inf[7],
+                "history": inf[8],
+                "picture": inf[9],
+                "trivia": inf[10]
             }
         )
 
