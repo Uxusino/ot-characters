@@ -112,4 +112,5 @@ class StoryService:
         """
         return db.mean_age(story_id=story_id)
 
+
 story_service = StoryService()

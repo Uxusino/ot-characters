@@ -274,7 +274,7 @@ class Database:
         for r in res:
             relations.append((r[0], r[1], r[2]))
         return relations
-    
+
     def _is_relation_twosided(self, relation_id: int) -> tuple:
         """Checks if a relation is two-sided or not. If it is, returns also the counterpart.
 
@@ -315,7 +315,8 @@ class Database:
         ts = self._is_relation_twosided(relation_id=relation_id)
 
         if ts[0] == 1:
-            data = (char1_id, char2_id, relation_id, former, char2_id, char1_id, ts[1], former)
+            data = (char1_id, char2_id, relation_id, former,
+                    char2_id, char1_id, ts[1], former)
             sql = """
                 INSERT INTO CharacterRelations(
                     char1_id,
@@ -351,7 +352,7 @@ class Database:
         cur = self._con.cursor()
         res = cur.execute(sql).fetchone()
         return res[0]
-    
+
     def mean_age(self, story_id: int) -> float:
         """Calculates mean age of characters in a story.
 
