@@ -36,11 +36,11 @@ Tarinoita ja hahmoja käsiteltävät luokat ovat [StoryService](https://github.c
 Palveluluokat tuovat metodeja tarinoiden ja hahmojen hallintaan, tallentamiseen ja tietojen saamiseen. Käyttöliittymä pääosin käyttää ```StoryService```- ja ```CharacterService```-luokat kaikkeen ohjelman sisäiseen toiminnallisuuteen. Palveluluokat ovat toisistaan riippumattomia ja kaikki tekevät oman tehtävänsä.
 
 Esimerkkejä palveluluokkien metodeista:
-- ```py create_character(info, story_id)```
-- ```py set_relations(char1, char2, relation, former)```
-- ```py clear_characters()```
-- ```py get_stories()```
-- ```py count_stories()```
+- ```create_character(info, story_id)```
+- ```set_relations(char1, char2, relation, former)```
+- ```clear_characters()```
+- ```get_stories()```
+- ```count_stories()```
 
 ![Luokkakaavio](Luokkakaavio.png)
 
