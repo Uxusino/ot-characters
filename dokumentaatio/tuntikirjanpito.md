@@ -21,4 +21,5 @@
 | 5.12  | 3    | Hahmojen suhteet lisätty |
 | 6.12  | 2    | Testit ja koodin dokumentaatio |
 | 7.12  | 1    | Koodin dokumentaatio |
-| yht.  | 43   | |
+| 12.12 | 3,5  | Suhteiden automaattinen päivitys, dokumentaatio, pienet korjaukset |
+| yht.  | 46,5 | |

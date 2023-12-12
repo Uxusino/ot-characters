@@ -37,3 +37,5 @@
 ## Viikko 6
 
 - Käyttäjä voi lisätä suhteen yhdelle hahmolle toisen hahmon kanssa (tai itsensä kanssa)
+- Kaksisuuntainen suhde päivittää automaattisesti myös toisen hahmon suhteet
+- Lisätty tilasto tarinan hahmojen keski-iälle
