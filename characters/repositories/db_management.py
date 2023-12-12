@@ -274,28 +274,67 @@ class Database:
         for r in res:
             relations.append((r[0], r[1], r[2]))
         return relations
+    
+    def _is_relation_twosided(self, relation_id: int) -> tuple:
+        """Checks if a relation is two-sided or not. If it is, returns also the counterpart.
+
+        Args:
+            relation_id (int): Relation id.
+
+        Returns:
+            tuple: (True, counterpart_id) if two-sided, (False, None) if not.
+        """
+
+        sql = """
+            SELECT two_sided,
+                CASE
+                    WHEN two_sided = 1 THEN counterpart
+                    ELSE NULL
+                END AS counterpart
+            FROM Relations
+            WHERE relation_id=?
+        """
+
+        cur = self._con.cursor()
+        res = cur.execute(sql, (relation_id, )).fetchone()
+        return res
 
     def set_relation(self, char1_id: int, char2_id: int, relation_id: int, former: int) -> None:
         """Sets a relationship between two characters.
 
         Char2 is a ___ to char1.
+        If the relation is two-sided, also updates char2.
 
         Args:
             char1_id (int): Id of the first character.
             char2_id (int): Id of the second character.
-            relation_id (int): Id of a relation.
+            relation_id (int): Relation id.
             former (int): Is the relationship former? 0 or 1
         """
 
-        data = (char1_id, char2_id, relation_id, former)
-        sql = """
-            INSERT INTO CharacterRelations(
-                char1_id,
-                char2_id,
-                relation_id,
-                former
-            ) VALUES (?, ?, ?, ?)
-        """
+        ts = self._is_relation_twosided(relation_id=relation_id)
+
+        if ts[0] == 1:
+            data = (char1_id, char2_id, relation_id, former, char2_id, char1_id, ts[1], former)
+            sql = """
+                INSERT INTO CharacterRelations(
+                    char1_id,
+                    char2_id,
+                    relation_id,
+                    former
+                ) VALUES (?, ?, ?, ?),
+                (?, ?, ?, ?)
+            """
+        else:
+            data = (char1_id, char2_id, relation_id, former)
+            sql = """
+                INSERT INTO CharacterRelations(
+                    char1_id,
+                    char2_id,
+                    relation_id,
+                    former
+                ) VALUES (?, ?, ?, ?)
+            """
 
         cur = self._con.cursor()
         cur.execute(sql, data)
@@ -312,6 +351,27 @@ class Database:
         cur = self._con.cursor()
         res = cur.execute(sql).fetchone()
         return res[0]
+    
+    def mean_age(self, story_id: int) -> float:
+        """Calculates mean age of characters in a story.
+
+        Args:
+            story_id (int): Story id.
+
+        Returns:
+            float: Mean age of characters of the story.
+        """
+
+        sql = """
+            SELECT COALESCE(SUM(c.age) / NULLIF(CAST(COUNT(c.age) AS FLOAT), 0), 0)
+            FROM Stories s
+            JOIN Characters c ON c.story_id=s.story_id AND c.age IS NOT NULL
+            WHERE s.story_id = ?
+        """
+
+        cur = self._con.cursor()
+        res = cur.execute(sql, (story_id,)).fetchone()[0]
+        return round(res, 1)
 
     # Deletes all stories.
     def clear_stories(self) -> None:

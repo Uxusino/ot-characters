@@ -6,6 +6,7 @@ from tkinter import ttk, font, constants, filedialog
 from PIL import Image, ImageTk
 from entities.story import Story
 from services.character_service import char_service, Character
+from services.story_service import story_service
 
 
 class CharacterCreationDialog:
@@ -331,12 +332,21 @@ class StoryView:
         endpage_frame = ttk.Frame(master=self._frame)
         endpage_frame.pack(pady=10)
 
+        tk.Label(master=endpage_frame, text="Story Statistics").pack()
+
+        mean_age = story_service.get_mean_age(story_id=self.story.story_id)
+        mean_age_lbl = tk.Label(
+            master=endpage_frame,
+            text=f"Mean age: {mean_age}"
+        )
+        mean_age_lbl.pack()
+
         button = ttk.Button(
             master=endpage_frame,
             text="Go back",
             command=lambda: self._handle_main()
         )
-        button.pack()
+        button.pack(pady=10)
 
     def _initialize(self) -> None:
         self._frame = ttk.Frame(master=self._root)
@@ -367,7 +377,7 @@ class StoryView:
         new_character = self._temp
         self._temp = None
         valid_character = char_service.create_character(
-            stats=new_character, story_id=self.story.story_id)
+            new_character, self.story.story_id)
         if valid_character:
             self._initialize_character(character=valid_character)
         self.unfreeze()

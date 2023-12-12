@@ -101,5 +101,15 @@ class StoryService:
         """
         return db.get_name_by_id(story_id=story_id)
 
+    def get_mean_age(self, story_id: int) -> float:
+        """Calculates mean age of characters in a story.
+
+        Args:
+            story_id (int): Story id.
+
+        Returns:
+            float: Mean age of characters of the story.
+        """
+        return db.mean_age(story_id=story_id)
 
 story_service = StoryService()

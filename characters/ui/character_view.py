@@ -58,12 +58,6 @@ class RelationDialog:
         self._former.set(0)
         former_check.pack(padx=5, side=tk.LEFT)
 
-        ttk.Label(
-            master=self.dialog, text="""
-            Currently you can only set relations one-sidedly.\n
-            Later, reciprocal relations will update themselves also on the second character.
-            """
-        ).pack(pady=5)
         ttk.Button(master=self.dialog, text="OK",
                    command=self._enter).pack(pady=10)
 
@@ -269,6 +263,31 @@ class CharacterView:
                 callback()
         wait()
 
+    def _relation_str(self, relationship: tuple) -> str:
+        """Parses a relationship tuple into a string.
+
+        Args:
+            relationship (tuple): (Character's name, Former, Relationship's name)
+
+        Returns:
+            str: Parsed string that describes said relation.
+        """
+
+        ex_names = {
+            "spouse": "ex-spouse",
+            "wife": "ex-wife",
+            "husband": "ex-husband",
+            "partner": "ex",
+            "girlfriend": "ex-girlfriend",
+            "boyfriend": "ex-boyfriend"
+        }
+        former = relationship[1] == 1
+        relationship_name = relationship[2]
+        if relationship_name in list(ex_names.keys()) and former:
+            relationship_name = ex_names[relationship_name]
+            return f"{relationship[0]}: {relationship_name}."
+        return f"{relationship[0]}: {relationship_name}. {'(former)' if former else ''}"
+
     def _initialize_relations(self) -> None:
         """Destroys and initializes all relations from scratch.
         """
@@ -283,7 +302,7 @@ class CharacterView:
         for relation in relations:
             ttk.Label(
                 master=self._relations_frame,
-                text=f"{relation[0]}: {relation[2]}. {'(former)' if relation[1] == 1 else ''}",
+                text=self._relation_str(relation),
                 width=self._info_width
             ).pack()
         self._frozen = False
