@@ -37,8 +37,8 @@ Tarinan sivussa näkyy lista hahmoja ja hahmojen tilasto (esim. keski-ikä, kesk
 - Hahmon luomisen jälkeen näkyy lista kaikkia hahmoja. *(tehty)*
 - Hahmon sivulle pääsee klikkaamalla. *(tehty)*
 - Sivun alapuolella näkyy tilasto, jossa voi tarkistaa:
-    - Hahmojen keski-ikä
-    - Montako prosentteja naisia, miehiä tai ei tiedossa olevia sukupuolia
+    - Hahmojen keski-ikä *(tehty)*
+    - Montako prosentteja naisia, miehiä tai muuta sukupuolta
     - Keskipituus
     - Keskipaino
 
@@ -49,7 +49,7 @@ Sivussa näkyy kaikki yllä mainitut tiedot. On mahdollista:
 - Poistaa hahmon
 - Muokata kumpi tahansa kohta
 - Lisätä suhteita olemassaolevien hahmojen väliin *(tehty)*
-    - Jos lisätään kaksisuuntainen suhde (esim. "parent"), myös toisen hahmon sivu päivitetään
+    - Jos lisätään kaksisuuntainen suhde (esim. "parent"), myös toisen hahmon sivu päivitetään *(tehty)*
     - On mahdollista lisätä yksisuuntaisia suhteita (esim. "love interest") *(tehty)*
 
 Mahdolliset suhteet ovat:
