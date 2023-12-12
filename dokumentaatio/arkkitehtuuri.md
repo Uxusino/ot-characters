@@ -9,6 +9,7 @@ Ohjelma sisältää seuraavat pakkaukset:
 - repositories
 - services
 - ui
+
 *Data* sisältää tietoa, kuten tietokantaa ja pysyvää tietoa, jota ei muokateta ohjelman suorituksessa. *Entities* sisältää yksittäisten objektien luokkia, kuten ```Character``` (Hahmo) tai ```Story``` (Tarina). *Library* sisältää kuvia, jotka tallennetaan hakemistoon. *Repositories* vastaa tietojen tallennuksesta ja hallitsemisesta tietokannassa ja *library*-hakemistossa. *Services* vastaa sovelluslogiikasta ja pakkauksessa *ui* löytyy käyttöliittymän koodi.
 
 ## Sovelluslogiikka
