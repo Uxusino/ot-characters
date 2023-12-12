@@ -34,6 +34,25 @@ class CharacterCreationDialog:
         self.picture = None
         self.trivia = None
 
+        self._initialize()
+
+        ok_button = ttk.Button(self.dialog, text="Ok", command=self.enter)
+        ok_button.pack()
+
+    def _initialize(self):
+        """Initializes all elements of character creation.
+        """
+
+        tk.Label(
+            master=self.dialog,
+            text="""
+                Instructions:\n
+                1. Birthday date values must be numeric.\n
+                2. Age must be numeric integer.\n
+                3. Height must be numeric integer in centimeters.\n
+                4. Weight must be numeric integer in kilograms.
+            """).pack()
+
         self.initialize_name()
         self.initialize_gender()
         self.initialize_birthday()
@@ -46,11 +65,13 @@ class CharacterCreationDialog:
         self.initialize_picture()
         self.initialize_trivia()
 
-        ok_button = ttk.Button(self.dialog, text="Ok", command=self.enter)
-        ok_button.pack()
-
-    # Saves tuple (name, gender, (day, month, year), height, weight, appearance, personality, history, picture, trivia)
     def enter(self) -> None:
+        """Gets all the data from entry or text boxes.
+
+        Saves tuple (name, gender, (day, month, year), height, weight, appearance, personality, history, picture, trivia) to temporary data.
+
+        """
+
         name = self.name.get()
         gender = self.gender
         day = self.day.get()
@@ -86,12 +107,25 @@ class CharacterCreationDialog:
         self.close()
 
     def generate_name(self) -> str:
+        """Generates random name for new image.
+
+        Returns:
+            str: Randomized string.
+        """
         chars = string.ascii_letters + string.digits
         name = ''.join(random.sample(chars, k=10))
         return name
 
-    # Saves image to image directory and returns image's name
     def save_image(self, image: Image) -> str:
+        """Saves image to image folder and returns image's name.
+
+        Args:
+            image (Image): Image object to be saved.
+
+        Returns:
+            str: Image's new name.
+        """
+
         dir = "../library/avatars/"
         new_name = self.generate_name()
         print(new_name)
@@ -111,6 +145,9 @@ class CharacterCreationDialog:
         self.name.pack()
 
     def initialize_gender(self) -> None:
+        """Initializes gender selection combobox.
+        """
+
         askgender = ttk.Label(self.dialog, text="Gender:")
         askgender.pack()
 
@@ -120,6 +157,8 @@ class CharacterCreationDialog:
         self.genderbox.pack()
 
     def initialize_birthday(self) -> None:
+        """Initializes entries for day, month and year of birthday.
+        """
         askbirthday = ttk.Label(self.dialog, text="Birthday:")
         askbirthday.pack()
 
@@ -196,7 +235,7 @@ class CharacterCreationDialog:
     def initialize_picture(self) -> None:
         self._pic_frame.pack()
         askpicture = ttk.Label(
-            self._pic_frame, text="Select image:")
+            self._pic_frame, text="Image:")
         warning = ttk.Label(
             self._pic_frame, text="For better compatibility the image is advised to have 1:1 aspect ratio.\nCurrently supported: .png, .jpg, .jpeg"
         )
@@ -210,6 +249,9 @@ class CharacterCreationDialog:
         select_image_button.pack()
 
     def select_image(self) -> None:
+        """Lets user select an image from their computer.
+        """
+
         file_path = filedialog.askopenfilename(
             title="Select an image",
             filetypes=[("Images", "*.png;*.jpg;*.jpeg;")]
@@ -231,6 +273,12 @@ class CharacterCreationDialog:
         self.trivia.pack()
 
     def on_date_click(self, entry: tk.Entry, event=None) -> None:
+        """Deletes gray preview text from birthday entries.
+
+        Args:
+            entry (tk.Entry): Date entry to erase preview text.
+        """
+
         if entry.get() == "Day" or entry.get() == "Month" or entry.get() == "Year":
             entry.delete(0, tk.END)
             entry.config(fg='black', font=('Arial', 10, 'normal'))
@@ -246,7 +294,6 @@ class StoryView:
     def __init__(self, root, story: Story, handle_main, handle_character, stories: list[Story]) -> None:
         self._root = root
         self._handle_main = handle_main
-        # Handle character page (yet to be added)
         self._handle_character = handle_character
         self._frame = None
         self._characters_frame = None
@@ -256,7 +303,7 @@ class StoryView:
         self._row = 0
         self._column = 0
 
-        self._freeze = False
+        self._frozen = False
         self._temp = None
 
         self._initialize()
@@ -268,6 +315,9 @@ class StoryView:
         self._frame.destroy()
 
     def _initialize_heading(self):
+        """Initializes heading of the view: story name, description and New Character button.
+        """
+
         heading_frame = ttk.Frame(master=self._frame)
         heading_frame.pack()
 
@@ -293,6 +343,9 @@ class StoryView:
         character_button.pack()
 
     def _initialize_characters(self) -> None:
+        """Initializes characters frame for all characters of the story.
+        """
+
         self._characters_frame = ttk.Frame(master=self._frame)
         self._characters_frame.pack(fill=tk.BOTH, expand=True)
         characters = char_service.get_characters_by_story_id(
@@ -303,6 +356,12 @@ class StoryView:
             self._initialize_character(character=character)
 
     def _initialize_character(self, character: Character) -> None:
+        """Initializes single character frame for selecter Character object.
+
+        Args:
+            character (Character): Character to be viewed.
+        """
+
         char_frame = ttk.Frame(master=self._characters_frame)
         char_frame.grid(row=self._row, column=self._column)
 
@@ -329,6 +388,9 @@ class StoryView:
         char_name_label.pack()
 
     def _initialize_endpage(self) -> None:
+        """Initializes endpage which contain story statistics and a button for going back to the story list.
+        """
+
         endpage_frame = ttk.Frame(master=self._frame)
         endpage_frame.pack(pady=10)
 
@@ -349,6 +411,9 @@ class StoryView:
         button.pack(pady=10)
 
     def _initialize(self) -> None:
+        """Initializes the main frame.
+        """
+
         self._frame = ttk.Frame(master=self._root)
 
         self._initialize_heading()
@@ -356,16 +421,28 @@ class StoryView:
         self._initialize_endpage()
 
     def _character_creation_dialog(self) -> None:
-        if not self._frozen():
-            self.freeze()
+        """Calls character creation dialog if none is already opened.
+        """
+
+        if not self._frozen:
+            self._frozen = True
             self._input_character_details()
 
     def _input_character_details(self) -> None:
+        """Calls character creation dialog and waits for user's input.
+        """
+
         dialog = CharacterCreationDialog(self._root, self)
         self._wait_for_input(dialog, self._create_character)
 
-    # Waits for user input before executing the rest of create story function
     def _wait_for_input(self, dialog: "CharacterCreationDialog", callback) -> None:
+        """Waits for user input before executing the rest of character creation function.
+
+        Args:
+            dialog (CharacterCreationDialog): Dialog that is awaited to be closed.
+            callback (function): Function that is called when dialog is closed.
+        """
+
         def wait():
             if dialog.dialog.winfo_exists():
                 self._root.after(100, wait)
@@ -374,19 +451,13 @@ class StoryView:
         wait()
 
     def _create_character(self) -> None:
+        """Clears temporary data, creates new character from input and initializes it; Unfreezes story view.
+        """
+
         new_character = self._temp
         self._temp = None
         valid_character = char_service.create_character(
             new_character, self.story.story_id)
         if valid_character:
             self._initialize_character(character=valid_character)
-        self.unfreeze()
-
-    def freeze(self):
-        self._freeze = True
-
-    def unfreeze(self):
-        self._freeze = False
-
-    def _frozen(self) -> bool:
-        return self._freeze
+        self._frozen = False

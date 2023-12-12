@@ -9,15 +9,15 @@ root_dir = os.path.dirname(dir)
 sys.path.append(root_dir)
 
 
-# A class to manage user input of story name and description.
-
 class StoryDialog:
+    """A class to manage user input of story name and description.
+    """
+
     def __init__(self, parent, view: "MainView") -> None:
         self.view = view
 
         self.dialog = Toplevel(parent)
         self.dialog.title("New story")
-        self.dialog.protocol("WM_DELETE_WINDOW", self.close)
 
         self.askname = ttk.Label(self.dialog, text="Name:")
         self.askname.pack()
@@ -35,6 +35,12 @@ class StoryDialog:
         self.ok_button.pack()
 
     def enter(self):
+        """Saves temporary data from user input and closes dialog window.
+
+        Name is obligatory.
+
+        """
+
         name = self.name.get()
         desc = self.desc.get()
 
@@ -48,6 +54,9 @@ class StoryDialog:
         self.close()
 
     def close(self):
+        """Closes dialog window.
+        """
+
         self.dialog.destroy()
 
 
@@ -62,19 +71,29 @@ class MainView:
         self.stories = stories
 
         # Can't click anything while dialog window is open
-        self._freeze = False
+        self._frozen = False
+
         # Stores last input from dialog
         self._temp = None
 
         self._initialize()
 
     def pack(self):
+        """Packs the whole view.
+        """
+
         self._frame.pack(fill=constants.X)
 
     def destroy(self):
+        """Destroys all widgets in current view.
+        """
+
         self._frame.destroy()
 
     def _initialize_welcome_frame(self):
+        """Initializes frame that contains user's name (from their computer) and New Story button.
+        """
+
         welcome_frame = ttk.Frame(master=self._frame)
         welcome_frame.pack()
 
@@ -96,6 +115,9 @@ class MainView:
         create_story_button.pack()
 
     def _initialize_endpage(self):
+        """Initializes story count and button for deleting all stories.
+        """
+
         endpage_frame = ttk.Frame(master=self._frame)
         endpage_frame.pack(pady=10)
 
@@ -114,6 +136,9 @@ class MainView:
         clear_stories_button.pack()
 
     def _initialize(self):
+        """Initializes main elements of the view.
+        """
+
         self._frame = ttk.Frame(master=self._root)
 
         self._initialize_welcome_frame()
@@ -121,6 +146,12 @@ class MainView:
         self._initialize_endpage()
 
     def _initialize_story(self, story: Story):
+        """Initializes single story frame from Story object.
+
+        Args:
+            story (Story): Story to be viewed.
+        """
+
         story_frame = ttk.Frame(master=self._stories_frame)
         story_button = ttk.Button(
             master=story_frame,
@@ -131,6 +162,9 @@ class MainView:
         story_frame.pack(fill=constants.X)
 
     def _initialize_stories_list(self):
+        """Initializes frame containing all stories.
+        """
+
         if not self._stories_frame:
             self._stories_frame = ttk.Frame(master=self._frame)
         self._stories_frame.pack()
@@ -139,54 +173,59 @@ class MainView:
             self._initialize_story(story=story)
         self.pack()
 
-    def freeze(self):
-        self._freeze = True
-
-    def unfreeze(self):
-        self._freeze = False
-
-    def _frozen(self):
-        return self._freeze
-
-    # No error message yet on errors
     def _story_creation_dialog(self):
-        if not self._frozen():
-            self.freeze()
+        """Checks if the window is frozen, if not, initializes story creation dialog.
+        """
+
+        if not self._frozen:
+            self._frozen = True
             self._input_story_details()
 
     def _create_story(self):
+        """Creates story from temporary data that was saved by story creation dialog.
+        """
+
+        self._frozen = False
         if not self._temp or not self._temp[0]:
-            print(self._temp)
-            print("Invalid input")
             return
         new_story = story_service.create_story(
             name=self._temp[0], desc=self._temp[1])
-        # Clears _temp
         self._temp = None
-        # User now can interact with window
-        self.unfreeze()
         if new_story:
             self._initialize_story(story=new_story)
             self._reload()
 
     def _clear_stories(self):
-        story_service.clear_stories()
-        self._reload()
+        """Deletes all stories and reloads the view.
+        """
 
-    # Reloads the page completely. May be a better solution
-    # I'll find out later.
+        if not self._frozen:
+            story_service.clear_stories()
+            self._reload()
+
     def _reload(self):
+        """Completely reloads the view.
+        """
+
         self._stories_frame = None
         self.destroy()
         self._initialize()
 
-    # Calls dialog window and waits for input
     def _input_story_details(self):
+        """Calls dialog window and waits for input.
+        """
+
         dialog = StoryDialog(self._root, self)
         self._wait_for_input(dialog, self._create_story)
 
-    # Waits for user input before executing the rest of create story function
     def _wait_for_input(self, dialog: "StoryDialog", callback):
+        """Waits for user input before executing the rest of story creation function.
+
+        Args:
+            dialog (StoryDialog): Story dialog that the function is waiting to be closed.
+            callback (function): Calls this function when the dialog is closed.
+        """
+
         def wait():
             if dialog.dialog.winfo_exists():
                 self._root.after(100, wait)

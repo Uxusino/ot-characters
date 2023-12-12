@@ -17,23 +17,38 @@ class UI:
         self._current_view = None
         self.stories = story_service.get_stories()
 
-    def start(self):
+    def start(self) -> None:
         self.show_main_view()
 
-    def _hide_current_view(self):
+    def _hide_current_view(self) -> None:
         if self._current_view:
             self._current_view.destroy()
         self._current_view = None
 
-    def _handle_main(self):
+    def _handle_main(self) -> None:
+        """Updates stories and shows the main view.
+        """
+
         self.stories = story_service.get_stories()
         self.show_main_view()
 
-    def _handle_story(self, story: Story):
+    def _handle_story(self, story: Story) -> None:
+        """Opens story view for a certain story.
+
+        Args:
+            story (Story): Story to be viewed.
+        """
+
         self.stories = story_service.get_stories()
         self.show_story_view(story=story)
 
     def _handle_character(self, character: Character) -> None:
+        """Opens character view for a certain character.
+
+        Args:
+            character (Character): Character to be viewed.
+        """
+
         self.show_character_view(character=character)
 
     def show_main_view(self):
