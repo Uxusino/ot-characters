@@ -80,7 +80,13 @@ class StoryService:
         """
         db.clear_stories()
         db.clear_characters()
+        db.clear_relations()
         rep.delete_all_avatars()
+
+    def clear_relations(self):
+        """Deletes all relations.
+        """
+        db.clear_relations()
 
     def delete_story(self, story_id: int):
         """Deletes a story based on its id.

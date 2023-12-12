@@ -393,5 +393,15 @@ class Database:
         cur.execute(sql)
         self._con.commit()
 
+    def clear_relations(self) -> None:
+        """Deletes all relations.
+        """
+
+        sql = "DELETE FROM CharacterRelations"
+        cur = self._con.cursor()
+        cur.execute(sql)
+        self._con.commit()
+        print("Relations cleared succesfully.")
+
 
 db = Database(get_db_connection())

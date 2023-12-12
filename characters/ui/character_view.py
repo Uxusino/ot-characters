@@ -137,6 +137,27 @@ class CharacterView:
         self._initialize_left()
         self._initialize_right()
 
+    def _split_long_text(self, text: str) -> str:
+        """Splits long text in character information boxes.
+
+        Args:
+            text (str): String to be splitted.
+
+        Returns:
+            str: Splitted string.
+        """
+
+        x = 0
+        new_text = ""
+        for y in range(len(text)):
+            if x > 50 and text[y] == " ":
+                new_text = new_text + "\n"
+                x = 0
+                continue
+            new_text = new_text + text[y]
+            x += 1
+        return new_text
+
     def _initialize_left(self):
         """Initializes left side of the view.
         """
@@ -156,7 +177,7 @@ class CharacterView:
             info_frame.pack()
             info = ttk.Label(
                 master=info_frame,
-                text=self._character.stats[l.lower()],
+                text=self._split_long_text(self._character.stats[l.lower()]),
                 width=self._info_width)
             info.pack(padx=5, pady=5)
 

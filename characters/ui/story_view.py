@@ -46,12 +46,10 @@ class CharacterCreationDialog:
         tk.Label(
             master=self.dialog,
             text="""
-                Instructions:\n
-                1. Birthday date values must be numeric.\n
-                2. Age must be numeric integer.\n
-                3. Height must be numeric integer in centimeters.\n
-                4. Weight must be numeric integer in kilograms.
-            """).pack()
+                All numeric values such as dates, age, height and weight must be integers and only contain numbers.
+            """,
+            justify=tk.LEFT,
+            anchor='w').pack()
 
         self.initialize_name()
         self.initialize_gender()
@@ -73,9 +71,15 @@ class CharacterCreationDialog:
         """
 
         name = self.name.get()
+        if len(name) > 30:
+            return
         gender = self.gender
         day = self.day.get()
+        if len(day) > 2:
+            return
         month = self.month.get()
+        if len(month) > 2:
+            return
         year = self.year.get()
         age = self.age.get()
         height = self.height.get()
@@ -196,14 +200,14 @@ class CharacterCreationDialog:
         self.age.pack()
 
     def initialize_height(self) -> None:
-        askheight = ttk.Label(self.dialog, text="Height:")
+        askheight = ttk.Label(self.dialog, text="Height (cm):")
         askheight.pack()
 
         self.height = tk.Entry(master=self.dialog)
         self.height.pack()
 
     def initialize_weight(self) -> None:
-        askweight = ttk.Label(self.dialog, text="Weight:")
+        askweight = ttk.Label(self.dialog, text="Weight (kg):")
         askweight.pack()
 
         self.weight = tk.Entry(master=self.dialog)
