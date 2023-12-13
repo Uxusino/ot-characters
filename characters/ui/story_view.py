@@ -304,6 +304,9 @@ class StoryView:
         self.story = story
         self.stories = stories
 
+        self._head = None
+        self._desc = None
+
         self._row = 0
         self._column = 0
 
@@ -313,46 +316,72 @@ class StoryView:
         self._initialize()
 
     def pack(self):
-        self._frame.pack(expand=True)
+        self._frame.pack(expand=True, fill="x")
 
     def destroy(self):
         self._frame.destroy()
+
+    def _change_story_name(self, event) -> None:
+        """Updates story name after user presses Enter, if name not empty and not too long.
+        """
+
+        new_name = self._head.get()
+        if new_name == "" or len(new_name) > 100:
+            return
+        story_service.update_story_name(story_id=self.story.story_id, new_name=new_name)
+
+    def _change_story_desc(self, event) -> None:
+        """Updates story description after user presses Enter if new description is not too long.
+        """
+
+        new_desc = self._desc.get()
+        if len(new_desc) > 100:
+            return
+        story_service.update_story_desc(story_id=self.story.story_id, new_desc=new_desc)
 
     def _initialize_heading(self):
         """Initializes heading of the view: story name, description and New Character button.
         """
 
-        heading_frame = ttk.Frame(master=self._frame)
-        heading_frame.pack(expand=True)
+        heading_frame = ttk.Frame(
+            master=self._frame, borderwidth=1, relief='solid', padding=5)
+        heading_frame.pack(expand=True, fill="x")
 
         story_name = self.story.name
-        head = tk.Entry(
+        self._head = tk.Entry(
             master=heading_frame,
             font=('Helvetica', '24'),
             bg="SystemButtonFace",
             relief="flat",
-            borderwidth=0
+            borderwidth=0,
+            justify=tk.CENTER
         )
-        head.insert(tk.END, story_name)
-        head.pack()
+        self._head.insert(tk.END, story_name)
+        self._head.pack(side=tk.TOP, anchor='center', fill='x')
+        self._head.bind("<Return>", self._change_story_name)
 
         story_desc = self.story.desc
-        desc = tk.Entry(
+        self._desc = tk.Entry(
             master=heading_frame,
             font=('Helvetica', '14'),
             bg="SystemButtonFace",
             relief="flat",
-            borderwidth=0
+            borderwidth=0,
+            justify=tk.CENTER
         )
-        desc.insert(tk.END, story_desc)
-        desc.pack(pady=5)
+        if story_desc:
+            self._desc.insert(tk.END, story_desc)
+        else:
+            self._desc.insert(tk.END, "No description")
+        self._desc.pack(side=tk.TOP, pady=5, anchor='center', fill='x')
+        self._desc.bind("<Return>", self._change_story_desc)
 
         character_button = ttk.Button(
             master=heading_frame,
             text="New Character",
             command=self._character_creation_dialog
         )
-        character_button.pack()
+        character_button.pack(pady=5)
 
     def _initialize_characters(self) -> None:
         """Initializes characters frame for all characters of the story.
@@ -428,6 +457,7 @@ class StoryView:
 
         self._frame = ttk.Frame(master=self._root)
         self._root.configure(bg="SystemButtonFace")
+        self._root.geometry('1000x600')
 
         self._initialize_heading()
         self._initialize_characters()

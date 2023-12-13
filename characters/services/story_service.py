@@ -69,11 +69,17 @@ class StoryService:
             return None
         if len(name) > 100:
             return None
-        if desc and len(desc) > 500:
+        if desc and len(desc) > 100:
             return None
         story_id = db.create_story(name=name, desc=desc)
         story = Story(story_id=story_id, name=name, desc=desc)
         return story
+    
+    def update_story_name(self, story_id: int, new_name: str) -> None:
+        db.update_story_name(story_id=story_id, new_name=new_name)
+
+    def update_story_desc(self, story_id: int, new_desc: str) -> None:
+        db.update_story_desc(story_id=story_id, new_desc=new_desc)
 
     def clear_stories(self, test: bool = None):
         """Deletes all stories and characters.

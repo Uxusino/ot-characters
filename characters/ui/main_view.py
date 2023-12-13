@@ -1,3 +1,4 @@
+import tkinter as tk
 from tkinter import ttk, constants, Toplevel, Entry
 from services.story_service import story_service, Story
 import getpass
@@ -13,8 +14,9 @@ class StoryDialog:
     """A class to manage user input of story name and description.
     """
 
-    def __init__(self, parent, view: "MainView") -> None:
+    def __init__(self, parent: tk.Tk, view: "MainView") -> None:
         self.view = view
+        self._parent = parent
 
         self.dialog = Toplevel(parent)
         self.dialog.title("New story")
@@ -28,7 +30,8 @@ class StoryDialog:
         self.askdesc = ttk.Label(self.dialog, text="Description (optional):")
         self.askdesc.pack()
 
-        self.desc = Entry(self.dialog)
+        self.desc = tk.Text(
+            self.dialog, wrap=tk.WORD, height=5, width=30)
         self.desc.pack()
 
         self.ok_button = ttk.Button(self.dialog, text="Ok", command=self.enter)
@@ -42,9 +45,9 @@ class StoryDialog:
         """
 
         name = self.name.get()
-        desc = self.desc.get()
+        desc = self.desc.get("1.0", tk.END).strip()
 
-        if name == '':
+        if name == '' or len(name) > 100 or len(desc) > 100:
             return
         if desc == '':
             desc = None
@@ -112,7 +115,7 @@ class MainView:
             text="New Story",
             command=self._story_creation_dialog
         )
-        create_story_button.pack()
+        create_story_button.pack(pady=10)
 
     def _initialize_endpage(self):
         """Initializes story count and button for deleting all stories.
