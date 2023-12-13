@@ -12,6 +12,25 @@ class Database:
     def __init__(self, con: sqlite3.Connection) -> None:
         self._con = con
 
+    def _execute(self, sql: str, data: tuple = None) -> sqlite3.Cursor:
+        """Executes SQL query and returns Cursor object.
+
+        Args:
+            sql (str): SQL string to be executed.
+            data (tuple, optional): Tuple with data to be used in SQL query. Defaults to None.
+
+        Returns:
+            sqlite3.Cursor: Cursor object to retrieve further information.
+        """
+
+        cur = self._con.cursor()
+        if not data:
+            cur.execute(sql)
+        else:
+            cur.execute(sql, data)
+        self._con.commit()
+        return cur
+
     def create_story(self, name: str, desc: str = None) -> int:
         """Creates a story and adds it to the database.
 
@@ -26,10 +45,8 @@ class Database:
         data = (name, desc)
         sql = "INSERT INTO Stories(name, desc) VALUES(?, ?)"
 
-        cur = self._con.cursor()
-        cur.execute(sql, data)
+        cur = self._execute(sql, data)
         story_id = cur.lastrowid
-        self._con.commit()
         return story_id
 
     def create_character(self, stats: tuple) -> int:
@@ -59,38 +76,45 @@ class Database:
             ) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """
 
-        cur = self._con.cursor()
-        cur.execute(sql, data)
+        cur = self._execute(sql, data)
         char_id = cur.lastrowid
-        self._con.commit()
         return char_id
 
     def delete_story(self, story_id: int) -> None:
         """Deletes story from the database.
 
         Args:
-            story_id (int): Story's id as in the database.
+            story_id (int): Story id
         """
 
         sql = "DELETE FROM Stories WHERE story_id=?"
-        cur = self._con.cursor()
-        cur.execute(sql, story_id)
-        self._con.commit()
+        self._execute(sql)
 
     def update_story_name(self, story_id: int, new_name: str) -> None:
         """Updates story's name based on its id.
 
         Args:
-            story_id (int): Story's id as in the database.
-            new_name (str): Name to be set as the new name.
+            story_id (int): Story id
+            new_name (str): New name
         """
 
         data = (new_name, story_id)
         sql = "UPDATE Stories SET name=? WHERE story_id=?"
 
-        cur = self._con.cursor()
-        cur.execute(sql, data)
-        self._con.commit()
+        self._execute(sql, data)
+
+    def update_story_desc(self, story_id: int, new_desc: str) -> None:
+        """Updates story's description based on its id.
+
+        Args:
+            story_id (int): Story id
+            new_desc (str): New description
+        """
+
+        data = (new_desc, story_id)
+        sql = "UPDATE Stories SET desc=? WHERE story_id=?"
+
+        self._execute(sql, data)
 
     def get_stories(self) -> list[dict]:
         """Returns all stories as a list of dictionaries.
@@ -337,9 +361,7 @@ class Database:
                 ) VALUES (?, ?, ?, ?)
             """
 
-        cur = self._con.cursor()
-        cur.execute(sql, data)
-        self._con.commit()
+        self._execute(sql, data)
 
     def count_stories(self) -> int:
         """Counts total stories.
@@ -380,28 +402,21 @@ class Database:
         """
 
         sql = "DELETE FROM Stories"
-        cur = self._con.cursor()
-        cur.execute(sql)
-        self._con.commit()
+        self._execute(sql)
 
     def clear_characters(self) -> None:
         """Deletes all characters.
         """
 
         sql = "DELETE FROM Characters"
-        cur = self._con.cursor()
-        cur.execute(sql)
-        self._con.commit()
+        self._execute(sql)
 
     def clear_relations(self) -> None:
         """Deletes all relations.
         """
 
         sql = "DELETE FROM CharacterRelations"
-        cur = self._con.cursor()
-        cur.execute(sql)
-        self._con.commit()
-        print("Relations cleared succesfully.")
+        self._execute(sql)
 
 
 db = Database(get_db_connection())

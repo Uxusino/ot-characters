@@ -328,14 +328,16 @@ class StoryView:
         story_name = self.story.name
         head = ttk.Label(
             master=heading_frame,
-            text=story_name
+            text=story_name,
+            font=('Helvetica', '24')
         )
         head.pack()
 
         story_desc = self.story.desc
         desc = ttk.Label(
             master=heading_frame,
-            text=story_desc
+            text=story_desc,
+            font=('Helvetica', '14')
         )
         desc.pack()
 
@@ -412,7 +414,7 @@ class StoryView:
             text="Go back",
             command=lambda: self._handle_main()
         )
-        button.pack(pady=10)
+        button.pack(pady=5)
 
     def _initialize(self) -> None:
         """Initializes the main frame.

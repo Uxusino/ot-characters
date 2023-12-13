@@ -75,13 +75,18 @@ class StoryService:
         story = Story(story_id=story_id, name=name, desc=desc)
         return story
 
-    def clear_stories(self):
+    def clear_stories(self, test: bool = None):
         """Deletes all stories and characters.
+
+        Args:
+            test (bool, optional): If run during test, doesn't affect avatars. Defaults to None.
         """
+
         db.clear_stories()
         db.clear_characters()
         db.clear_relations()
-        rep.delete_all_avatars()
+        if not test:
+            rep.delete_all_avatars()
 
     def clear_relations(self):
         """Deletes all relations.
