@@ -12,7 +12,7 @@ Pääsivussa näkyy lista omista tarinoita.
 
 - Pääsivulle voi lisätä uusia tarinoita. *(tehty)*
 - Tarinalle annetaan nimi ja vapaaehtoinen kuvaus. *(tehty)*
-- Tarinan nimi ja kuvaus voidaan muokata.
+- Tarinan nimi ja kuvaus voidaan muokata. *(tehty)*
 - Voi poistaa tarinoita, mikä poistaa myös kaikki tarinan hahmoja.
 - Voi poistaa kaikki tarinat yhdellä klikkauksella. *(tehty)*
 

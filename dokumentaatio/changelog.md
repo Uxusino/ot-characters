@@ -43,3 +43,4 @@
 ## Viikko 7
 
 - Uusi luokka Formatter, joka käsittelee merkkijonoja
+- Käyttäjä voi muokata tarinan nimeä ja kuvausta

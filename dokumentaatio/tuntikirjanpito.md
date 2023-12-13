@@ -22,4 +22,5 @@
 | 6.12  | 2    | Testit ja koodin dokumentaatio |
 | 7.12  | 1    | Koodin dokumentaatio |
 | 12.12 | 3,5  | Suhteiden automaattinen päivitys, dokumentaatio, pienet korjaukset |
-| yht.  | 46,5 | |
+| 13.12 | 2,5  | Parannettu ulkonäkö, uusi luokka merkkijonojen käsittelyyn, tarinan nimen ja kuvauksen muokkaus |
+| yht.  | 49   | |
