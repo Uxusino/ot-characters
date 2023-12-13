@@ -71,14 +71,14 @@ class CharacterCreationDialog:
         """
 
         name = self.name.get()
-        if len(name) > 30:
+        if name != "" and len(name) > 30:
             return
         gender = self.gender
         day = self.day.get()
-        if len(day) > 2:
+        if day not in ["", "Day"] and len(day) > 2:
             return
         month = self.month.get()
-        if len(month) > 2:
+        if month not in ["", "Month"] and len(month) > 2:
             return
         year = self.year.get()
         age = self.age.get()
@@ -295,7 +295,7 @@ class CharacterCreationDialog:
 
 
 class StoryView:
-    def __init__(self, root, story: Story, handle_main, handle_character, stories: list[Story]) -> None:
+    def __init__(self, root: tk.Tk, story: Story, handle_main, handle_character, stories: list[Story]) -> None:
         self._root = root
         self._handle_main = handle_main
         self._handle_character = handle_character
@@ -313,7 +313,7 @@ class StoryView:
         self._initialize()
 
     def pack(self):
-        self._frame.pack(fill=constants.X, expand=True)
+        self._frame.pack(expand=True)
 
     def destroy(self):
         self._frame.destroy()
@@ -323,23 +323,29 @@ class StoryView:
         """
 
         heading_frame = ttk.Frame(master=self._frame)
-        heading_frame.pack()
+        heading_frame.pack(expand=True)
 
         story_name = self.story.name
-        head = ttk.Label(
+        head = tk.Entry(
             master=heading_frame,
-            text=story_name,
-            font=('Helvetica', '24')
+            font=('Helvetica', '24'),
+            bg="SystemButtonFace",
+            relief="flat",
+            borderwidth=0
         )
+        head.insert(tk.END, story_name)
         head.pack()
 
         story_desc = self.story.desc
-        desc = ttk.Label(
+        desc = tk.Entry(
             master=heading_frame,
-            text=story_desc,
-            font=('Helvetica', '14')
+            font=('Helvetica', '14'),
+            bg="SystemButtonFace",
+            relief="flat",
+            borderwidth=0
         )
-        desc.pack()
+        desc.insert(tk.END, story_desc)
+        desc.pack(pady=5)
 
         character_button = ttk.Button(
             master=heading_frame,
@@ -421,6 +427,7 @@ class StoryView:
         """
 
         self._frame = ttk.Frame(master=self._root)
+        self._root.configure(bg="SystemButtonFace")
 
         self._initialize_heading()
         self._initialize_characters()
