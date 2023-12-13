@@ -1,7 +1,5 @@
 """A stepping stone between database and Character as an object.
 
-Is also be responsible for checking if user's input is valid or not.
-
     Returns:
         CharacterService: App logic for everything to do with characters.
 """

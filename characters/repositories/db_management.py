@@ -88,7 +88,7 @@ class Database:
         """
 
         sql = "DELETE FROM Stories WHERE story_id=?"
-        self._execute(sql)
+        self._execute(sql, (story_id,))
 
     def update_story_name(self, story_id: int, new_name: str) -> None:
         """Updates story's name based on its id.

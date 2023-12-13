@@ -3,6 +3,7 @@ from tkinter import ttk
 from typing import Callable
 from services.character_service import char_service, Character
 from services.story_service import story_service
+from services.formatter import formatter
 
 
 class RelationDialog:
@@ -137,27 +138,6 @@ class CharacterView:
         self._initialize_left()
         self._initialize_right()
 
-    def _split_long_text(self, text: str) -> str:
-        """Splits long text in character information boxes.
-
-        Args:
-            text (str): String to be splitted.
-
-        Returns:
-            str: Splitted string.
-        """
-
-        x = 0
-        new_text = ""
-        for y in range(len(text)):
-            if x > 50 and text[y] == " ":
-                new_text = new_text + "\n"
-                x = 0
-                continue
-            new_text = new_text + text[y]
-            x += 1
-        return new_text
-
     def _initialize_left(self):
         """Initializes left side of the view.
         """
@@ -177,7 +157,8 @@ class CharacterView:
             info_frame.pack()
             info = ttk.Label(
                 master=info_frame,
-                text=self._split_long_text(self._character.stats[l.lower()]),
+                text=formatter.split_text(
+                    self._character.stats[l.lower()], 50),
                 width=self._info_width)
             info.pack(padx=5, pady=5)
 
@@ -284,31 +265,6 @@ class CharacterView:
                 callback()
         wait()
 
-    def _relation_str(self, relationship: tuple) -> str:
-        """Parses a relationship tuple into a string.
-
-        Args:
-            relationship (tuple): (Character's name, Former, Relationship's name)
-
-        Returns:
-            str: Parsed string that describes said relation.
-        """
-
-        ex_names = {
-            "spouse": "ex-spouse",
-            "wife": "ex-wife",
-            "husband": "ex-husband",
-            "partner": "ex",
-            "girlfriend": "ex-girlfriend",
-            "boyfriend": "ex-boyfriend"
-        }
-        former = relationship[1] == 1
-        relationship_name = relationship[2]
-        if relationship_name in list(ex_names.keys()) and former:
-            relationship_name = ex_names[relationship_name]
-            return f"{relationship[0]}: {relationship_name}."
-        return f"{relationship[0]}: {relationship_name}. {'(former)' if former else ''}"
-
     def _initialize_relations(self) -> None:
         """Destroys and initializes all relations from scratch.
         """
@@ -323,7 +279,7 @@ class CharacterView:
         for relation in relations:
             ttk.Label(
                 master=self._relations_frame,
-                text=self._relation_str(relation),
+                text=formatter.relation_str(relation),
                 width=self._info_width
             ).pack()
         self._frozen = False

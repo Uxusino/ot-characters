@@ -39,3 +39,7 @@
 - Käyttäjä voi lisätä suhteen yhdelle hahmolle toisen hahmon kanssa (tai itsensä kanssa)
 - Kaksisuuntainen suhde päivittää automaattisesti myös toisen hahmon suhteet
 - Lisätty tilasto tarinan hahmojen keski-iälle
+
+## Viikko 7
+
+- Uusi luokka Formatter, joka käsittelee merkkijonoja
