@@ -2,6 +2,7 @@ import tkinter as tk
 import os
 import string
 import random
+from . import delete_dialog as dd
 from tkinter import ttk, font, constants, filedialog
 from PIL import Image, ImageTk
 from entities.story import Story
@@ -15,7 +16,6 @@ class CharacterCreationDialog:
 
         self.dialog = tk.Toplevel(parent)
         self.dialog.title = "New Character"
-        self.dialog.protocol("WM_DELETE_WINDOW", self.close)
 
         self._pic_frame = tk.Frame(self.dialog)
         self._pic_name = ttk.Label(master=self._pic_frame, text="")
@@ -328,7 +328,8 @@ class StoryView:
         new_name = self._head.get()
         if new_name == "" or len(new_name) > 100:
             return
-        story_service.update_story_name(story_id=self.story.story_id, new_name=new_name)
+        story_service.update_story_name(
+            story_id=self.story.story_id, new_name=new_name)
 
     def _change_story_desc(self, event) -> None:
         """Updates story description after user presses Enter if new description is not too long.
@@ -337,7 +338,8 @@ class StoryView:
         new_desc = self._desc.get()
         if len(new_desc) > 100:
             return
-        story_service.update_story_desc(story_id=self.story.story_id, new_desc=new_desc)
+        story_service.update_story_desc(
+            story_id=self.story.story_id, new_desc=new_desc)
 
     def _initialize_heading(self):
         """Initializes heading of the view: story name, description and New Character button.
@@ -444,12 +446,30 @@ class StoryView:
         )
         mean_age_lbl.pack()
 
+        delete_story_button = ttk.Button(
+            master=endpage_frame,
+            text="Delete story",
+            command=self._press_delete_button
+        )
+        delete_story_button.pack(pady=5)
+
         button = ttk.Button(
             master=endpage_frame,
             text="Go back",
             command=lambda: self._handle_main()
         )
         button.pack(pady=5)
+
+    def _press_delete_button(self) -> None:
+        if self._frozen:
+            return
+        self._frozen = True
+        dialog = dd.DeleteDialog(
+            self._root, self._handle_main, self.story, 'story')
+        self._wait_for_input(dialog, self.unfreeze)
+
+    def unfreeze(self):
+        self._frozen = False
 
     def _initialize(self) -> None:
         """Initializes the main frame.

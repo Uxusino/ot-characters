@@ -4,7 +4,7 @@
         CharacterService: App logic for everything to do with characters.
 """
 
-from repositories.db_management import db
+from repositories.db_characters import char_db
 from repositories.file_management import rep
 from entities.character import Character
 
@@ -106,11 +106,11 @@ class CharacterService():
         gender = self._convert_gender(inf[1])
         birthday = self._parse_birthday(inf[2])
         age = self._parse_number_value(inf[3])
-        height = self._parse_number_value(inf[4])
-        weight = self._parse_number_value(inf[5])
+        ht = self._parse_number_value(inf[4])
+        wt = self._parse_number_value(inf[5])
 
-        char_id = db.create_character((story_id, name, gender, birthday, age,
-                                       height, weight, inf[6], inf[7], inf[8], inf[9], inf[10]))
+        char_id = char_db.create_character((story_id, name, gender, birthday, age,
+                                            ht, wt, inf[6], inf[7], inf[8], inf[9], inf[10]))
 
         if not char_id:
             return None
@@ -123,8 +123,8 @@ class CharacterService():
                 "gender": gender,
                 "birthday": birthday,
                 "age": age,
-                "height": height,
-                "weight": weight,
+                "height": ht,
+                "weight": wt,
                 "appearance": inf[6],
                 "personality": inf[7],
                 "history": inf[8],
@@ -145,7 +145,7 @@ class CharacterService():
             list[Character]: Contains Character-objects.
         """
 
-        db_characters = db.get_characters_by_story_id(story_id=story_id)
+        db_characters = char_db.get_characters_by_story_id(story_id=story_id)
         if not db_characters:
             return None
         characters = []
@@ -178,7 +178,7 @@ class CharacterService():
             list[str]: List with relation names.
         """
 
-        return db.get_relations()
+        return char_db.get_relations()
 
     def get_character_relations(self, character: Character) -> list[tuple]:
         """Searches all relationships of a character.
@@ -190,7 +190,7 @@ class CharacterService():
             list[tuple]: List with all relationships of this character.
         """
 
-        relations = db.get_character_relations(character.char_id)
+        relations = char_db.get_character_relations(character.char_id)
         return relations
 
     def set_relations(self, char1: Character, char2: Character, relation: str, former: int) -> None:
@@ -207,15 +207,15 @@ class CharacterService():
 
         char1_id = char1.char_id
         char2_id = char2.char_id
-        rel_id = db.get_relation_id_from_name(relation)
-        db.set_relation(char1_id=char1_id, char2_id=char2_id,
-                        relation_id=rel_id, former=former)
+        rel_id = char_db.get_relation_id_from_name(relation)
+        char_db.set_relation(char1_id=char1_id, char2_id=char2_id,
+                             relation_id=rel_id, former=former)
 
     def clear_characters(self) -> None:
         """Deletes all characters and their avatars.
         """
 
-        db.clear_characters()
+        char_db.clear_characters()
         rep.delete_all_avatars()
 
 

@@ -21,6 +21,16 @@ class Repository:
             if "default.png" not in path:
                 os.remove(path=path)
 
+    def delete_avatars(self, avatars: list[str]) -> None:
+        """Deletes avatars which name matches images in avatars list.
+
+        Args:
+            avatars (list[str]): List with image names to be deleted
+        """
+
+        for avatar in avatars:
+            self.delete_avatar(avatar)
+
     def delete_avatar(self, name: str) -> None:
         """Deletes a certain character image.
 

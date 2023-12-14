@@ -1,5 +1,5 @@
 class Formatter:
-    """Formatter serves for parsing and formatting strings.
+    """Formatter serves for parsing and formatting different types of data.
     """
 
     def __init__(self) -> None:
@@ -51,6 +51,38 @@ class Formatter:
             relationship_name = self._ex_convert[relationship_name]
             return f"{relationship[0]}: {relationship_name}."
         return f"{relationship[0]}: {relationship_name}. {'(former)' if former else ''}"
+
+    def characters_to_dict(self, lst: list) -> list[dict]:
+        """Converts list with raw characters data into a clean dictionary.
+
+        Args:
+            lst (list): Raw list with data from the database.
+
+        Returns:
+            list[dict]: Contains characters represented by a dictionary.
+        """
+
+        characters = []
+        for c in lst:
+            character = {
+                "char_id": c[0],
+                "story_id": c[1],
+                "stats": {
+                    "name": c[2],
+                    "gender": c[3],
+                    "birthday": c[4],
+                    "age": c[5],
+                    "height": c[6],
+                    "weight": c[7],
+                    "appearance": c[8],
+                    "personality": c[9],
+                    "history": c[10],
+                    "picture": c[11],
+                    "trivia": c[12]
+                }
+            }
+            characters.append(character)
+        return characters
 
 
 formatter = Formatter()

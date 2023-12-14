@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, constants, Toplevel, Entry
 from services.story_service import story_service, Story
+from . import delete_dialog as dd
 import getpass
 import sys
 import os
@@ -202,14 +203,19 @@ class MainView:
         """Deletes all stories and reloads the view.
         """
 
+        if len(self.stories) == 0:
+            return
+
         if not self._frozen:
-            story_service.clear_stories()
-            self._reload()
+            self._frozen = True
+            dialog = dd.DeleteDialog(self._root, None, None, 'all_stories')
+            self._wait_for_input(dialog=dialog, callback=self._reload)
 
     def _reload(self):
         """Completely reloads the view.
         """
 
+        self._frozen = False
         self._stories_frame = None
         self.destroy()
         self._initialize()

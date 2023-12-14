@@ -6,7 +6,8 @@ This class is also responsible for checking whether user's input is valid or not
         StoryService: Controls everything to do with stories.
 """
 
-from repositories.db_management import db
+from repositories.db_stories import story_db
+from repositories.db_characters import char_db
 from repositories.file_management import rep
 from entities.story import Story
 
@@ -22,7 +23,7 @@ class StoryService:
             list[Story]: Contains all of user's stories.
         """
 
-        stories_dict = db.get_stories()
+        stories_dict = story_db.get_stories()
         stories = []
         for s in stories_dict:
             story = Story(
@@ -43,7 +44,7 @@ class StoryService:
             Story: Story object for the corresponding story.
         """
 
-        story_dict = db.get_story_by_id(story_id=story_id)
+        story_dict = story_db.get_story_by_id(story_id=story_id)
         return Story(story_id=story_dict["id"], name=story_dict["name"], desc=story_dict["desc"])
 
     def count_stories(self) -> int:
@@ -52,7 +53,7 @@ class StoryService:
         Returns:
             int: Total number of stories.
         """
-        return db.count_stories()
+        return story_db.count_stories()
 
     def create_story(self, name: str, desc=None) -> Story:
         """Creates a story and return a Story object.
@@ -71,15 +72,15 @@ class StoryService:
             return None
         if desc and len(desc) > 100:
             return None
-        story_id = db.create_story(name=name, desc=desc)
+        story_id = story_db.create_story(name=name, desc=desc)
         story = Story(story_id=story_id, name=name, desc=desc)
         return story
-    
+
     def update_story_name(self, story_id: int, new_name: str) -> None:
-        db.update_story_name(story_id=story_id, new_name=new_name)
+        story_db.update_story_name(story_id=story_id, new_name=new_name)
 
     def update_story_desc(self, story_id: int, new_desc: str) -> None:
-        db.update_story_desc(story_id=story_id, new_desc=new_desc)
+        story_db.update_story_desc(story_id=story_id, new_desc=new_desc)
 
     def clear_stories(self, test: bool = None):
         """Deletes all stories and characters.
@@ -88,16 +89,16 @@ class StoryService:
             test (bool, optional): If run during test, doesn't affect avatars. Defaults to None.
         """
 
-        db.clear_stories()
-        db.clear_characters()
-        db.clear_relations()
+        story_db.clear_stories()
+        char_db.clear_characters()
+        char_db.clear_relations()
         if not test:
             rep.delete_all_avatars()
 
     def clear_relations(self):
         """Deletes all relations.
         """
-        db.clear_relations()
+        char_db.clear_relations()
 
     def delete_story(self, story_id: int):
         """Deletes a story based on its id.
@@ -105,7 +106,12 @@ class StoryService:
         Args:
             story_id (int): Story id to be deleted.
         """
-        db.delete_story(story_id=story_id)
+
+        avatars = story_db.get_all_avatars_of_a_story(story_id=story_id)
+        story_db.delete_relations_of_a_story(story_id=story_id)
+        story_db.delete_characters_of_a_story(story_id=story_id)
+        story_db.delete_story(story_id=story_id)
+        rep.delete_avatars(avatars=avatars)
 
     def get_name_by_id(self, story_id: int) -> str:
         """Obtains story name by its id.
@@ -116,7 +122,7 @@ class StoryService:
         Returns:
             str: Story name.
         """
-        return db.get_name_by_id(story_id=story_id)
+        return story_db.get_name_by_id(story_id=story_id)
 
     def get_mean_age(self, story_id: int) -> float:
         """Calculates mean age of characters in a story.
@@ -127,7 +133,7 @@ class StoryService:
         Returns:
             float: Mean age of characters of the story.
         """
-        return db.mean_age(story_id=story_id)
+        return story_db.mean_age(story_id=story_id)
 
 
 story_service = StoryService()

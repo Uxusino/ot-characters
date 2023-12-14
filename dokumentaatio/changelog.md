@@ -44,3 +44,4 @@
 
 - Uusi luokka Formatter, joka käsittelee merkkijonoja
 - Käyttäjä voi muokata tarinan nimeä ja kuvausta
+- Käyttäjä voi poistaa yksittäisen tarinan

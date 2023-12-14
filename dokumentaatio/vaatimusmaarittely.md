@@ -8,15 +8,15 @@ Sovelluksen avulla käyttäjä voi hallita omia hahmojaan tietyssä tarinassa. S
 
 ### Pääsivu
 
-Pääsivussa näkyy lista omista tarinoita.
+Pääsivussa näkyy lista omia tarinoita.
 
 - Pääsivulle voi lisätä uusia tarinoita. *(tehty)*
 - Tarinalle annetaan nimi ja vapaaehtoinen kuvaus. *(tehty)*
 - Tarinan nimi ja kuvaus voidaan muokata. *(tehty)*
-- Voi poistaa tarinoita, mikä poistaa myös kaikki tarinan hahmoja.
+- Voi poistaa tarinoita, mikä poistaa myös kaikki tarinan hahmot. *(tehty)*
 - Voi poistaa kaikki tarinat yhdellä klikkauksella. *(tehty)*
 
-Pääsivusta pääsee jonkin tarinan sivulle.
+Pääsivusta pääsee tarinan sivulle.
 
 ### Tarinan sivu
 
