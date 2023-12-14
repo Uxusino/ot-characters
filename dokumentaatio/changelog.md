@@ -45,3 +45,5 @@
 - Uusi luokka Formatter, joka käsittelee merkkijonoja
 - Käyttäjä voi muokata tarinan nimeä ja kuvausta
 - Käyttäjä voi poistaa yksittäisen tarinan
+- Käyttäjältä kysytään, haluaako hän oikeasti poistaa tarinan tai tarinat
+- Luokka Database jaettu kahteen luokkaan: StoryDatabase ja CharacterDatabase. Alkuperäinen moduuli alkoi olla liian pitkä
