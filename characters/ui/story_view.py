@@ -477,7 +477,7 @@ class StoryView:
         """
 
         self._frame = ttk.Frame(master=self._root)
-        self._root.configure(bg="SystemButtonFace")
+        self._root.configure(bg=self._bg_color)
         self._root.geometry('1000x600')
 
         self._initialize_heading()
