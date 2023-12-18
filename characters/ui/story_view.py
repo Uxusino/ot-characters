@@ -218,7 +218,7 @@ class CharacterCreationDialog:
         askappearance.pack()
 
         self.appearance = tk.Text(
-            self.dialog, wrap=tk.WORD, height=5, width=30)
+            self.dialog, wrap=tk.WORD, height=4, width=30)
         self.appearance.pack()
 
     def initialize_personality(self) -> None:
@@ -226,14 +226,14 @@ class CharacterCreationDialog:
         askpersonality.pack()
 
         self.personality = tk.Text(
-            self.dialog, wrap=tk.WORD, height=5, width=30)
+            self.dialog, wrap=tk.WORD, height=4, width=30)
         self.personality.pack()
 
     def initialize_history(self) -> None:
         askhistory = ttk.Label(self.dialog, text="History:")
         askhistory.pack()
 
-        self.history = tk.Text(self.dialog, wrap=tk.WORD, height=5, width=30)
+        self.history = tk.Text(self.dialog, wrap=tk.WORD, height=4, width=30)
         self.history.pack()
 
     def initialize_picture(self) -> None:
@@ -273,7 +273,7 @@ class CharacterCreationDialog:
         asktrivia = ttk.Label(self.dialog, text="Trivia:")
         asktrivia.pack()
 
-        self.trivia = tk.Text(self.dialog, wrap=tk.WORD, height=5, width=30)
+        self.trivia = tk.Text(self.dialog, wrap=tk.WORD, height=4, width=30)
         self.trivia.pack()
 
     def on_date_click(self, entry: tk.Entry, event=None) -> None:
