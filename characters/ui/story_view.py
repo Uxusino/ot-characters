@@ -307,6 +307,7 @@ class StoryView:
         self._head = None
         self._desc = None
 
+        self._bg_color = "#f0f0f0"
         self._row = 0
         self._column = 0
 
@@ -353,7 +354,7 @@ class StoryView:
         self._head = tk.Entry(
             master=heading_frame,
             font=('Helvetica', '24'),
-            bg="SystemButtonFace",
+            bg=self._bg_color,
             relief="flat",
             borderwidth=0,
             justify=tk.CENTER
@@ -366,7 +367,7 @@ class StoryView:
         self._desc = tk.Entry(
             master=heading_frame,
             font=('Helvetica', '14'),
-            bg="SystemButtonFace",
+            bg=self._bg_color,
             relief="flat",
             borderwidth=0,
             justify=tk.CENTER
