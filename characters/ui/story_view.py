@@ -301,6 +301,7 @@ class StoryView:
         self._handle_character = handle_character
         self._frame = None
         self._characters_frame = None
+        self._endpage_frame = None
         self.story = story
         self.stories = stories
 
@@ -431,31 +432,58 @@ class StoryView:
         char_name_label = tk.Label(master=char_frame, text=char_name)
         char_name_label.pack()
 
+    def _initialize_statistics(self) -> None:
+        """Initializes statistics within the endpage.
+        """
+        tk.Label(master=self._endpage_frame,
+                 text="Average character is:").pack()
+
+        mean_age = story_service.get_mean_age(story_id=self.story.story_id)
+        mean_age_lbl = tk.Label(
+            master=self._endpage_frame,
+            text=f"{mean_age} years old"
+        )
+        mean_age_lbl.pack()
+
+        physique = story_service.get_mean_physique(self.story.story_id)
+        physique_lbl = tk.Label(
+            master=self._endpage_frame,
+            text=physique
+        )
+        physique_lbl.pack()
+
+        p = story_service.get_gender_percentage(self.story.story_id)
+        percents_lbl = tk.Label(
+            master=self._endpage_frame,
+            text=f"{p['female']}% Female, {p['male']}% Male, {p['unknown']}% Undefined/Other"
+        )
+        percents_lbl.pack()
+
+        complete = story_service.get_completion_percent(self.story.story_id)
+        complete_lbl = tk.Label(
+            master=self._endpage_frame,
+            text=f"Characters' Completion: {complete}%"
+        )
+        complete_lbl.pack()
+
     def _initialize_endpage(self) -> None:
         """Initializes endpage which contain story statistics and a button for going back to the story list.
         """
 
-        endpage_frame = ttk.Frame(master=self._frame)
-        endpage_frame.pack(pady=10)
+        self._endpage_frame = ttk.Frame(master=self._frame)
+        self._endpage_frame.pack(pady=10)
 
-        tk.Label(master=endpage_frame, text="Story Statistics").pack()
-
-        mean_age = story_service.get_mean_age(story_id=self.story.story_id)
-        mean_age_lbl = tk.Label(
-            master=endpage_frame,
-            text=f"Mean age: {mean_age}"
-        )
-        mean_age_lbl.pack()
+        self._initialize_statistics()
 
         delete_story_button = ttk.Button(
-            master=endpage_frame,
+            master=self._endpage_frame,
             text="Delete story",
             command=self._press_delete_button
         )
         delete_story_button.pack(pady=5)
 
         button = ttk.Button(
-            master=endpage_frame,
+            master=self._endpage_frame,
             text="Go back",
             command=lambda: self._handle_main()
         )
@@ -524,4 +552,6 @@ class StoryView:
             new_character, self.story.story_id)
         if valid_character:
             self._initialize_character(character=valid_character)
+            self._endpage_frame.destroy()
+            self._initialize_endpage()
         self._frozen = False

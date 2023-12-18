@@ -24,4 +24,5 @@
 | 12.12 | 3,5  | Suhteiden automaattinen päivitys, dokumentaatio, pienet korjaukset |
 | 13.12 | 2,5  | Parannettu ulkonäkö, uusi luokka merkkijonojen käsittelyyn, tarinan nimen ja kuvauksen muokkaus |
 | 14.12 | 2    | Luokka Database jaettu kahteen osaan; Mahdollisuus poistaa yksittäisen tarinan; Uusi ikkuna, joka varmistaa tarinan tai tarinoiden poistamisen |
-| yht.  | 51   | |
+| 18.12 | 2,5  | Uusia hahmotilastoja |
+| yht.  | 53,5 | |

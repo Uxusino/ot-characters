@@ -204,14 +204,96 @@ class StoriesDatabase:
         """
 
         sql = """
-            SELECT COALESCE(SUM(c.age) / NULLIF(CAST(COUNT(c.age) AS FLOAT), 0), 0)
-            FROM Stories s
-            JOIN Characters c ON c.story_id=s.story_id AND c.age IS NOT NULL
-            WHERE s.story_id = ?
+            SELECT COALESCE(SUM(age) / NULLIF(CAST(COUNT(age) AS FLOAT), 0), 0)
+            FROM Characters
+            WHERE story_id=? AND age IS NOT NULL
         """
 
         cur = self._con.cursor()
         res = cur.execute(sql, (story_id,)).fetchone()[0]
+        return round(res, 1)
+
+    def get_gender_percentage(self, story_id: int) -> dict:
+        """Calculates percentage of female, male or undefined genders.
+
+        Args:
+            story_id (int): Story id
+
+        Returns:
+            dict: Contains percentages which look like {"female": x, "male": y, "unknown": z}
+        """
+
+        sql = """
+            SELECT
+                SUM(CASE WHEN gender=0 THEN 1 ELSE 0 END) * 100.0 / COUNT(*),
+                SUM(CASE WHEN gender=1 THEN 1 ELSE 0 END) * 100.0 / COUNT(*),
+                SUM(CASE WHEN gender=2 THEN 1 ELSE 0 END) * 100.0 / COUNT(*)
+            FROM Characters
+            WHERE story_id=?
+        """
+
+        cur = self._con.cursor()
+        res = cur.execute(sql, (story_id,)).fetchone()
+        return {
+            "female": res[0],
+            "male": res[1],
+            "unknown": res[2]
+        }
+
+    def get_mean_physique(self, story_id: int) -> tuple[int]:
+        """Calculates mean height and weight of characters in a story.
+
+        Args:
+            story_id (int): Story id
+
+        Returns:
+            tuple[int]: Contains mean values of height and weight.
+        """
+
+        sql = """
+            SELECT
+                COALESCE(SUM(height) / NULLIF(CAST(COUNT(height) AS FLOAT), 0), 0),
+                COALESCE(SUM(weight) / NULLIF(CAST(COUNT(weight) AS FLOAT), 0), 0)
+            FROM Characters
+            WHERE story_id=? AND height IS NOT NULL AND weight IS NOT NULL
+        """
+
+        cur = self._con.cursor()
+        res = cur.execute(sql, (story_id,)).fetchone()
+        return (res[0], res[1])
+
+    def get_completion_percent(self, story_id: int) -> float:
+        """Calculates percentage of empty character stats.
+
+        Args:
+            story_id (int): Story id
+
+        Returns:
+            float: Percentage of empty blanks.
+        """
+
+        sql = """
+            SELECT
+                (
+                    (SELECT COUNT(*) FROM Characters WHERE birthday IS NOT NULL AND story_id=?) +
+                    (SELECT COUNT(*) FROM Characters WHERE age IS NOT NULL AND story_id=?) +
+                    (SELECT COUNT(*) FROM Characters WHERE height IS NOT NULL AND story_id=?) +
+                    (SELECT COUNT(*) FROM Characters WHERE weight IS NOT NULL AND story_id=?) +
+                    (SELECT COUNT(*) FROM Characters WHERE appearance IS NOT NULL AND story_id=?) +
+                    (SELECT COUNT(*) FROM Characters WHERE personality IS NOT NULL AND story_id=?) +
+                    (SELECT COUNT(*) FROM Characters WHERE history IS NOT NULL AND story_id=?) +
+                    (SELECT COUNT(*) FROM Characters WHERE picture IS NOT NULL AND story_id=?)
+                ) * 100.0 / (COUNT(*) * 8 )
+            FROM Characters
+            WHERE story_id=?
+        """
+        data = (story_id, story_id, story_id, story_id,
+                story_id, story_id, story_id, story_id, story_id)
+
+        cur = self._con.cursor()
+        res = cur.execute(sql, data).fetchone()[0]
+        if not res:
+            return 0
         return round(res, 1)
 
     def clear_stories(self) -> None:

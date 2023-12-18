@@ -24,6 +24,9 @@ class Formatter:
             str: Splitted string.
         """
 
+        if not text:
+            return ""
+
         x = 0
         new_text = ""
         for y in text:

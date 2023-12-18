@@ -71,6 +71,8 @@ class Character:
         """
 
         age = self.stats["age"]
+        if age == 0:
+            return "0"
         if age:
             return str(age)
         return "???"
@@ -86,7 +88,7 @@ class Character:
         """
 
         birthday = self.stats["birthday"]
-        if birthday == "??/??/????" or not birthday:
+        if not birthday:
             return "Unknown"
         if birthday[-4:] == "????":
             return birthday[:-5]

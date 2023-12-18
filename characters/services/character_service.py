@@ -59,7 +59,7 @@ class CharacterService():
 
         birthday = f"{day}/{month}/{year}"
         if birthday == "??/??/????":
-            return "Unknown"
+            return None
         return birthday
 
     def _parse_number_value(self, value: str) -> int:
@@ -104,13 +104,17 @@ class CharacterService():
 
         name = self._parse_name(name=inf[0])
         gender = self._convert_gender(inf[1])
-        birthday = self._parse_birthday(inf[2])
+        bday = self._parse_birthday(inf[2])
         age = self._parse_number_value(inf[3])
         ht = self._parse_number_value(inf[4])
         wt = self._parse_number_value(inf[5])
+        appr = inf[6] if inf[6] != "" else None
+        prsn = inf[7] if inf[7] != "" else None
+        hist = inf[8] if inf[8] != "" else None
+        triv = inf[10] if inf[10] != "" else None
 
-        char_id = char_db.create_character((story_id, name, gender, birthday, age,
-                                            ht, wt, inf[6], inf[7], inf[8], inf[9], inf[10]))
+        char_id = char_db.create_character((story_id, name, gender, bday, age,
+                                            ht, wt, appr, prsn, hist, inf[9], triv))
 
         if not char_id:
             return None
@@ -121,15 +125,15 @@ class CharacterService():
             stats={
                 "name": name,
                 "gender": gender,
-                "birthday": birthday,
+                "birthday": bday,
                 "age": age,
                 "height": ht,
                 "weight": wt,
-                "appearance": inf[6],
-                "personality": inf[7],
-                "history": inf[8],
+                "appearance": appr,
+                "personality": prsn,
+                "history": hist,
                 "picture": inf[9],
-                "trivia": inf[10]
+                "trivia": triv
             }
         )
 

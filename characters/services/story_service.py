@@ -135,5 +135,48 @@ class StoryService:
         """
         return story_db.mean_age(story_id=story_id)
 
+    def get_gender_percentage(self, story_id: int) -> dict:
+        """Calculates percentage of female, male or undefined genders.
+
+        Args:
+            story_id (int): Story id
+
+        Returns:
+            dict: Contains percentages which look like {"female": x, "male": y, "unknown": z}
+        """
+
+        p = story_db.get_gender_percentage(story_id=story_id)
+        for key, value in p.items():
+            if not value:
+                p[key] = 0
+            else:
+                p[key] = round(value, 1)
+        return p
+
+    def get_mean_physique(self, story_id: int) -> str:
+        """Calculates mean height and weight and casts it to a string.
+
+        Args:
+            story_id (int): Story id
+
+        Returns:
+            str: 'X.x cm, Y.y kg'
+        """
+
+        physique = story_db.get_mean_physique(story_id=story_id)
+        return f"{round(physique[0], 1)} cm, {round(physique[1], 1)} kg"
+
+    def get_completion_percent(self, story_id: int) -> float:
+        """Calculates percentage of empty character stats.
+
+        Args:
+            story_id (int): Story id
+
+        Returns:
+            float: Percentage of empty blanks.
+        """
+
+        return story_db.get_completion_percent(story_id=story_id)
+
 
 story_service = StoryService()
