@@ -1,13 +1,12 @@
 import tkinter as tk
-import os
-import string
-import random
 from . import delete_dialog as dd
-from tkinter import ttk, font, constants, filedialog
+from . import image_selector as im
+from tkinter import ttk, font, constants
 from PIL import Image, ImageTk
 from entities.story import Story
 from services.character_service import char_service, Character
 from services.story_service import story_service
+from repositories.file_management import rep
 
 
 class CharacterCreationDialog:
@@ -89,7 +88,7 @@ class CharacterCreationDialog:
         history = self.history.get("1.0", tk.END).strip()
         picture = self.picture
         if picture:
-            picture = self.save_image(picture)
+            picture = rep.save_image(picture)
         trivia = self.trivia.get("1.0", tk.END).strip()
 
         res_tuple = (
@@ -109,37 +108,6 @@ class CharacterCreationDialog:
         self.view._temp = res_tuple
 
         self.close()
-
-    def generate_name(self) -> str:
-        """Generates random name for new image.
-
-        Returns:
-            str: Randomized string.
-        """
-        chars = string.ascii_letters + string.digits
-        name = ''.join(random.sample(chars, k=10))
-        return name
-
-    def save_image(self, image: Image) -> str:
-        """Saves image to image folder and returns image's name.
-
-        Args:
-            image (Image): Image object to be saved.
-
-        Returns:
-            str: Image's new name.
-        """
-
-        dir = "../library/avatars/"
-        new_name = self.generate_name()
-        print(new_name)
-        filedir = dir + f"{new_name}.png"
-
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        pic_path = os.path.join(current_dir, filedir)
-
-        image.save(pic_path, format="png")
-        return new_name
 
     def initialize_name(self) -> None:
         askname = ttk.Label(self.dialog, text="Name:")
@@ -249,25 +217,17 @@ class CharacterCreationDialog:
         self._pic_name.pack()
 
         select_image_button = ttk.Button(
-            self._pic_frame, text="Select image", command=self.select_image)
+            self._pic_frame, text="Select image", command=self._select_image)
         select_image_button.pack()
 
-    def select_image(self) -> None:
-        """Lets user select an image from their computer.
+    def _select_image(self) -> None:
+        """Opens image selection window.
         """
 
-        file_path = filedialog.askopenfilename(
-            title="Select an image",
-            filetypes=[("Images", "*.png;*.jpg;*.jpeg;")]
-        )
-
-        if file_path:
-            image_path = file_path
-            img_name = os.path.basename(file_path)
-            img = Image.open(image_path)
-            img = img.resize((125, 125))
-            self.picture = img
-            self._pic_name.config(text=img_name)
+        img_tuple = im.select_image()
+        if img_tuple:
+            self.picture = img_tuple[0]
+            self._pic_name.config(text=img_tuple[1])
 
     def initialize_trivia(self) -> None:
         asktrivia = ttk.Label(self.dialog, text="Trivia:")
@@ -428,8 +388,7 @@ class StoryView:
         label.bind(
             "<Button-1>", lambda event: self._handle_character(character=character))
 
-        char_name = character.name()
-        char_name_label = tk.Label(master=char_frame, text=char_name)
+        char_name_label = tk.Label(master=char_frame, text=character.name())
         char_name_label.pack()
 
     def _initialize_statistics(self) -> None:

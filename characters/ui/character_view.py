@@ -1,10 +1,12 @@
 import tkinter as tk
 from tkinter import ttk
+from PIL import Image, ImageTk
 from typing import Callable
 from services.character_service import char_service, Character
 from services.story_service import story_service
 from services.formatter import formatter
 from . import delete_dialog as dd
+from . import image_selector as im
 
 
 class RelationDialog:
@@ -108,6 +110,7 @@ class CharacterView:
         self._handle_story = handle_story
         self._frame = None
         self._relations_frame = None
+        self._img_label = None
         self._data_entries = {
             "gender": None,
             "birthday": None,
@@ -186,6 +189,30 @@ class CharacterView:
         self._relations_frame.pack()
         self._initialize_relations()
 
+    def _initialize_image(self, frame: ttk.Frame):
+        img_frame = ttk.Frame(master=frame, border=1,
+                              relief=tk.SOLID, width=125, height=125)
+        img_frame.pack()
+
+        img_path = char_service.get_image_path(self._character)
+
+        img = tk.PhotoImage(file=img_path)
+        self._img_label = tk.Label(master=img_frame, image=img)
+        self._img_label.image = img
+        self._img_label.pack()
+        self._img_label.bind(
+            "<Button-1>", lambda event: self._change_image(event))
+
+    def _change_image(self, event):
+        img_tuple = im.select_image()
+        if not img_tuple:
+            return
+        img = img_tuple[0]
+        char_service.update_image(self._character, img)
+        tk_image = ImageTk.PhotoImage(img)
+        self._img_label.image = tk_image
+        self._img_label.configure(image=tk_image)
+
     def _initialize_right(self):
         """Initializes the right side of the character view.
         """
@@ -198,16 +225,7 @@ class CharacterView:
             master=right_frame, text=name, font=self._heading_font)
         name_label.pack(pady=10)
 
-        img_frame = ttk.Frame(master=right_frame, border=1,
-                              relief=tk.SOLID, width=125, height=125)
-        img_frame.pack()
-
-        img_path = char_service.get_image_path(self._character)
-
-        img = tk.PhotoImage(file=img_path)
-        img_label = tk.Label(master=img_frame, image=img)
-        img_label.image = img
-        img_label.pack()
+        self._initialize_image(right_frame)
 
         story_name = story_service.get_name_by_id(
             story_id=self._character.story_id)

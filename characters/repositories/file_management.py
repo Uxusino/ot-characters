@@ -5,12 +5,41 @@
 """
 
 import os
+import string
+import random
+from PIL import Image
 
 
 class Repository:
     def __init__(self) -> None:
         current_dir = os.path.dirname(os.path.abspath(__file__))
         self._path = os.path.join(current_dir, "../library/avatars/")
+
+    def _generate_name(self) -> str:
+        """Generates random name for new image.
+
+        Returns:
+            str: Randomized string.
+        """
+        chars = string.ascii_letters + string.digits
+        name = ''.join(random.sample(chars, k=10))
+        return name
+
+    def save_image(self, image: Image) -> str:
+        """Saves image to image folder and returns image's name.
+
+        Args:
+            image (Image): Image object to be saved.
+
+        Returns:
+            str: Image's new name.
+        """
+
+        new_name = self._generate_name()
+        filedir = self._path + f"{new_name}.png"
+
+        image.save(filedir, format="png")
+        return new_name
 
     def delete_all_avatars(self) -> None:
         """Deletes all character images except for default picture.

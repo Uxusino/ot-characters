@@ -13,6 +13,7 @@ class Formatter:
             "girlfriend": "ex-girlfriend",
             "boyfriend": "ex-boyfriend"
         }
+        self._genders = ["female", "male", "unknown", "0", "1", "2", "f", "m"]
 
     def split_text(self, text: str, n: int) -> str:
         """Splits long text to different lines by n characters.
@@ -123,7 +124,7 @@ class Formatter:
             int: Integer representative of character's gender.
         """
 
-        if not gender or gender.lower() not in ["female", "male", "unknown", "0", "1", "2", "f", "m"]:
+        if not gender or gender.lower() not in self._genders:
             return 2
         return {
             "female": 0,

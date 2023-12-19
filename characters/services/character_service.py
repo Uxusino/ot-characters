@@ -4,6 +4,7 @@
         CharacterService: App logic for everything to do with characters.
 """
 
+from PIL import Image
 from repositories.db_characters import char_db
 from repositories.file_management import rep
 from entities.character import Character
@@ -28,7 +29,7 @@ class CharacterService():
         if not inf:
             return None
 
-        name = name or "Unknown"
+        name = inf[0] or "Unknown"
         gender = formatter.convert_gender(inf[1])
         bday = formatter.parse_birthday(inf[2])
         age = formatter.parse_number_value(inf[3])
@@ -80,6 +81,19 @@ class CharacterService():
         char_id = stats[5].char_id
         char_db.update_character(
             (gender, birthday, age, height, weight, char_id))
+
+    def update_image(self, character: Character, img: Image) -> None:
+        """Updates character's avatar.
+
+        Args:
+            character (Character): Character
+            img (Image): New image
+        """
+
+        old_image = character.stats["picture"]
+        new_image = rep.save_image(img)
+        char_db.update_image(new_image, character.char_id)
+        rep.delete_avatar(old_image)
 
     def get_characters_by_story_id(self, story_id: int) -> list[Character]:
         """Searches all characters of a certain story in the database.

@@ -66,6 +66,17 @@ class CharactersDatabase:
         """
         e.execute_sql(self._con, sql, stats)
 
+    def update_image(self, picture: str, char_id: int) -> None:
+        """Updated character's avatar.
+
+        Args:
+            picture (str): Name of the new avatar
+            char_id (int): Character id
+        """
+
+        sql = "UPDATE Characters SET picture=? WHERE char_id=?"
+        e.execute_sql(self._con, sql, (picture, char_id))
+
     def get_characters_by_story_id(self, story_id: int) -> list[dict]:
         """Searches all characters from a certain story.
 
