@@ -25,4 +25,5 @@
 | 13.12 | 2,5  | Parannettu ulkonäkö, uusi luokka merkkijonojen käsittelyyn, tarinan nimen ja kuvauksen muokkaus |
 | 14.12 | 2    | Luokka Database jaettu kahteen osaan; Mahdollisuus poistaa yksittäisen tarinan; Uusi ikkuna, joka varmistaa tarinan tai tarinoiden poistamisen |
 | 18.12 | 2,5  | Uusia hahmotilastoja |
-| yht.  | 53,5 | |
+| 19.12 | 2    | Voi muokata hahmon perustietoja ja kuvaa sekä poistaa yksittäisen hahmon |
+| yht.  | 55,5 | |
