@@ -108,12 +108,20 @@ class CharacterView:
         self._handle_story = handle_story
         self._frame = None
         self._relations_frame = None
+        self._data_entries = {
+            "gender": None,
+            "birthday": None,
+            "age": None,
+            "height": None,
+            "weight": None
+        }
 
         self._frozen = False
 
         self._character = character
 
         self._heading_font = ('Helvetica', '20')
+        self._bg_color = "#f0f0f0"
         self._info_width = 50
         self._button_width = 15
 
@@ -216,7 +224,7 @@ class CharacterView:
         """
 
         table_frame = ttk.Frame(parent)
-        table_frame.pack()
+        table_frame.pack(pady=10)
 
         data = [
             ("Gender", self._character.gender()),
@@ -229,18 +237,38 @@ class CharacterView:
         y = 0
         for record in data:
             ttk.Label(master=table_frame, text=record[0]).grid(row=y, column=0)
-            entry = ttk.Entry(master=table_frame)
+            entry = tk.Entry(
+                master=table_frame,
+                bg=self._bg_color,
+                relief="flat",
+                borderwidth=0)
+            self._data_entries[record[0].lower()] = entry
             entry.grid(row=y, column=1)
             entry.insert(0, record[1])
             y += 1
 
-        delete_character = ttk.Button(master=parent, text="Delete Character",
-                                      command=self._delete_character, width=self._button_width)
-        delete_character.pack(pady=50)
+        buttons_frame = ttk.Frame(table_frame)
+        buttons_frame.grid(row=y, column=1, pady=40)
 
-        go_back = ttk.Button(master=parent, text="Go Back", width=self._button_width, command=lambda: self._handle_story(
+        delete_character = ttk.Button(master=buttons_frame, text="Delete Character",
+                                      command=self._delete_character, width=self._button_width)
+        delete_character.pack()
+        save_data = ttk.Button(master=buttons_frame, text="Save Data",
+                               command=self._save_data, width=self._button_width)
+        save_data.pack()
+
+        go_back = ttk.Button(master=buttons_frame, text="Go Back", width=self._button_width, command=lambda: self._handle_story(
             story=story_service.get_story_by_id(self._character.story_id)))
-        go_back.pack()
+        go_back.pack(pady=5)
+
+    def _save_data(self):
+        gender = self._data_entries["gender"].get()
+        birthday = self._data_entries["birthday"].get()
+        age = self._data_entries["age"].get()
+        height = self._data_entries["height"].get()
+        weight = self._data_entries["weight"].get()
+        char_service.update_character(
+            (gender, birthday, age, height, weight, self._character))
 
     def _add_relation(self):
         """Calls new dialog window for adding relationships, freezes other buttons and waits for input.

@@ -87,5 +87,81 @@ class Formatter:
             characters.append(character)
         return characters
 
+    def parse_number_value(self, value: str) -> int:
+        """If user has given non-numeric value, resets it to None.
+
+        Args:
+            value (str): String value that must represent a number.
+
+        Returns:
+            int: Integer representation of given numeric string.
+        """
+
+        if not value or value == "":
+            return None
+
+        _value = value.split()[0]
+        num_value = ""
+        for sym in _value:
+            if sym.isnumeric():
+                num_value = num_value + sym
+        if num_value == "":
+            return None
+        return int(num_value)
+
+    def convert_gender(self, gender: str) -> int:
+        """Converts gender from string to integer representative.
+
+        0 = Female
+        1 = Male
+        2 = Unknown/other
+
+        Args:
+            gender (str): Gender string
+
+        Returns:
+            int: Integer representative of character's gender.
+        """
+
+        if not gender or gender.lower() not in ["female", "male", "unknown", "0", "1", "2", "f", "m"]:
+            return 2
+        return {
+            "female": 0,
+            "0": 0,
+            "f": 0,
+            "male": 1,
+            "m": 1,
+            "1": 1,
+            "unknown": 2,
+            "2": 2
+        }[gender.lower()]
+
+    def parse_birthday(self, birthday: tuple[str]) -> str:
+        """Converts day, month and year to string representation of birthday.
+
+        All values must be numeric, else it will be reverted to an unknown value.
+
+        Args:
+            birthday (tuple[str]): Tuple with values of day, month and year.
+
+        Returns:
+            str: Birthday in the form of dd/mm/yyyy
+        """
+        day = birthday[0]
+        month = birthday[1]
+        year = birthday[2]
+
+        if not day or not day.isnumeric():
+            day = "??"
+        if not month or not month.isnumeric():
+            month = "??"
+        if not year or not year.isnumeric():
+            year = "????"
+
+        birthday = f"{day}/{month}/{year}"
+        if birthday == "??/??/????":
+            return None
+        return birthday
+
 
 formatter = Formatter()

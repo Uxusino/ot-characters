@@ -7,86 +7,12 @@
 from repositories.db_characters import char_db
 from repositories.file_management import rep
 from entities.character import Character
+from services.formatter import formatter
 
 
 class CharacterService():
     def __init__(self) -> None:
         pass
-
-    def _convert_gender(self, gender: str) -> int:
-        """Converts gender from string to integer representative.
-
-        0 = Female
-        1 = Male
-        2 = Unknown/other
-
-        Args:
-            gender (str): Gender string
-
-        Returns:
-            int: Integer representative of character's gender.
-        """
-
-        if not gender or gender not in ["Female", "Male", "Unknown"]:
-            return 2
-        return {
-            "Female": 0,
-            "Male": 1,
-            "Unknown": 2,
-        }[gender]
-
-    def _parse_birthday(self, birthday: tuple[str]) -> str:
-        """Converts day, month and year to string representation of birthday.
-
-        All values must be numeric, else it will be reverted to an unknown value.
-
-        Args:
-            birthday (tuple[str]): Tuple with values of day, month and year.
-
-        Returns:
-            str: Birthday in the form of dd/mm/yyyy
-        """
-        day = birthday[0]
-        month = birthday[1]
-        year = birthday[2]
-
-        if not day or not day.isnumeric():
-            day = "??"
-        if not month or not month.isnumeric():
-            month = "??"
-        if not year or not year.isnumeric():
-            year = "????"
-
-        birthday = f"{day}/{month}/{year}"
-        if birthday == "??/??/????":
-            return None
-        return birthday
-
-    def _parse_number_value(self, value: str) -> int:
-        """If user has given non-numeric value, resets it to None.
-
-        Args:
-            value (str): String value that must represent a number.
-
-        Returns:
-            int: Integer representation of given numeric string.
-        """
-        if not value or not value.isnumeric():
-            return None
-        return int(value)
-
-    def _parse_name(self, name: str) -> str:
-        """Checks whether user has given name, else sets the name as Unknown.
-
-        Args:
-            name (str): User's input of character's name.
-
-        Returns:
-            str: Character's name in form of a valid string.
-        """
-        if not name:
-            return "Unknown"
-        return name
 
     def create_character(self, inf: tuple, story_id: int) -> Character:
         """Adds character to the database and returns a Character object.
@@ -102,12 +28,12 @@ class CharacterService():
         if not inf:
             return None
 
-        name = self._parse_name(name=inf[0])
-        gender = self._convert_gender(inf[1])
-        bday = self._parse_birthday(inf[2])
-        age = self._parse_number_value(inf[3])
-        ht = self._parse_number_value(inf[4])
-        wt = self._parse_number_value(inf[5])
+        name = name or "Unknown"
+        gender = formatter.convert_gender(inf[1])
+        bday = formatter.parse_birthday(inf[2])
+        age = formatter.parse_number_value(inf[3])
+        ht = formatter.parse_number_value(inf[4])
+        wt = formatter.parse_number_value(inf[5])
         appr = inf[6] if inf[6] != "" else None
         prsn = inf[7] if inf[7] != "" else None
         hist = inf[8] if inf[8] != "" else None
@@ -138,6 +64,22 @@ class CharacterService():
         )
 
         return new_char
+
+    def update_character(self, stats: tuple[str | Character]) -> None:
+        """Updates character information in the database.
+
+        Args:
+            stats (tuple): New information to be updated.
+        """
+
+        gender = formatter.convert_gender(stats[0])
+        birthday = stats[1]
+        age = formatter.parse_number_value(stats[2])
+        height = formatter.parse_number_value(stats[3])
+        weight = formatter.parse_number_value(stats[4])
+        char_id = stats[5].char_id
+        char_db.update_character(
+            (gender, birthday, age, height, weight, char_id))
 
     def get_characters_by_story_id(self, story_id: int) -> list[Character]:
         """Searches all characters of a certain story in the database.

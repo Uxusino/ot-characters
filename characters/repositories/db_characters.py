@@ -45,6 +45,27 @@ class CharactersDatabase:
         char_id = cur.lastrowid
         return char_id
 
+    def update_character(self, stats: tuple) -> None:
+        """Updates character's information in the database.
+
+        stats = (gender, birthday, age, height, weight, char_id)
+
+        Args:
+            stats (tuple): Information to be updated
+        """
+
+        sql = """
+            UPDATE Characters
+            SET
+                gender=?,
+                birthday=?,
+                age=?,
+                height=?,
+                weight=?
+            WHERE char_id=?
+        """
+        e.execute_sql(self._con, sql, stats)
+
     def get_characters_by_story_id(self, story_id: int) -> list[dict]:
         """Searches all characters from a certain story.
 
