@@ -54,6 +54,8 @@ class DeleteDialog:
             story_service.clear_stories()
             self._close()
         elif self._type == 'character':
-            pass
+            char_service.delete_character(self._object)
+            self._handle_func()
+            self._close()
         else:
             self._close()

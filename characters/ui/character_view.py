@@ -4,6 +4,7 @@ from typing import Callable
 from services.character_service import char_service, Character
 from services.story_service import story_service
 from services.formatter import formatter
+from . import delete_dialog as dd
 
 
 class RelationDialog:
@@ -286,9 +287,17 @@ class CharacterView:
 
     def _delete_character(self):
         """Deletes current character from the database.
-
-        WIP
-
         """
 
-        pass
+        if not self._frozen:
+            self._frozen = True
+            _story = story_service.get_story_by_id(self._character.story_id)
+            dialog = dd.DeleteDialog(
+                self._root,
+                lambda: self._handle_story(story=_story),
+                self._character,
+                'character')
+            self._wait_for_input(dialog, self._unfreeze)
+
+    def _unfreeze(self):
+        self._frozen = False

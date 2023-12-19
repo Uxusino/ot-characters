@@ -215,6 +215,18 @@ class CharacterService():
         char_db.set_relation(char1_id=char1_id, char2_id=char2_id,
                              relation_id=rel_id, former=former)
 
+    def delete_character(self, character: Character) -> None:
+        """Deletes character from the database.
+
+        Args:
+            character (Character): Character object
+        """
+
+        char_db.delete_character(character.char_id)
+        char_db.delete_character_relations(character.char_id)
+        if character.stats["picture"]:
+            rep.delete_avatar(character.stats["picture"])
+
     def clear_characters(self) -> None:
         """Deletes all characters and their avatars.
         """

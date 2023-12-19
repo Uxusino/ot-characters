@@ -192,6 +192,26 @@ class CharactersDatabase:
         res = cur.execute(sql, (relation_id, )).fetchone()
         return res
 
+    def delete_character(self, char_id: int) -> None:
+        """Deletes a character by their id.
+
+        Args:
+            char_id (int): Character id
+        """
+
+        sql = "DELETE FROM Characters WHERE char_id=?"
+        e.execute_sql(self._con, sql, (char_id,))
+
+    def delete_character_relations(self, char_id: int) -> None:
+        """Deletes all relationships of a character.
+
+        Args:
+            char_id (int): Character id
+        """
+
+        sql = "DELETE FROM CharacterRelations WHERE char1_id=? OR char2_id=?"
+        e.execute_sql(self._con, sql, (char_id, char_id))
+
     def clear_characters(self) -> None:
         """Deletes all characters.
         """
