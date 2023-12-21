@@ -116,7 +116,12 @@ class CharacterView:
             "birthday": None,
             "age": None,
             "height": None,
-            "weight": None
+            "weight": None,
+            "appearance": None,
+            "personality": None,
+            "history": None,
+            "trivia": None,
+            "name": None
         }
 
         self._frozen = False
@@ -159,7 +164,9 @@ class CharacterView:
 
         labels = ["Appearance", "Personality",
                   "History", "Trivia"]
+
         for l in labels:
+            txt = self._character.stats[l.lower()] or ""
             stat_frame = ttk.Frame(left_frame)
             stat_frame.pack(pady=15, padx=30)
             ttk.Label(stat_frame, text=l,
@@ -167,20 +174,23 @@ class CharacterView:
             info_frame = ttk.Frame(
                 master=stat_frame, border=1, relief=tk.SOLID)
             info_frame.pack()
-            info = ttk.Label(
+            info = tk.Text(
                 master=info_frame,
-                text=formatter.split_text(
-                    self._character.stats[l.lower()], 50),
-                width=self._info_width)
+                bg=self._bg_color,
+                height=5,
+                width=self._info_width
+            )
+            info.insert(tk.END, txt)
+            self._data_entries[l.lower()] = info
             info.pack(padx=5, pady=5)
 
-        rel_frame = ttk.Frame(left_frame)
+        rel_frame = ttk.Frame(master=left_frame, width=self._info_width)
         rel_frame.pack(pady=15, padx=30)
         ttk.Label(rel_frame, text="Relationships",
                   font=self._heading_font).pack(anchor="w")
 
         info_frame = ttk.Frame(
-            master=rel_frame, border=1, relief=tk.SOLID)
+            master=rel_frame, border=1, relief=tk.SOLID, width=self._info_width)
         info_frame.pack()
         ttk.Button(master=info_frame, text="Add Relation",
                    command=self._add_relation, width=self._button_width).pack(pady=5)
@@ -221,9 +231,17 @@ class CharacterView:
         right_frame.pack(side=tk.RIGHT)
 
         name = self._character.name()
-        name_label = ttk.Label(
-            master=right_frame, text=name, font=self._heading_font)
-        name_label.pack(pady=10)
+        name_entry = tk.Entry(
+            master=right_frame,
+            font=self._heading_font,
+            bg=self._bg_color,
+            relief="flat",
+            borderwidth=0,
+            justify=tk.CENTER
+        )
+        name_entry.insert(tk.END, name)
+        self._data_entries["name"] = name_entry
+        name_entry.pack(pady=10)
 
         self._initialize_image(right_frame)
 
@@ -271,7 +289,7 @@ class CharacterView:
         delete_character = ttk.Button(master=buttons_frame, text="Delete Character",
                                       command=self._delete_character, width=self._button_width)
         delete_character.pack()
-        save_data = ttk.Button(master=buttons_frame, text="Save Data",
+        save_data = ttk.Button(master=buttons_frame, text="Save Changes",
                                command=self._save_data, width=self._button_width)
         save_data.pack()
 
@@ -285,8 +303,15 @@ class CharacterView:
         age = self._data_entries["age"].get()
         height = self._data_entries["height"].get()
         weight = self._data_entries["weight"].get()
+        appearance = self._data_entries["appearance"].get(
+            "1.0", tk.END).strip()
+        personality = self._data_entries["personality"].get(
+            "1.0", tk.END).strip()
+        history = self._data_entries["history"].get("1.0", tk.END).strip()
+        trivia = self._data_entries["trivia"].get("1.0", tk.END).strip()
+        name = self._data_entries["name"].get()
         char_service.update_character(
-            (gender, birthday, age, height, weight, self._character))
+            (gender, birthday, age, height, weight, appearance, personality, history, trivia, name, self._character))
 
     def _add_relation(self):
         """Calls new dialog window for adding relationships, freezes other buttons and waits for input.
@@ -324,12 +349,19 @@ class CharacterView:
                       width=self._info_width).pack()
             return
         for relation in relations:
-            ttk.Label(
+            r = ttk.Label(
                 master=self._relations_frame,
                 text=formatter.relation_str(relation),
                 width=self._info_width
-            ).pack()
+            )
+            r.pack()
+            r.bind("<Button-1>", lambda event, char1_id=self._character.char_id,
+                   char2_id=relation[3], rel_id=relation[4], two_sided=relation[5], cpart=relation[6]: self._delete_relation(event, char1_id, char2_id, rel_id, two_sided, cpart))
         self._frozen = False
+
+    def _delete_relation(self, event, char1_id: int, char2_id: int, rel_id: int, two_sided: int, counterpart: int):
+        char_service.delete_relation(char1_id, char2_id, rel_id, two_sided, counterpart)
+        self._initialize_relations()
 
     def _delete_character(self):
         """Deletes current character from the database.

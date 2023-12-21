@@ -47,11 +47,11 @@ Tarinan sivussa näkyy lista hahmoja ja hahmojen tilasto.
 Sivussa näkyy kaikki yllä mainitut tiedot. On mahdollista:
 
 - Poistaa hahmon *(tehty)*
-- Muokata kumpi tahansa kohta
+- Muokata kumpi tahansa kohta *(tehty)*
 - Lisätä suhteita olemassaolevien hahmojen väliin *(tehty)*
     - Jos lisätään kaksisuuntainen suhde (esim. "parent"), myös toisen hahmon sivu päivitetään *(tehty)*
     - On mahdollista lisätä yksisuuntaisia suhteita (esim. "love interest") *(tehty)*
-- Poistaa suhteita
+- Poistaa suhteita *(tehty)*
 
 Mahdolliset suhteet ovat:
 

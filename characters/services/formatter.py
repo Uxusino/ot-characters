@@ -43,7 +43,7 @@ class Formatter:
         """Parses a relationship tuple into a string.
 
         Args:
-            relationship (tuple): (Character's name, Former, Relationship's name)
+            relationship (tuple): (Character's name, Former, Relationship's name...)
 
         Returns:
             str: Parsed string that describes said relation.

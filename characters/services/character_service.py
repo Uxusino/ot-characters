@@ -78,9 +78,15 @@ class CharacterService():
         age = formatter.parse_number_value(stats[2])
         height = formatter.parse_number_value(stats[3])
         weight = formatter.parse_number_value(stats[4])
-        char_id = stats[5].char_id
+        appearance = stats[5].replace("\n", " ")
+        personality = stats[6].replace("\n", " ")
+        history = stats[7].replace("\n", " ")
+        trivia = stats[8].replace("\n", " ")
+        name = stats[9]
+        char_id = stats[10].char_id
         char_db.update_character(
-            (gender, birthday, age, height, weight, char_id))
+            (gender, birthday, age, height, weight, appearance,
+             personality, history, trivia, name, char_id))
 
     def update_image(self, character: Character, img: Image) -> None:
         """Updates character's avatar.
@@ -182,6 +188,21 @@ class CharacterService():
         char_db.delete_character_relations(character.char_id)
         if character.stats["picture"]:
             rep.delete_avatar(character.stats["picture"])
+
+    def delete_relation(self, char1_id: int, char2_id: int, rel_id: int,
+                        two_sided: int, counterpart: int) -> None:
+        """Deletes a relationship between two characters.
+
+        Args:
+            char1_id (int): Id of the first character
+            char2_id (int): Id of the second character
+            rel_id (int): Relation id
+            two_sided (int): True if two-sided, False otherwise
+            counterpart (int): If two-sided, id of a corresponding relation
+        """
+        _two_sided = two_sided == 1
+        char_db.delete_relation(
+            char1_id, char2_id, rel_id, _two_sided, counterpart)
 
     def clear_characters(self) -> None:
         """Deletes all characters and their avatars.

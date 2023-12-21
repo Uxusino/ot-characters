@@ -26,4 +26,5 @@
 | 14.12 | 2    | Luokka Database jaettu kahteen osaan; Mahdollisuus poistaa yksittäisen tarinan; Uusi ikkuna, joka varmistaa tarinan tai tarinoiden poistamisen |
 | 18.12 | 2,5  | Uusia hahmotilastoja |
 | 19.12 | 2    | Voi muokata hahmon perustietoja ja kuvaa sekä poistaa yksittäisen hahmon |
-| yht.  | 55,5 | |
+| 21.12 | 2    | Voi muokata hahmon kaikki tiedot sekä poistaa suhteita klikkaamalla niitä |
+| yht.  | 57,5 | |

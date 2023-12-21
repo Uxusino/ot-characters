@@ -48,8 +48,6 @@ class CharactersDatabase:
     def update_character(self, stats: tuple) -> None:
         """Updates character's information in the database.
 
-        stats = (gender, birthday, age, height, weight, char_id)
-
         Args:
             stats (tuple): Information to be updated
         """
@@ -61,7 +59,12 @@ class CharactersDatabase:
                 birthday=?,
                 age=?,
                 height=?,
-                weight=?
+                weight=?,
+                appearance=?,
+                personality=?,
+                history=?,
+                trivia=?,
+                name=?
             WHERE char_id=?
         """
         e.execute_sql(self._con, sql, stats)
@@ -116,10 +119,10 @@ class CharactersDatabase:
         """All relationships of a certain character.
 
         Args:
-            char_id (int): Character id as in the database.
+            char_id (int): Character id
 
         Returns:
-            list[tuple]: (character's name, is relationship former, relation's name)
+            list[tuple]: (name, former, relation, char2_id, relation id, two-sided, counterpart)
         """
 
         sql = """
@@ -128,7 +131,12 @@ class CharactersDatabase:
                     WHEN char.gender = 0 THEN rel.female_name
                     WHEN char.gender = 1 THEN rel.male_name
                     ELSE rel.name
-                END AS relation_name
+                END AS relation_name,
+                charrel.char2_id, rel.relation_id, rel.two_sided,
+                CASE
+                    WHEN rel.two_sided = 1 THEN rel.counterpart
+                    ELSE NULL
+                END AS counterpart
             FROM CharacterRelations charrel
             JOIN Characters char ON char.char_id = charrel.char2_id
             JOIN Relations rel ON rel.relation_id = charrel.relation_id
@@ -141,7 +149,7 @@ class CharactersDatabase:
             return None
         relations = []
         for r in res:
-            relations.append((r[0], r[1], r[2]))
+            relations.append((r[0], r[1], r[2], r[3], r[4], r[5], r[6]))
         return relations
 
     def get_relation_id_from_name(self, name: str) -> int:
@@ -243,6 +251,29 @@ class CharactersDatabase:
 
         sql = "DELETE FROM CharacterRelations WHERE char1_id=? OR char2_id=?"
         e.execute_sql(self._con, sql, (char_id, char_id))
+
+    def delete_relation(self, char1_id: int, char2_id: int, rel_id: int,
+                        two_sided: bool, counterpart: int = None) -> None:
+        """Deletes a relationship between two characters.
+
+        Args:
+            char1_id (int): Id of the first character
+            char2_id (int): Id of the second character
+            rel_id (int): Relation id
+            two_sided (bool): True if two-sided, False if not
+            counterpart (int): Id of respective relation, if two-sided
+        """
+
+        data = (char1_id, char2_id, rel_id)
+        sql = """
+            DELETE FROM CharacterRelations
+            WHERE char1_id=? AND char2_id=? AND relation_id=?
+        """
+        e.execute_sql(self._con, sql, data)
+
+        if two_sided:
+            data2 = (char2_id, char1_id, counterpart)
+            e.execute_sql(self._con, sql, data2)
 
     def clear_characters(self) -> None:
         """Deletes all characters.
