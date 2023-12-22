@@ -55,7 +55,7 @@ Hahmon tietoja voi kirjoittaa seuraaviin kenttiin:
 - **Image**: Kuvan valitseminen omasta tietokoneesta. Kuvan koko muutetaan kooksi 150x150.
 - **Trivia**: Mahdollisia lisätietoja hahmosta.
 
-Mikään kenttä ei ole pakollinen ja halutessaan voi luoda tyhjänkin hahmon. ( ❗ Tärkeä huomio: löysin viikon 6 releasessa bugin, joka ei salli luomaan hahmon, jolla on tyhjä nimi ja tyhjä syntymäpäivä. Bugi korjattu main-haaralla, mutta se esiintyy viikon 6 releasessa.) Syötettyään kaikki tarvittavat tiedot uuden hahmon luonti onnistuu painamalla *"Ok"*-painiketta.
+Mikään kenttä ei ole pakollinen ja halutessaan voi luoda tyhjänkin hahmon. Syötettyään kaikki tarvittavat tiedot uuden hahmon luonti onnistuu painamalla *"Ok"*-painiketta.
 
 ## Pääsy hahmon sivulle
 
