@@ -77,5 +77,16 @@ Jos suhde on kaksisuuntainen, toisen hahmon sivu päivittyy automaattisesti.
 
 ![Autoupdate](autoupdate.png)
 
+## Hahmon tietojen muokkaaminen
 
+On mahdollista vapaasti muokata hahmon tiedot. Pitää yksinkertaisesti painaa muokatettavaa tietoa; sen jälkeen kun päivittää kaikki tarvittavat kohdat, pitää painaa "Save Changes"-nappia ja tiedot tallentuvat tietokantaan.
 
+![EditCharacter](edit_character.png)
+
+Kuvaa pääsee muokkamaan painamalla hahmon profiilikuvaa. Sitä ei tarvitse erikseen tallentaa, sillä kuva päivittyy heti, kun valitsee sitä.
+
+## Suhteiden poistaminen
+
+Suhteita voi poistaa klikkaamalla niitä. Silloin kun suhde on valittu, teksti muuttuu lihavoiduksi.
+
+![DeleteRelation](delete_relation.png)
