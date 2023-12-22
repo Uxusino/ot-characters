@@ -378,7 +378,8 @@ class CharacterView:
         label.config(font=font)
 
     def _delete_relation(self, event, char1_id: int, char2_id: int, rel_id: int, two_sided: int, counterpart: int):
-        char_service.delete_relation(char1_id, char2_id, rel_id, two_sided, counterpart)
+        char_service.delete_relation(
+            char1_id, char2_id, rel_id, two_sided, counterpart)
         self._initialize_relations()
 
     def _delete_character(self):

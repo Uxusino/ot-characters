@@ -90,7 +90,8 @@ class TestCharacterService(unittest.TestCase):
 
     def test_update_character(self):
         char = char_service.create_character(self.dummy_character_stats, 1)
-        stats = ("f", "22/12/2023", "", "170", "", "bald head blue eyes", "", "", "", "Dummella", char)
+        stats = ("f", "22/12/2023", "", "170", "",
+                 "bald head blue eyes", "", "", "", "Dummella", char)
         edited = Character(
             char_id=1,
             story_id=1,
@@ -118,8 +119,10 @@ class TestCharacterService(unittest.TestCase):
     def test_delete_twosided_relation(self):
         char1 = char_service.create_character(self.dummy_character_stats, 1)
         char2 = char_service.create_character(self.dummy_character_stats, 1)
-        char_service.set_relations(char1=char1, char2=char2, relation="parent", former=0)
-        char_service.delete_relation(char1_id=char2.char_id, char2_id=char1.char_id, rel_id=2, two_sided=1, counterpart=1)
+        char_service.set_relations(
+            char1=char1, char2=char2, relation="parent", former=0)
+        char_service.delete_relation(
+            char1_id=char2.char_id, char2_id=char1.char_id, rel_id=2, two_sided=1, counterpart=1)
         res = char_service.get_character_relations(char1)
 
         self.assertEqual(res, None)
@@ -127,11 +130,14 @@ class TestCharacterService(unittest.TestCase):
     def test_delete_single_story_deletes_relations(self):
         char1 = char_service.create_character(self.dummy_character_stats, 1)
         char2 = char_service.create_character(self.dummy_character_stats, 1)
-        char_service.set_relations(char1=char1, char2=char2, relation="parent", former=0)
+        char_service.set_relations(
+            char1=char1, char2=char2, relation="parent", former=0)
         story_service.delete_story(1)
         story = story_service.create_story(name="Dummy Story")
-        char3 = char_service.create_character(self.dummy_character_stats, story_id=story.story_id)
-        char_service.create_character(self.dummy_character_stats, story_id=story.story_id)
+        char3 = char_service.create_character(
+            self.dummy_character_stats, story_id=story.story_id)
+        char_service.create_character(
+            self.dummy_character_stats, story_id=story.story_id)
         res = char_service.get_character_relations(char3)
 
         self.assertEqual(res, None)

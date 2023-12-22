@@ -120,7 +120,7 @@ class Character:
         return "?? kg"
 
     def __str__(self) -> str:
-        return f"{self.stats['name']} from {story_service.get_name_by_id(self.story_id)} {self.stats}"
+        return f"{self.stats['name']} from {story_service.get_name_by_id(self.story_id)}"
 
     def __eq__(self, __value: "Character") -> bool:
         return (
