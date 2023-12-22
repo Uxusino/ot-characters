@@ -78,11 +78,11 @@ class CharacterService():
         age = formatter.parse_number_value(stats[2])
         height = formatter.parse_number_value(stats[3])
         weight = formatter.parse_number_value(stats[4])
-        appearance = stats[5].replace("\n", " ")
-        personality = stats[6].replace("\n", " ")
-        history = stats[7].replace("\n", " ")
-        trivia = stats[8].replace("\n", " ")
-        name = stats[9]
+        appearance = stats[5] if stats[5] != "" else None
+        personality = stats[6] if stats[6] != "" else None
+        history = stats[7] if stats[7] != "" else None
+        trivia = stats[8] if stats[8] != "" else None
+        name = stats[9] if stats[9] != "" else None
         char_id = stats[10].char_id
         char_db.update_character(
             (gender, birthday, age, height, weight, appearance,
@@ -99,7 +99,8 @@ class CharacterService():
         old_image = character.stats["picture"]
         new_image = rep.save_image(img)
         char_db.update_image(new_image, character.char_id)
-        rep.delete_avatar(old_image)
+        if old_image:
+            rep.delete_avatar(old_image)
 
     def get_characters_by_story_id(self, story_id: int) -> list[Character]:
         """Searches all characters of a certain story in the database.
