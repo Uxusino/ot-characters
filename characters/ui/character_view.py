@@ -348,16 +348,34 @@ class CharacterView:
             ttk.Label(master=self._relations_frame, text="",
                       width=self._info_width).pack()
             return
+
         for relation in relations:
-            r = ttk.Label(
+            r_frame = tk.Frame(
                 master=self._relations_frame,
+                width=400,
+                height=25)
+            r_frame.pack_propagate(0)
+            r_frame.pack()
+            r = ttk.Label(
+                master=r_frame,
                 text=formatter.relation_str(relation),
-                width=self._info_width
+                font=('Helvetica', '12')
             )
-            r.pack()
+            r.pack(expand=True)
             r.bind("<Button-1>", lambda event, char1_id=self._character.char_id,
                    char2_id=relation[3], rel_id=relation[4], two_sided=relation[5], cpart=relation[6]: self._delete_relation(event, char1_id, char2_id, rel_id, two_sided, cpart))
+            r.bind("<Enter>", lambda event, label=r: self._hover(event, label))
+            r.bind("<Leave>", lambda event, label=r: self._leave(event, label))
+
         self._frozen = False
+
+    def _hover(self, event, label: ttk.Label) -> None:
+        bold_font = ('Helvetica', '12', 'bold')
+        label.config(font=bold_font)
+
+    def _leave(self, event, label: ttk.Label) -> None:
+        font = ('Helvetica', '12')
+        label.config(font=font)
 
     def _delete_relation(self, event, char1_id: int, char2_id: int, rel_id: int, two_sided: int, counterpart: int):
         char_service.delete_relation(char1_id, char2_id, rel_id, two_sided, counterpart)

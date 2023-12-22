@@ -15,30 +15,6 @@ class Formatter:
         }
         self._genders = ["female", "male", "unknown", "0", "1", "2", "f", "m"]
 
-    def split_text(self, text: str, n: int) -> str:
-        """Splits long text to different lines by n characters.
-
-        Args:
-            text (str): String to be splitted.
-
-        Returns:
-            str: Splitted string.
-        """
-
-        if not text:
-            return ""
-
-        x = 0
-        new_text = ""
-        for y in text:
-            if x > n and y == " ":
-                new_text = new_text + "\n"
-                x = 0
-                continue
-            new_text = new_text + y
-            x += 1
-        return new_text
-
     def relation_str(self, relationship: tuple) -> str:
         """Parses a relationship tuple into a string.
 
